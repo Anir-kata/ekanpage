@@ -1,73 +1,64 @@
-# React + TypeScript + Vite
+# Portfolio + Tableau de Bord Pédagogique
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Application front-end réalisée avec React, TypeScript, Vite et Tailwind CSS.
 
-Currently, two official plugins are available:
+Le projet contient deux espaces principaux:
+- un portfolio professionnel interactif
+- un tableau de bord pédagogique pour le suivi des élèves
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Fonctionnalités
 
-## React Compiler
+### Portfolio
+- Interface sci-fi moderne avec animations et effets interactifs
+- Présentation du profil, des compétences, des expériences et des projets
+- Section contact avec accès direct email/téléphone/LinkedIn/GitHub
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+### Espace pédagogique
+- Liste des élèves avec anonymisation des noms dans l'interface
+- Ajout et modification complète des fiches élèves via fenêtre modale
+- Déverrouillage protégé par schéma (pattern lock) avant affichage de la fiche complète
+- Sélection de la prochaine séance via calendrier (date + heure)
+- Tableau de bord avec indicateurs et avis de progression
 
-## Expanding the ESLint configuration
+## Stack technique
+- React 19
+- TypeScript
+- Vite
+- Tailwind CSS
+- React Icons
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Démarrage local
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+1. Installer les dépendances
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. Lancer le serveur de développement
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev
 ```
+
+3. Générer le build de production
+
+```bash
+npm run build
+```
+
+4. Prévisualiser le build
+
+```bash
+npm run preview
+```
+
+## Structure rapide
+
+- src/components: composants UI (portfolio, élèves, onglets)
+- src/data: données de profil et jeu de données élèves
+- src/types: types TypeScript métier
+
+## Note importante
+
+Le verrouillage par schéma est actuellement géré côté front. Pour une sécurité forte en production, il faut ajouter une authentification côté backend et des endpoints protégés.
