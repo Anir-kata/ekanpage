@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { CVProfile } from './components/CVProfile'
 import { StudentList } from './components/StudentList'
 import { Tabs, type TabKey } from './components/Tabs'
@@ -9,13 +9,30 @@ function App() {
   const [activeView, setActiveView] = useState<'portfolio' | TabKey>('portfolio')
   const [students, setStudents] = useState<Student[]>(mockStudents)
 
+  useEffect(() => {
+    const handlePointerMove = (event: PointerEvent) => {
+      const root = document.documentElement
+      root.style.setProperty('--mouse-x', `${event.clientX}px`)
+      root.style.setProperty('--mouse-y', `${event.clientY}px`)
+    }
+
+    window.addEventListener('pointermove', handlePointerMove)
+    return () => window.removeEventListener('pointermove', handlePointerMove)
+  }, [])
+
   const totalSessions = useMemo(
     () => students.reduce((acc, student) => acc + student.sessionsDone, 0),
     [students],
   )
 
-  const updateStudentFiche = (studentId: string, notes: string) => {
-    setStudents((prev) => prev.map((student) => (student.id === studentId ? { ...student, notes } : student)))
+  const updateStudent = (updatedStudent: Student) => {
+    setStudents((prev) =>
+      prev.map((student) => (student.id === updatedStudent.id ? updatedStudent : student)),
+    )
+  }
+
+  const addStudent = (student: Student) => {
+    setStudents((prev) => [student, ...prev])
   }
 
   return (
@@ -60,15 +77,32 @@ function App() {
                 <p className="mt-3 text-4xl font-extrabold text-blue-300">{totalSessions}</p>
               </article>
               <article className="panel-soft rounded-2xl p-5 transition hover:-translate-y-0.5 hover:shadow-indigo-400/20">
-                <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Prochaine étape</p>
-                <p className="mt-3 text-base font-semibold text-indigo-200">Ajouter des fiches de suivi par élève</p>
+                <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Progression observée</p>
+                <p className="mt-3 text-base font-semibold text-indigo-200">Suivi positif global</p>
               </article>
+            </section>
+          )}
+
+          {activeView === 'dashboard' && (
+            <section className="mt-6 panel rounded-2xl p-5">
+              <h3 className="hud-title text-base font-bold text-cyan-200">Avis de progression des élèves</h3>
+              <div className="mt-4 grid gap-3 md:grid-cols-3">
+                {students.slice(0, 3).map((student, index) => (
+                  <article
+                    key={student.id}
+                    className="panel-soft rounded-xl p-4 transition hover:-translate-y-0.5 hover:shadow-cyan-400/20"
+                  >
+                    <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Élève #{index + 1}</p>
+                    <p className="mt-2 text-sm text-slate-200">{student.notes}</p>
+                  </article>
+                ))}
+              </div>
             </section>
           )}
 
           {activeView === 'students' && (
             <section className="mt-6">
-              <StudentList students={students} onUpdateFiche={updateStudentFiche} />
+              <StudentList students={students} onUpdateStudent={updateStudent} onAddStudent={addStudent} />
             </section>
           )}
         </>

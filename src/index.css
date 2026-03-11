@@ -44,6 +44,22 @@ body::before {
   min-height: 100vh;
 }
 
+#root::after {
+  content: "";
+  position: fixed;
+  width: 42vmax;
+  height: 42vmax;
+  left: var(--mouse-x, 50%);
+  top: var(--mouse-y, 50%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(34, 211, 238, 0.14) 0%, rgba(34, 211, 238, 0.05) 26%, rgba(2, 6, 23, 0) 64%);
+  filter: blur(8px);
+  z-index: -1;
+  transition: left 120ms linear, top 120ms linear;
+}
+
 .panel {
   border: none;
   background: linear-gradient(160deg, rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.55));
@@ -102,6 +118,45 @@ body::before {
   animation: scan 7s linear infinite;
 }
 
+.reveal {
+  opacity: 0;
+  transform: translateY(20px) scale(0.99);
+  filter: blur(3px);
+  transition: opacity 620ms ease, transform 620ms ease, filter 620ms ease;
+}
+
+.reveal--visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+.interactive-card {
+  position: relative;
+  transform-style: preserve-3d;
+  transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 180ms ease, box-shadow 180ms ease;
+  overflow: hidden;
+}
+
+.interactive-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), rgba(103, 232, 249, 0.22), transparent 46%);
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+
+.interactive-card:hover {
+  box-shadow: 0 14px 34px rgba(8, 47, 73, 0.34);
+}
+
+.interactive-card:hover::before {
+  opacity: 1;
+}
+
 .skill-flow .skill-orb {
   animation: drift 5.5s ease-in-out infinite;
   will-change: transform;
@@ -134,5 +189,14 @@ body::before {
 @media (max-width: 640px) {
   .hud-title {
     letter-spacing: 0.04em;
+  }
+
+  #root::after {
+    width: 52vmax;
+    height: 52vmax;
+  }
+
+  .interactive-card {
+    transform: none;
   }
 }

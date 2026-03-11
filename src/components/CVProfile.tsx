@@ -1,6 +1,7 @@
-import { useState, type ComponentType } from 'react'
+import { useEffect, useRef, useState, type ComponentType, type MouseEvent, type ReactNode } from 'react'
 import {
   FaCalendarCheck,
+  FaChevronDown,
   FaCode,
   FaFlask,
   FaEnvelope,
@@ -35,21 +36,24 @@ import { profile } from '../data/profile'
 
 const frontendSkills = [
   { name: 'React', icon: SiReact },
-  { name: 'TypeScript', icon: SiTypescript },
   { name: 'Angular', icon: SiAngular },
-  { name: 'HTML5 / CSS', icon: SiVite },
+  { name: 'Vite', icon: SiVite },
   { name: 'Tailwind', icon: SiTailwindcss },
 ]
 
 const backendSkills = [
-  { name: 'Java', icon: SiSpringboot },
-  { name: 'Python', icon: SiPython },
-  { name: 'Node.js', icon: SiNodedotjs },
   { name: 'Spring Boot', icon: SiSpringboot },
   { name: 'Django', icon: SiDjango },
   { name: 'FastAPI', icon: SiFastapi },
   { name: 'Express.js', icon: SiExpress },
-  { name: 'SQL (PostgreSQL, MySQL)', icon: SiPostgresql },
+]
+
+const languageSkills = [
+  { name: 'Java', icon: SiSpringboot },
+  { name: 'Python', icon: SiPython },
+  { name: 'TypeScript', icon: SiTypescript },
+  { name: 'Node.js', icon: SiNodedotjs },
+  { name: 'R', icon: FaTools },
 ]
 
 const toolingSkills = [
@@ -153,7 +157,6 @@ const softSkills = [
   { name: "Capacité d'adaptation", icon: FaTools },
   { name: 'Travail en équipe', icon: FaTools },
   { name: 'Écoute active', icon: FaTools },
-  { name: 'Leadership technique', icon: FaTools },
   { name: 'Vulgarisation', icon: FaTools },
   { name: 'Gestion des priorités', icon: FaTools },
   { name: 'Communication technique', icon: FaTools },
@@ -193,6 +196,89 @@ const projects = [
   },
 ]
 
+const profileStory = [
+  {
+    title: 'Mon profil',
+    content:
+      "Je suis jeune diplômé de l'ENSIMAG. Je construis mes premières expériences fullstack avec une approche orientée performance, scalabilité et intégration propre.",
+  },
+  {
+    title: 'Ma façon de travailler',
+    content:
+      "J'avance étape par étape, je demande du feedback tôt et je préfère un code clair avant un code trop complexe.",
+  },
+  {
+    title: 'Ce que je recherche',
+    content:
+      "Continuer à progresser sur des projets concrets, encadré par une équipe exigeante, pour monter en niveau rapidement en frontend et backend.",
+  },
+]
+
+const expertiseAreas = [
+  {
+    key: 'backend',
+    label: 'Backend',
+    title: 'Bases solides en backend',
+    points: [
+      'Conception d’APIs REST sur des cas réels (stages et projets personnels).',
+      'Mise en pratique de Java, Python, TypeScript, Node.js et R selon le contexte.',
+      'Structuration du code backend pour rester lisible et maintenable.',
+      'Gestion des validations d’entrée, des erreurs et des réponses API.',
+      'Premières intégrations cloud (Azure) et déploiements simples.',
+      'Automatisation de traitements data/reporting sur des besoins métier.',
+    ],
+  },
+  {
+    key: 'frontend',
+    label: 'Frontend',
+    title: 'Frontend moderne orienté produit',
+    points: [
+      'Développement en React + TypeScript avec composants réutilisables.',
+      'Création d’interfaces lisibles, responsives et agréables à utiliser.',
+      'Utilisation de Tailwind pour accélérer le développement UI.',
+      'Animations et interactions légères pour améliorer l’expérience utilisateur.',
+      'Connexion aux APIs avec gestion du chargement et des erreurs.',
+      'Attention portée à la clarté visuelle et à la cohérence globale.',
+    ],
+  },
+  {
+    key: 'algo',
+    label: 'Algorithmie et Analyse Mathématique',
+    title: 'Rigueur analytique appliquée',
+    points: [
+      'Résolution de problèmes en gardant une logique claire et structurée.',
+      'Analyse mathématique utile pour la data, la prévision et l’aide à la décision.',
+      'Traitement et nettoyage de données hétérogènes sur des cas métiers.',
+      'Réflexion sur la complexité et le coût des traitements quand c’est nécessaire.',
+      'Approche rigoureuse héritée de ma formation scientifique (MPSI/MP + ENSIMAG).',
+      'Capacité à vulgariser un raisonnement technique pour le rendre compréhensible.',
+    ],
+  },
+] as const
+
+const faqItems = [
+  {
+    question: 'Quel poste je recherche ?',
+    answer: 'Un poste de développeur fullstack junior (ou backend/frontend junior) avec des projets concrets et une vraie montée en compétence.',
+  },
+  {
+    question: 'Pourquoi ce portfolio ?',
+    answer: 'Présenter mon parcours de jeune diplômé, montrer mes projets et donner une image fidèle de mon niveau actuel.',
+  },
+  {
+    question: 'Comment je travaille ?',
+    answer: 'Je travaille de façon pragmatique: comprendre le besoin, avancer vite sur une première version, puis améliorer avec les retours.',
+  },
+  {
+    question: 'Quelles technologies je maîtrise le mieux ?',
+    answer: 'Java, Python, TypeScript, Node.js et R, avec React/Tailwind côté interface.',
+  },
+  {
+    question: 'Disponible pour échanger ?',
+    answer: 'Oui, je suis ouvert à discuter d’un poste junior, d’une alternance de fin d’études ou d’une mission technique.',
+  },
+]
+
 type ExperienceItem = {
   role: string
   subtitle: string
@@ -202,6 +288,64 @@ type ExperienceItem = {
   context1: string[]
   context2Title?: string
   context2?: string[]
+}
+
+function Reveal({ children, className = '', delay = 0 }: { children: ReactNode; className?: string; delay?: number }) {
+  const [visible, setVisible] = useState(false)
+  const ref = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    if (!ref.current) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          setVisible(true)
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.14 },
+    )
+
+    observer.observe(ref.current)
+    return () => observer.disconnect()
+  }, [])
+
+  return (
+    <div ref={ref} className={`reveal ${visible ? 'reveal--visible' : ''} ${className}`.trim()} style={{ transitionDelay: `${delay}ms` }}>
+      {children}
+    </div>
+  )
+}
+
+function TiltCard({ children, className = '' }: { children: ReactNode; className?: string }) {
+  const ref = useRef<HTMLDivElement | null>(null)
+
+  const onMove = (event: MouseEvent<HTMLDivElement>) => {
+    if (!ref.current) return
+    const rect = ref.current.getBoundingClientRect()
+    const x = event.clientX - rect.left
+    const y = event.clientY - rect.top
+    const dx = (x / rect.width) * 2 - 1
+    const dy = (y / rect.height) * 2 - 1
+
+    ref.current.style.setProperty('--mx', `${x}px`)
+    ref.current.style.setProperty('--my', `${y}px`)
+    ref.current.style.setProperty('--rx', `${-dy * 6}deg`)
+    ref.current.style.setProperty('--ry', `${dx * 7}deg`)
+  }
+
+  const onLeave = () => {
+    if (!ref.current) return
+    ref.current.style.setProperty('--rx', '0deg')
+    ref.current.style.setProperty('--ry', '0deg')
+  }
+
+  return (
+    <div ref={ref} className={`interactive-card ${className}`.trim()} onMouseMove={onMove} onMouseLeave={onLeave}>
+      {children}
+    </div>
+  )
 }
 
 function SkillOrb({ name, icon: Icon, delay }: { name: string; icon: ComponentType<{ className?: string }>; delay: number }) {
@@ -219,10 +363,12 @@ type CVProfileProps = {
 
 export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
   const [selectedExperience, setSelectedExperience] = useState<ExperienceItem | null>(null)
+  const [openedFaq, setOpenedFaq] = useState<number | null>(0)
 
   return (
     <section id="portfolio" className="mt-6 grid gap-6">
-      <article className="panel scan-line rounded-3xl p-6 md:p-8">
+      <Reveal>
+        <article className="panel scan-line rounded-3xl p-6 md:p-8">
         <p className="text-xs uppercase tracking-[0.2em] text-cyan-200/90">Portfolio</p>
         <h2 className="hud-title mt-3 text-2xl font-black text-slate-100 sm:text-3xl">
           {profile.fullName} - {profile.title}
@@ -256,43 +402,94 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
             Accéder au tableau de bord d'enseignement
           </button>
         </div>
-      </article>
+        <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-emerald-400/12 px-3 py-1 text-xs font-semibold text-emerald-200">
+          <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-300" />
+          Disponible pour CDI
+        </div>
+        </article>
+      </Reveal>
 
-      <article className="panel rounded-2xl p-6">
+      <Reveal delay={80}>
+        <article className="panel rounded-2xl p-6">
+          <h3 className="hud-title text-lg font-bold text-cyan-200">À propos</h3>
+          <div className="mt-4 grid gap-4 md:grid-cols-3">
+            {profileStory.map((item) => (
+              <TiltCard key={item.title} className="panel-soft rounded-xl p-4">
+                <p className="text-xs uppercase tracking-[0.16em] text-slate-400">{item.title}</p>
+                <p className="mt-2 text-sm leading-relaxed text-slate-300">{item.content}</p>
+              </TiltCard>
+            ))}
+          </div>
+        </article>
+      </Reveal>
+
+      <Reveal delay={100}>
+        <article className="panel rounded-2xl p-6">
+          <h3 className="hud-title text-lg font-bold text-cyan-200">Expertise</h3>
+          <div className="mt-4 grid gap-4 lg:grid-cols-3">
+            {expertiseAreas.map((area) => (
+              <TiltCard key={area.key} className="panel-soft rounded-xl p-4">
+                <p className="text-xs uppercase tracking-[0.16em] text-slate-400">{area.label}</p>
+                <p className="mt-2 text-sm font-semibold text-cyan-100">{area.title}</p>
+                <div className="mt-3 grid gap-2">
+                  {area.points.map((point) => (
+                    <p key={point} className="text-sm text-slate-300">
+                      • {point}
+                    </p>
+                  ))}
+                </div>
+              </TiltCard>
+            ))}
+          </div>
+        </article>
+      </Reveal>
+
+      <Reveal delay={70}>
+        <article className="panel rounded-2xl p-6">
         <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="panel-soft rounded-xl p-4">
+          <TiltCard className="panel-soft rounded-xl p-4">
             <p className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-slate-400">
               <FaMapMarkerAlt />
               Localisation
             </p>
             <p className="mt-2 font-semibold text-slate-100">{profile.location}</p>
-          </div>
-          <div className="panel-soft rounded-xl p-4">
+          </TiltCard>
+          <TiltCard className="panel-soft rounded-xl p-4">
             <p className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-slate-400">
               <FaCalendarCheck />
               Disponibilité
             </p>
             <p className="mt-2 font-semibold text-slate-100">{profile.availability}</p>
-          </div>
-          <div className="panel-soft rounded-xl p-4">
+          </TiltCard>
+          <TiltCard className="panel-soft rounded-xl p-4">
             <p className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-slate-400">
               <FaLanguage />
               Langues
             </p>
             <p className="mt-2 font-semibold text-slate-100">{profile.languages}</p>
-          </div>
-          <div className="panel-soft rounded-xl p-4">
+          </TiltCard>
+          <TiltCard className="panel-soft rounded-xl p-4">
             <p className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-slate-400">
               <FaTools />
               Statut
             </p>
             <p className="mt-2 font-semibold text-slate-100">{profile.status}</p>
+          </TiltCard>
+        </div>
+        </article>
+      </Reveal>
+
+      <Reveal delay={120}>
+        <article className="panel rounded-2xl p-6">
+        <h3 className="hud-title text-lg font-bold text-cyan-200">Compétences</h3>
+        <div className="panel-soft mt-4 rounded-xl p-4">
+          <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Langages maîtrisés</p>
+          <div className="skill-flow mt-3 flex flex-wrap gap-2">
+            {languageSkills.map((skill, index) => (
+              <SkillOrb key={skill.name} name={skill.name} icon={skill.icon} delay={index * 120} />
+            ))}
           </div>
         </div>
-      </article>
-
-      <article className="panel rounded-2xl p-6">
-        <h3 className="hud-title text-lg font-bold text-cyan-200">Compétences</h3>
         <div className="mt-5 grid gap-6 lg:grid-cols-2">
           <div className="grid gap-4">
             <p className="text-sm uppercase tracking-[0.18em] text-slate-400">Frontend</p>
@@ -315,7 +512,7 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
 
         <div className="mt-6 grid gap-6 lg:grid-cols-2">
           <div>
-            <p className="text-sm uppercase tracking-[0.18em] text-slate-400">Outils et stack technique</p>
+            <p className="text-sm uppercase tracking-[0.18em] text-slate-400">Outils</p>
             <div className="skill-flow mt-3 flex flex-wrap gap-2">
               {toolingSkills.map((skill, index) => {
                 const Icon = skill.icon
@@ -334,43 +531,49 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
             </div>
           </div>
         </div>
-      </article>
+        </article>
+      </Reveal>
 
-      <article className="panel rounded-2xl p-6">
+      <Reveal delay={160}>
+        <article className="panel rounded-2xl p-6">
         <h3 className="hud-title text-lg font-bold text-cyan-200">Expériences</h3>
         <div className="relative mt-5 grid gap-5 before:absolute before:left-2.5 before:top-1 before:h-[calc(100%-10px)] before:w-px before:bg-cyan-300/30 sm:before:left-3">
           {experiences.map((experience) => (
             <div key={experience.role} className="relative pl-9">
               <span className="absolute left-0 top-2 h-5 w-5 rounded-full bg-cyan-300/20 shadow-[0_0_14px_rgba(34,211,238,0.45)]" />
-              <button
-                className="panel-soft w-full rounded-xl p-4 text-left transition hover:scale-[1.02]"
-                onClick={() => setSelectedExperience(experience)}
-              >
-                <p className="text-xs uppercase tracking-[0.16em] text-slate-400">{experience.period}</p>
-                <h4 className="mt-1 text-lg font-semibold text-slate-100">{experience.role}</h4>
-                <p className="mt-1 text-sm font-semibold text-cyan-100">{experience.subtitle}</p>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {experience.stack.map((item) => {
-                    const Icon = item.icon
-                    return (
-                      <span key={item.name} className="inline-flex items-center gap-2 rounded-full bg-slate-900/40 px-2.5 py-1 text-xs text-cyan-100">
-                        <Icon className="text-cyan-200" />
-                        {item.name}
-                      </span>
-                    )
-                  })}
-                </div>
-                <p className="mt-3 text-right text-sm text-slate-300">Cliquer pour voir les détails</p>
-              </button>
+              <TiltCard className="panel-soft rounded-xl">
+                <button
+                  className="w-full rounded-xl p-4 text-left transition hover:scale-[1.02]"
+                  onClick={() => setSelectedExperience(experience)}
+                >
+                  <p className="text-xs uppercase tracking-[0.16em] text-slate-400">{experience.period}</p>
+                  <h4 className="mt-1 text-lg font-semibold text-slate-100">{experience.role}</h4>
+                  <p className="mt-1 text-sm font-semibold text-cyan-100">{experience.subtitle}</p>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {experience.stack.map((item) => {
+                      const Icon = item.icon
+                      return (
+                        <span key={item.name} className="inline-flex items-center gap-2 rounded-full bg-slate-900/40 px-2.5 py-1 text-xs text-cyan-100">
+                          <Icon className="text-cyan-200" />
+                          {item.name}
+                        </span>
+                      )
+                    })}
+                  </div>
+                  <p className="mt-3 text-right text-sm text-slate-300">Cliquer pour voir les détails</p>
+                </button>
+              </TiltCard>
             </div>
           ))}
         </div>
-      </article>
+        </article>
+      </Reveal>
 
-      <article className="panel rounded-2xl p-6">
+      <Reveal delay={220}>
+        <article className="panel rounded-2xl p-6">
         <h3 className="hud-title text-lg font-bold text-cyan-200">Formation et certifications</h3>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
-          <div className="panel-soft rounded-xl p-4">
+          <TiltCard className="panel-soft rounded-xl p-4">
             <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Diplôme ingénieur - 2025</p>
             <div className="mt-3 grid gap-2 sm:grid-cols-[96px_1fr]">
               <div className="rounded-xl bg-slate-900/30 p-2">
@@ -383,8 +586,8 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
                 <p className="mt-2 text-sm text-slate-300">Spécialisation : Ingénierie des Systèmes d'Information</p>
               </div>
             </div>
-          </div>
-          <div className="panel-soft rounded-xl p-4">
+          </TiltCard>
+          <TiltCard className="panel-soft rounded-xl p-4">
             <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Autres formations</p>
             <p className="mt-2 text-sm font-semibold text-cyan-100">
               Classes préparatoires aux grandes écoles MPSI / MP (Grand Admis au concours CCP)
@@ -392,15 +595,17 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
             <p className="mt-2 text-sm font-semibold text-cyan-100">
               Baccalauréat Scientifique - Spécialité Mathématiques (Mention Très bien)
             </p>
-          </div>
+          </TiltCard>
         </div>
-      </article>
+        </article>
+      </Reveal>
 
-      <article className="panel rounded-2xl p-6">
+      <Reveal delay={260}>
+        <article className="panel rounded-2xl p-6">
         <h3 className="hud-title text-lg font-bold text-cyan-200">Projets personnels</h3>
         <div className="mt-4 grid gap-4 lg:grid-cols-2">
           {projects.map((project) => (
-            <div key={project.title} className="panel-soft rounded-xl p-4">
+            <TiltCard key={project.title} className="panel-soft rounded-xl p-4">
               <h4 className="text-base font-semibold text-slate-100">{project.title}</h4>
               <p className="mt-2 text-sm text-cyan-100">Stack : {project.stack}</p>
               <p className="mt-2 text-sm text-slate-300">{project.result}</p>
@@ -417,30 +622,34 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
                   </a>
                 </div>
               )}
-            </div>
+            </TiltCard>
           ))}
         </div>
-      </article>
+        </article>
+      </Reveal>
 
-      <article className="panel rounded-2xl p-6">
-        <h3 className="hud-title text-lg font-bold text-cyan-200">Pédagogie d'enseignement</h3>
+      <Reveal delay={300}>
+        <article className="panel rounded-2xl p-6">
+        <h3 className="hud-title text-lg font-bold text-cyan-200">Pédagogie: passion et soft skill</h3>
         <div className="mt-4 grid gap-4 md:grid-cols-3">
-          <div className="panel-soft rounded-xl p-4">
-            <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Niveau des élèves coachés</p>
-            <p className="mt-2 text-sm text-slate-300">Élèves de collège, lycée et étudiants en mathématiques</p>
-          </div>
-          <div className="panel-soft rounded-xl p-4">
-            <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Méthode</p>
-            <p className="mt-2 text-sm text-slate-300">Explication progressive des notions mathématiques et mise en pratique par exercices ciblés</p>
-          </div>
-          <div className="panel-soft rounded-xl p-4">
-            <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Résultats</p>
-            <p className="mt-2 text-sm text-slate-300">Meilleure autonomie, progression régulière et confiance renforcée en résolution de problèmes</p>
-          </div>
+          <TiltCard className="panel-soft rounded-xl p-4">
+            <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Passion</p>
+            <p className="mt-2 text-sm text-slate-300">J’aime transmettre, expliquer simplement et aider quelqu’un à progresser sur un sujet difficile.</p>
+          </TiltCard>
+          <TiltCard className="panel-soft rounded-xl p-4">
+            <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Soft skills associées</p>
+            <p className="mt-2 text-sm text-slate-300">Écoute, patience, reformulation et adaptation du discours selon la personne en face.</p>
+          </TiltCard>
+          <TiltCard className="panel-soft rounded-xl p-4">
+            <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Impact</p>
+            <p className="mt-2 text-sm text-slate-300">Au quotidien, ça m’aide à écrire un code plus clair et à mieux collaborer avec une équipe produit/tech.</p>
+          </TiltCard>
         </div>
-      </article>
+        </article>
+      </Reveal>
 
-      <article id="contact" className="panel rounded-2xl p-6 text-center">
+      <Reveal delay={340}>
+        <article id="contact" className="panel rounded-2xl p-6 text-center">
         <h3 className="hud-title text-xl font-bold text-cyan-200">Contact</h3>
         <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
           <a href={`mailto:${profile.email}`} className="inline-flex items-center gap-2 rounded-lg bg-slate-800/45 px-3 py-2 text-slate-300 hover:text-cyan-100">
@@ -470,7 +679,33 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
             GitHub
           </a>
         </div>
-      </article>
+        </article>
+      </Reveal>
+
+      <Reveal delay={360}>
+        <article className="panel rounded-2xl p-6">
+          <h3 className="hud-title text-lg font-bold text-cyan-200">Questions fréquentes</h3>
+          <div className="mt-4 grid gap-3">
+            {faqItems.map((item, index) => {
+              const opened = openedFaq === index
+              return (
+                <div key={item.question} className="panel-soft rounded-xl">
+                  <button
+                    className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left"
+                    onClick={() => setOpenedFaq((prev) => (prev === index ? null : index))}
+                  >
+                    <span className="text-sm font-semibold text-slate-100">{item.question}</span>
+                    <FaChevronDown
+                      className={`text-cyan-200 transition ${opened ? 'rotate-180' : ''}`}
+                    />
+                  </button>
+                  {opened && <p className="px-4 pb-4 text-sm text-slate-300">{item.answer}</p>}
+                </div>
+              )
+            })}
+          </div>
+        </article>
+      </Reveal>
 
       {selectedExperience && (
         <div className="fixed inset-0 z-50 grid place-items-center bg-slate-950/70 p-4">

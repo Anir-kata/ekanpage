@@ -1,6 +1,6 @@
 export const profile = {
   fullName: 'Anir El Kabiri',
-  title: 'Ingénieur ENSIMAG, Développeur Fullstack',
+  title: 'Jeune diplômé ENSIMAG, Développeur Fullstack junior',
   brand: 'Plateforme Anir El Kabiri',
   headerSubtitle: 'Portfolio, suivi pédagogique en mathématiques et projets techniques.',
   email: 'ekanir52@gmail.com',
@@ -8,10 +8,10 @@ export const profile = {
   phoneLink: '+33612592033',
   linkedInUrl: 'https://www.linkedin.com/in/anir-el-kabiri',
   githubUrl: 'https://github.com/Anir-kata',
-  location: 'Paris (75014)',
+  location: 'Paris (75014) \n Lyon (69007)',
   availability: 'Immédiate',
   languages: 'Français, Anglais',
-  status: 'CDI / Missions',
+  status: 'Disponible pour CDI',
   cvPdfPath: '/Anir-El-Kabiri-CV.pdf',
   pitchLines: [
     "Ingénieur diplômé de l'ENSIMAG, issu d'un parcours baccalauréat scientifique puis classes préparatoires MPSI/MP.",
