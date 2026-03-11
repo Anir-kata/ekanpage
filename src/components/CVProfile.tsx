@@ -215,7 +215,7 @@ const universityProjects = [
       'Langage: Java',
       'Outils: ANTLR, Maven, Git',
       'Qualité: Cobertura, tests automatisés',
-      'IDE: Eclipse / NetBeans',
+      'IDE: Eclipse',
       'Méthodes: TDD, intégration continue, programmation par paires',
     ],
   },

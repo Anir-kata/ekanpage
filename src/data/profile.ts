@@ -8,7 +8,7 @@ export const profile = {
   phoneLink: '+33612592033',
   linkedInUrl: 'https://www.linkedin.com/in/anir-el-kabiri',
   githubUrl: 'https://github.com/Anir-kata',
-  location: 'Paris (75014) \n Lyon (69007)',
+  location: 'Paris (75014) / Lyon (69007)',
   availability: 'Immédiate',
   languages: 'Français, Anglais',
   status: 'Disponible pour CDI',
