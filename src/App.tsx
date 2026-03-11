@@ -1,12 +1,13 @@
 import { useMemo, useState } from 'react'
 import { AddStudentForm } from './components/AddStudentForm'
+import { CVProfile } from './components/CVProfile'
 import { StudentList } from './components/StudentList'
 import { Tabs, type TabKey } from './components/Tabs'
 import { mockStudents } from './data/mockStudents'
 import type { Student } from './types/student'
 
 function App() {
-  const [activeTab, setActiveTab] = useState<TabKey>('dashboard')
+  const [activeTab, setActiveTab] = useState<TabKey>('cv')
   const [students, setStudents] = useState<Student[]>(mockStudents)
 
   const totalSessions = useMemo(
@@ -25,18 +26,20 @@ function App() {
       <div className="pointer-events-none absolute bottom-[-60px] right-[-40px] h-52 w-52 rounded-full bg-indigo-400/20 blur-3xl" />
 
       <header className="panel scan-line relative rounded-3xl p-6 md:p-8">
-        <p className="text-xs font-medium uppercase tracking-[0.2em] text-cyan-200/90">Math Mentor Interface v1.0</p>
+        <p className="text-xs font-medium uppercase tracking-[0.2em] text-cyan-200/90">EKAN : Anir EL KABIRI</p>
         <h1 className="hud-title mt-3 text-2xl font-black text-slate-100 sm:text-3xl lg:text-4xl">
-          Command Center: Student Tracking
+          Centre de pilotage
         </h1>
-        <p className="mt-3 max-w-2xl text-sm text-slate-300 sm:text-base">
-          Control panel futuriste pour gerer tes eleves, visualiser les progres et piloter tes sessions.
+        <p className="mt-3 ml-auto w-full max-w-2xl text-right text-sm text-slate-300 sm:text-base">
+          Email: ekanir52@gmail.com | Tel: 06 12 59 20 33 | LinkedIn: linkedin.com/in/anir-el-kabiri
         </p>
       </header>
 
       <section className="panel mt-6 rounded-2xl p-4">
         <Tabs activeTab={activeTab} onChange={setActiveTab} />
       </section>
+
+      {activeTab === 'cv' && <CVProfile />}
 
       {activeTab === 'dashboard' && (
         <section className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
