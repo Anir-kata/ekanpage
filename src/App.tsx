@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { CVProfile } from './components/CVProfile'
 import { StudentList } from './components/StudentList'
 import { Tabs, type TabKey } from './components/Tabs'
@@ -8,16 +8,38 @@ import type { Student } from './types/student'
 function App() {
   const [activeView, setActiveView] = useState<'portfolio' | TabKey>('portfolio')
   const [students, setStudents] = useState<Student[]>(mockStudents)
+  const frameRef = useRef<number | null>(null)
+  const pointerRef = useRef<{ x: number; y: number } | null>(null)
 
   useEffect(() => {
-    const handlePointerMove = (event: PointerEvent) => {
+    const flushPointer = () => {
+      const next = pointerRef.current
+      if (!next) {
+        frameRef.current = null
+        return
+      }
+
       const root = document.documentElement
-      root.style.setProperty('--mouse-x', `${event.clientX}px`)
-      root.style.setProperty('--mouse-y', `${event.clientY}px`)
+      root.style.setProperty('--mouse-x', `${next.x}px`)
+      root.style.setProperty('--mouse-y', `${next.y}px`)
+      pointerRef.current = null
+      frameRef.current = null
     }
 
-    window.addEventListener('pointermove', handlePointerMove)
-    return () => window.removeEventListener('pointermove', handlePointerMove)
+    const handlePointerMove = (event: PointerEvent) => {
+      pointerRef.current = { x: event.clientX, y: event.clientY }
+      if (frameRef.current === null) {
+        frameRef.current = requestAnimationFrame(flushPointer)
+      }
+    }
+
+    window.addEventListener('pointermove', handlePointerMove, { passive: true })
+    return () => {
+      window.removeEventListener('pointermove', handlePointerMove)
+      if (frameRef.current !== null) {
+        cancelAnimationFrame(frameRef.current)
+      }
+    }
   }, [])
 
   const totalSessions = useMemo(

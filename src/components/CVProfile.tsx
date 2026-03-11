@@ -200,7 +200,7 @@ const profileStory = [
   {
     title: 'Mon profil',
     content:
-      "Je suis jeune diplômé de l'ENSIMAG. Je construis mes premières expériences fullstack avec une approche orientée performance, scalabilité et intégration propre.",
+      "Je suis diplômé de l'ENSIMAG. Je construis mes premières expériences fullstack avec une approche orientée performance, scalabilité et intégration propre.",
   },
   {
     title: 'Ma façon de travailler',
@@ -259,11 +259,11 @@ const expertiseAreas = [
 const faqItems = [
   {
     question: 'Quel poste je recherche ?',
-    answer: 'Un poste de développeur fullstack junior (ou backend/frontend junior) avec des projets concrets et une vraie montée en compétence.',
+    answer: 'Un poste de développeur fullstack avec des projets concrets et une vraie montée en compétence.',
   },
   {
     question: 'Pourquoi ce portfolio ?',
-    answer: 'Présenter mon parcours de jeune diplômé, montrer mes projets et donner une image fidèle de mon niveau actuel.',
+    answer: 'Présenter mon parcours, montrer mes projets et donner une image fidèle de mes compétences !',
   },
   {
     question: 'Comment je travaille ?',
@@ -271,11 +271,11 @@ const faqItems = [
   },
   {
     question: 'Quelles technologies je maîtrise le mieux ?',
-    answer: 'Java, Python, TypeScript, Node.js et R, avec React/Tailwind côté interface.',
+    answer: 'Java, Python, TypeScript, Node.js et R, avec React/Tailwind/Angular côté interface.',
   },
   {
     question: 'Disponible pour échanger ?',
-    answer: 'Oui, je suis ouvert à discuter d’un poste junior, d’une alternance de fin d’études ou d’une mission technique.',
+    answer: 'Oui, je suis ouvert à discuter. N’hésitez pas à me contacter pour en savoir plus !',
   },
 ]
 
@@ -396,7 +396,7 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
             Contact
           </a>
           <button
-            className="inline-flex items-center gap-2 rounded-xl bg-cyan-400/15 px-4 py-2 text-sm font-semibold text-cyan-100 transition hover:shadow-[0_0_22px_rgba(34,211,238,0.35)]"
+            className="inline-flex items-center gap-2 rounded-xl bg-cyan-400/15 px-4 py-2 text-sm font-semibold text-cyan-100 transition-all duration-150 ease-out hover:-translate-y-0.5 hover:bg-cyan-300/25 hover:shadow-[0_0_22px_rgba(34,211,238,0.35)] active:translate-y-0 active:scale-[0.98]"
             onClick={onOpenPedagogy}
           >
             Accéder au tableau de bord d'enseignement

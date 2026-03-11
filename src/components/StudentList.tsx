@@ -8,6 +8,7 @@ type StudentListProps = {
 }
 
 const FICHE_ACCESS_PATTERN = '0-1-2-5-8'
+const REQUIRED_PATTERN = FICHE_ACCESS_PATTERN.split('-').map((value) => Number(value))
 
 type StudentDraft = {
   id: string
@@ -88,11 +89,30 @@ export function StudentList({ students, onUpdateStudent, onAddStudent }: Student
     setPatternAttempt(nextPattern)
   }
 
+  const validatePatternProgress = (nextPattern: number[]) => {
+    const isPrefix = nextPattern.every((dot, index) => dot === REQUIRED_PATTERN[index])
+    if (!isPrefix) {
+      setAccessError('Schéma incorrect.')
+      applyPattern([])
+      setIsDrawingPattern(false)
+      return
+    }
+
+    if (nextPattern.length === REQUIRED_PATTERN.length) {
+      setAccessError('')
+      setIsUnlocked(true)
+      setIsDrawingPattern(false)
+      applyPattern([])
+    }
+  }
+
   const startPattern = (dot: number) => {
     if (isUnlocked) return
     setAccessError('')
     setIsDrawingPattern(true)
-    applyPattern([dot])
+    const nextPattern = [dot]
+    applyPattern(nextPattern)
+    validatePatternProgress(nextPattern)
   }
 
   const extendPattern = (dot: number) => {
@@ -100,23 +120,14 @@ export function StudentList({ students, onUpdateStudent, onAddStudent }: Student
 
     const current = patternRef.current
     if (current.includes(dot)) return
-    applyPattern([...current, dot])
+    const nextPattern = [...current, dot]
+    applyPattern(nextPattern)
+    validatePatternProgress(nextPattern)
   }
 
   const finishPattern = () => {
     if (!isDrawingPattern || isUnlocked) return
     setIsDrawingPattern(false)
-
-    const entered = patternRef.current.join('-')
-    if (entered !== FICHE_ACCESS_PATTERN) {
-      setAccessError('Schéma incorrect.')
-      applyPattern([])
-      return
-    }
-
-    setAccessError('')
-    setIsUnlocked(true)
-    applyPattern([])
   }
 
   useEffect(() => {
@@ -254,13 +265,14 @@ export function StudentList({ students, onUpdateStudent, onAddStudent }: Student
                       <button
                         key={dot}
                         type="button"
-                        className={`h-12 w-12 rounded-full border transition ${
+                        className={`touch-none select-none h-12 w-12 rounded-full border transition-all duration-100 ease-out ${
                           isSelected
-                            ? 'border-cyan-200 bg-cyan-300/35 shadow-[0_0_16px_rgba(34,211,238,0.45)]'
-                            : 'border-cyan-400/30 bg-slate-900/70 hover:border-cyan-300/60'
+                            ? 'scale-105 border-cyan-200 bg-cyan-300/35 shadow-[0_0_16px_rgba(34,211,238,0.45)]'
+                            : 'border-cyan-400/30 bg-slate-900/70 hover:scale-105 hover:border-cyan-300/60 active:scale-95'
                         }`}
                         onPointerDown={() => startPattern(dot)}
                         onPointerEnter={() => extendPattern(dot)}
+                        onPointerUp={finishPattern}
                       />
                     )
                   })}

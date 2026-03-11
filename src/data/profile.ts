@@ -1,6 +1,6 @@
 export const profile = {
   fullName: 'Anir El Kabiri',
-  title: 'Jeune diplômé ENSIMAG, Développeur Fullstack junior',
+  title: 'Diplomé ENSIMAG, Développeur Fullstack',
   brand: 'Plateforme Anir El Kabiri',
   headerSubtitle: 'Portfolio, suivi pédagogique en mathématiques et projets techniques.',
   email: 'ekanir52@gmail.com',
