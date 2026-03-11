@@ -45,53 +45,53 @@ export function AddStudentForm({ onAddStudent }: AddStudentFormProps) {
   }
 
   return (
-    <section className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
-      <h2 className="text-xl font-bold text-slate-900">Ajouter un eleve</h2>
+    <section className="panel rounded-2xl p-6">
+      <h2 className="hud-title text-lg font-bold text-cyan-200">Ajouter un eleve</h2>
       <form className="mt-4 grid gap-4" onSubmit={handleSubmit}>
-        <label className="grid gap-1 text-sm font-medium text-slate-700">
+        <label className="grid gap-1 text-sm font-medium text-slate-300">
           Nom complet
           <input
-            className="rounded-lg border border-slate-300 px-3 py-2 outline-none ring-slate-300 transition focus:ring-2"
+            className="futuristic-input rounded-lg px-3 py-2 transition"
             value={form.fullName}
             onChange={(event) => setForm((prev) => ({ ...prev, fullName: event.target.value }))}
             placeholder="Ex: Sara Dupont"
           />
         </label>
 
-        <label className="grid gap-1 text-sm font-medium text-slate-700">
+        <label className="grid gap-1 text-sm font-medium text-slate-300">
           Niveau
           <input
-            className="rounded-lg border border-slate-300 px-3 py-2 outline-none ring-slate-300 transition focus:ring-2"
+            className="futuristic-input rounded-lg px-3 py-2 transition"
             value={form.level}
             onChange={(event) => setForm((prev) => ({ ...prev, level: event.target.value }))}
             placeholder="Ex: Terminale"
           />
         </label>
 
-        <label className="grid gap-1 text-sm font-medium text-slate-700">
+        <label className="grid gap-1 text-sm font-medium text-slate-300">
           Objectif
           <input
-            className="rounded-lg border border-slate-300 px-3 py-2 outline-none ring-slate-300 transition focus:ring-2"
+            className="futuristic-input rounded-lg px-3 py-2 transition"
             value={form.objective}
             onChange={(event) => setForm((prev) => ({ ...prev, objective: event.target.value }))}
             placeholder="Ex: Preparation bac"
           />
         </label>
 
-        <label className="grid gap-1 text-sm font-medium text-slate-700">
+        <label className="grid gap-1 text-sm font-medium text-slate-300">
           Prochaine seance
           <input
-            className="rounded-lg border border-slate-300 px-3 py-2 outline-none ring-slate-300 transition focus:ring-2"
+            className="futuristic-input rounded-lg px-3 py-2 transition"
             value={form.nextSessionAt}
             onChange={(event) => setForm((prev) => ({ ...prev, nextSessionAt: event.target.value }))}
             placeholder="Ex: 2026-03-16 17:00"
           />
         </label>
 
-        <label className="grid gap-1 text-sm font-medium text-slate-700">
+        <label className="grid gap-1 text-sm font-medium text-slate-300">
           Notes
           <textarea
-            className="min-h-24 rounded-lg border border-slate-300 px-3 py-2 outline-none ring-slate-300 transition focus:ring-2"
+            className="futuristic-input min-h-24 rounded-lg px-3 py-2 transition"
             value={form.notes}
             onChange={(event) => setForm((prev) => ({ ...prev, notes: event.target.value }))}
             placeholder="Points importants de suivi"
@@ -100,9 +100,9 @@ export function AddStudentForm({ onAddStudent }: AddStudentFormProps) {
 
         <button
           type="submit"
-          className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-700"
+          className="rounded-lg border border-cyan-300/70 bg-cyan-400/20 px-4 py-2 text-sm font-semibold text-cyan-100 transition duration-300 hover:bg-cyan-300/30 hover:shadow-[0_0_22px_rgba(34,211,238,0.36)]"
         >
-          Enregistrer l eleve
+          Enregistrer l'élève
         </button>
       </form>
     </section>

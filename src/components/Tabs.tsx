@@ -6,10 +6,10 @@ type TabsProps = {
 }
 
 const tabStyles = (isActive: boolean) =>
-  `rounded-full px-4 py-2 text-sm font-semibold transition ${
+  `rounded-xl border px-4 py-2 text-sm font-semibold transition duration-300 ${
     isActive
-      ? 'bg-slate-900 text-white shadow-lg'
-      : 'bg-white text-slate-700 hover:bg-slate-100'
+      ? 'border-cyan-300/60 bg-cyan-400/15 text-cyan-200 shadow-[0_0_22px_rgba(34,211,238,0.3)]'
+      : 'border-slate-500/40 bg-slate-900/40 text-slate-300 hover:border-cyan-400/40 hover:text-cyan-200'
   }`
 
 export function Tabs({ activeTab, onChange }: TabsProps) {

@@ -20,32 +20,37 @@ function App() {
   }
 
   return (
-    <main className="mx-auto min-h-screen w-full max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
-      <header className="rounded-3xl bg-slate-900 p-6 text-white shadow-xl">
-        <p className="text-sm font-medium text-slate-300">Prof de mathematiques | Fullstack junior</p>
-        <h1 className="mt-2 text-3xl font-extrabold tracking-tight">Pilotage de mes eleves</h1>
-        <p className="mt-3 max-w-2xl text-sm text-slate-200">
-          Base React + Tailwind pour suivre tes eleves, organiser tes seances et apprendre a coder proprement.
+    <main className="relative mx-auto min-h-screen w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
+      <div className="pointer-events-none absolute left-[-80px] top-[-90px] h-56 w-56 rounded-full bg-cyan-400/20 blur-3xl" />
+      <div className="pointer-events-none absolute bottom-[-60px] right-[-40px] h-52 w-52 rounded-full bg-indigo-400/20 blur-3xl" />
+
+      <header className="panel scan-line relative rounded-3xl p-6 md:p-8">
+        <p className="text-xs font-medium uppercase tracking-[0.2em] text-cyan-200/90">Math Mentor Interface v1.0</p>
+        <h1 className="hud-title mt-3 text-2xl font-black text-slate-100 sm:text-3xl lg:text-4xl">
+          Command Center: Student Tracking
+        </h1>
+        <p className="mt-3 max-w-2xl text-sm text-slate-300 sm:text-base">
+          Control panel futuriste pour gerer tes eleves, visualiser les progres et piloter tes sessions.
         </p>
       </header>
 
-      <section className="mt-6 rounded-2xl bg-slate-100 p-4 ring-1 ring-slate-200">
+      <section className="panel mt-6 rounded-2xl p-4">
         <Tabs activeTab={activeTab} onChange={setActiveTab} />
       </section>
 
       {activeTab === 'dashboard' && (
         <section className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <article className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200">
-            <p className="text-sm text-slate-500">Nombre d eleves</p>
-            <p className="mt-2 text-3xl font-extrabold text-slate-900">{students.length}</p>
+          <article className="panel-soft rounded-2xl p-5 transition hover:-translate-y-0.5 hover:shadow-cyan-400/20">
+            <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Nombre d eleves</p>
+            <p className="neon-cyan mt-3 text-4xl font-extrabold">{students.length}</p>
           </article>
-          <article className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200">
-            <p className="text-sm text-slate-500">Seances realisees</p>
-            <p className="mt-2 text-3xl font-extrabold text-slate-900">{totalSessions}</p>
+          <article className="panel-soft rounded-2xl p-5 transition hover:-translate-y-0.5 hover:shadow-blue-400/20">
+            <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Seances realisees</p>
+            <p className="mt-3 text-4xl font-extrabold text-blue-300">{totalSessions}</p>
           </article>
-          <article className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200">
-            <p className="text-sm text-slate-500">Prochaine etape</p>
-            <p className="mt-2 text-base font-semibold text-slate-900">Ajouter fiches de suivi par eleve</p>
+          <article className="panel-soft rounded-2xl p-5 transition hover:-translate-y-0.5 hover:shadow-indigo-400/20">
+            <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Prochaine etape</p>
+            <p className="mt-3 text-base font-semibold text-indigo-200">Ajouter des fiches de suivi par eleve</p>
           </article>
         </section>
       )}
