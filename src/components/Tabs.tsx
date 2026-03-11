@@ -1,4 +1,4 @@
-type TabKey = 'dashboard' | 'students' | 'add'
+type TabKey = 'dashboard' | 'students'
 
 type TabsProps = {
   activeTab: TabKey
@@ -20,9 +20,6 @@ export function Tabs({ activeTab, onChange }: TabsProps) {
       </button>
       <button className={tabStyles(activeTab === 'students')} onClick={() => onChange('students')}>
         Eleves
-      </button>
-      <button className={tabStyles(activeTab === 'add')} onClick={() => onChange('add')}>
-        Ajouter un eleve
       </button>
     </nav>
   )

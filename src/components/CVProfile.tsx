@@ -69,7 +69,16 @@ const experiences = [
     role: 'SIJO - Levallois-Perret',
     subtitle: "Stage fin d'etudes + CDD",
     period: '05/2024 - 03/2025',
-    summary: "Bilan: 90% de reduction du temps de traitement grace a l'automatisation OCR + LLM et une app web interne.",
+    stack: [
+      { name: 'Python', icon: SiPython },
+      { name: 'Streamlit', icon: FaTools },
+      { name: 'OCR DocTR', icon: FaTools },
+      { name: 'GPT-4o', icon: FaRobot },
+      { name: 'React', icon: SiReact },
+      { name: 'Node.js', icon: SiNodedotjs },
+      { name: 'Tailwind', icon: SiTailwindcss },
+      { name: 'Azure', icon: FaTools },
+    ],
     context1Title: 'Contexte 1 : PFE',
     context1: [
       "Conception et developpement d'une application Python/Streamlit permettant l'upload de CV heterogenes (PDF, scans) et la generation automatique d'un dossier de competences conforme au standard de l'entreprise.",
@@ -94,7 +103,13 @@ const experiences = [
     role: 'Save Energies (IDEX) - Boulogne-Billancourt',
     subtitle: 'Stage 6 mois',
     period: '04/2021 - 09/2021',
-    summary: 'Bilan: acceleration des reportings quotidiens via automatisation des collectes, traitements et previsions energetiques.',
+    stack: [
+      { name: 'R', icon: FaTools },
+      { name: 'Selenium', icon: FaTools },
+      { name: 'VBA', icon: FaTools },
+      { name: 'PowerShell', icon: FaTools },
+      { name: 'API REST', icon: FaTools },
+    ],
     context1Title: 'Missions',
     context1: [
       "Automatisation de processus metiers : collecte de donnees energetiques, traitement/nettoyage des donnees, gestion des erreurs d'execution, generation de reportings automatises.",
@@ -109,7 +124,12 @@ const experiences = [
     role: 'HP France SAS - Grenoble',
     subtitle: 'Business Intelligence - Stage 3 mois',
     period: '05/2019 - 08/2019',
-    summary: 'Bilan: amelioration du pilotage business avec des dashboards interactifs et des scripts de mise a jour automatisee.',
+    stack: [
+      { name: 'QlikView', icon: FaTools },
+      { name: 'Power BI', icon: FaTools },
+      { name: 'SQL', icon: SiPostgresql },
+      { name: 'Scripts Batch', icon: FaTools },
+    ],
     context1Title: 'Missions',
     context1: [
       'Developpement de dashboards decisionnels.',
@@ -127,7 +147,15 @@ const softSkills = [
   { name: 'Agilite', icon: FaRobot },
   { name: 'TDD', icon: FaFlask },
   { name: 'Clean Code', icon: FaCode },
-  { name: 'CI/CD', icon: FaTools },
+  { name: 'Esprit analytique', icon: FaTools },
+  { name: "Rigueur d'ingenierie", icon: FaTools },
+  { name: 'Autonomie', icon: FaTools },
+  { name: "Capacite d'adaptation", icon: FaTools },
+  { name: 'Travail en equipe', icon: FaTools },
+  { name: 'Ecoute active', icon: FaTools },
+  { name: 'Leadership technique', icon: FaTools },
+  { name: 'Vulgarisation', icon: FaTools },
+  { name: 'Gestion des priorites', icon: FaTools },
   { name: 'Communication technique', icon: FaTools },
   { name: 'Resolution de problemes', icon: FaTools },
 ]
@@ -169,7 +197,7 @@ type ExperienceItem = {
   role: string
   subtitle: string
   period: string
-  summary: string
+  stack: Array<{ name: string; icon: ComponentType<{ className?: string }> }>
   context1Title: string
   context1: string[]
   context2Title?: string
@@ -321,7 +349,17 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
                 <p className="text-xs uppercase tracking-[0.16em] text-slate-400">{experience.period}</p>
                 <h4 className="mt-1 text-lg font-semibold text-slate-100">{experience.role}</h4>
                 <p className="mt-1 text-sm font-semibold text-cyan-100">{experience.subtitle}</p>
-                <p className="mt-3 text-sm text-slate-300">{experience.summary}</p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {experience.stack.map((item) => {
+                    const Icon = item.icon
+                    return (
+                      <span key={item.name} className="inline-flex items-center gap-2 rounded-full bg-slate-900/40 px-2.5 py-1 text-xs text-cyan-100">
+                        <Icon className="text-cyan-200" />
+                        {item.name}
+                      </span>
+                    )
+                  })}
+                </div>
                 <p className="mt-3 text-right text-sm text-slate-300">Cliquer pour voir les details</p>
               </button>
             </div>

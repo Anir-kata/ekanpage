@@ -1,10 +1,8 @@
 import { useMemo, useState } from 'react'
-import { AddStudentForm } from './components/AddStudentForm'
 import { CVProfile } from './components/CVProfile'
 import { StudentList } from './components/StudentList'
 import { Tabs, type TabKey } from './components/Tabs'
 import { mockStudents } from './data/mockStudents'
-import { profile } from './data/profile'
 import type { Student } from './types/student'
 
 function App() {
@@ -16,9 +14,8 @@ function App() {
     [students],
   )
 
-  const addStudent = (student: Student) => {
-    setStudents((prev) => [student, ...prev])
-    setActiveView('students')
+  const updateStudentFiche = (studentId: string, notes: string) => {
+    setStudents((prev) => prev.map((student) => (student.id === studentId ? { ...student, notes } : student)))
   }
 
   return (
@@ -32,12 +29,12 @@ function App() {
         <>
           {activeView === 'dashboard' && (
             <header className="panel scan-line relative rounded-3xl p-6 md:p-8">
-              <p className="text-xs font-medium uppercase tracking-[0.2em] text-cyan-200/90">Plateforme professionnelle</p>
+              <p className="text-xs font-medium uppercase tracking-[0.2em] text-cyan-200/90">Espace d'enseignement</p>
               <h1 className="hud-title mt-3 text-2xl font-black text-slate-100 sm:text-3xl lg:text-4xl">
-                {profile.brand}
+                Tableau de bord pedagogique
               </h1>
               <p className="mt-3 w-full max-w-3xl text-sm text-slate-300 sm:text-base">
-                {profile.headerSubtitle}
+                Suivi des eleves, pilotage des seances et gestion des fiches de progression.
               </p>
             </header>
           )}
@@ -71,13 +68,7 @@ function App() {
 
           {activeView === 'students' && (
             <section className="mt-6">
-              <StudentList students={students} />
-            </section>
-          )}
-
-          {activeView === 'add' && (
-            <section className="mt-6">
-              <AddStudentForm onAddStudent={addStudent} />
+              <StudentList students={students} onUpdateFiche={updateStudentFiche} />
             </section>
           )}
         </>

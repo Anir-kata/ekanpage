@@ -14,7 +14,7 @@ export const profile = {
   status: 'CDI / Missions',
   cvPdfPath: '/Anir-El-Kabiri-CV.pdf',
   pitchLines: [
-    'Ingenieur ENSIMAG, je recherche un poste en developpement fullstack.',
+    "Ingenieur diplome de l'ENSIMAG, issu d'un parcours baccalaureat scientifique puis classes preparatoires MPSI/MP.",
     "Experience en conception d'APIs, developpement d'applications web, automatisation de processus metiers et deploiement cloud.",
     'Maitrise de Java et Python, avec une approche orientee qualite (Methodes Agiles, TDD, CI/CD, tests automatises).',
   ],
