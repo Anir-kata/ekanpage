@@ -27,6 +27,7 @@ import {
   SiTypescript,
   SiVite,
 } from 'react-icons/si'
+import { profile } from '../data/profile'
 
 const frontendSkills = [
   { name: 'React', level: 92, icon: SiReact },
@@ -120,7 +121,7 @@ const projects = [
     title: 'Generateur automatique de dossiers de competences',
     stack: 'Python, OCR (DocTR), GPT-4o, Streamlit, Azure',
     result: 'Automatisation complete du traitement de CV et generation de documents structures.',
-    link: 'https://github.com/Anir-kata',
+    link: profile.githubUrl,
   },
   {
     title: 'Application d automatisation des relances email',
@@ -165,17 +166,13 @@ export function CVProfile() {
       <article className="panel scan-line rounded-3xl p-6 md:p-8">
         <p className="text-xs uppercase tracking-[0.2em] text-cyan-200/90">Portfolio</p>
         <h2 className="hud-title mt-3 text-2xl font-black text-slate-100 sm:text-3xl">
-          Anir El Kabiri - Ingenieur ENSIMAG, Developpeur Fullstack
+          {profile.fullName} - {profile.title}
         </h2>
-        <p className="mt-3 text-slate-300">
-          Ingenieur ENSIMAG, je recherche un poste en developpement fullstack.
-        </p>
-        <p className="text-slate-300">
-          Experience en conception d APIs, developpement d applications web, automatisation de processus metiers et deploiement cloud.
-        </p>
-        <p className="text-slate-300">
-          Maitrise de Java et Python, avec une approche orientee qualite (Methodes Agiles, TDD, CI/CD, tests automatises).
-        </p>
+        {profile.pitchLines.map((line) => (
+          <p key={line} className="mt-3 text-slate-300">
+            {line}
+          </p>
+        ))}
 
         <div className="mt-6 flex flex-wrap gap-3">
           <a
@@ -185,7 +182,7 @@ export function CVProfile() {
             Voir CV
           </a>
           <a
-            href="/Anir-El-Kabiri-CV.pdf"
+            href={profile.cvPdfPath}
             download
             className="inline-flex items-center gap-2 rounded-xl border border-indigo-300/60 bg-indigo-400/15 px-4 py-2 text-sm font-semibold text-indigo-100 transition hover:shadow-[0_0_22px_rgba(129,140,248,0.35)]"
           >
@@ -193,40 +190,11 @@ export function CVProfile() {
             Telecharger PDF
           </a>
           <a
-            href="mailto:ekanir52@gmail.com"
+            href="#contact"
             className="inline-flex items-center gap-2 rounded-xl border border-slate-400/50 bg-slate-800/50 px-4 py-2 text-sm font-semibold text-slate-100 transition hover:border-cyan-300/60 hover:text-cyan-100"
           >
             <FaEnvelope />
             Me contacter
-          </a>
-        </div>
-
-        <div className="mt-6 flex flex-wrap gap-3 text-sm text-slate-300">
-          <a href="mailto:ekanir52@gmail.com" className="inline-flex items-center gap-2 rounded-lg border border-slate-600/40 px-3 py-2 hover:text-cyan-100">
-            <FaEnvelope className="text-cyan-200" />
-            ekanir52@gmail.com
-          </a>
-          <a href="tel:+33612592033" className="inline-flex items-center gap-2 rounded-lg border border-slate-600/40 px-3 py-2 hover:text-cyan-100">
-            <FaPhoneAlt className="text-cyan-200" />
-            06 12 59 20 33
-          </a>
-          <a
-            href="https://www.linkedin.com/in/anir-el-kabiri"
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-2 rounded-lg border border-slate-600/40 px-3 py-2 hover:text-cyan-100"
-          >
-            <FaLinkedin className="text-cyan-200" />
-            LinkedIn
-          </a>
-          <a
-            href="https://github.com/Anir-kata"
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-2 rounded-lg border border-slate-600/40 px-3 py-2 hover:text-cyan-100"
-          >
-            <FaGithub className="text-cyan-200" />
-            GitHub
           </a>
         </div>
       </article>
@@ -239,28 +207,28 @@ export function CVProfile() {
               <FaMapMarkerAlt />
               Localisation
             </p>
-            <p className="mt-2 font-semibold text-slate-100">Paris (75014)</p>
+            <p className="mt-2 font-semibold text-slate-100">{profile.location}</p>
           </div>
           <div className="panel-soft rounded-xl p-4">
             <p className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-slate-400">
               <FaCalendarCheck />
               Disponibilite
             </p>
-            <p className="mt-2 font-semibold text-slate-100">Immediate</p>
+            <p className="mt-2 font-semibold text-slate-100">{profile.availability}</p>
           </div>
           <div className="panel-soft rounded-xl p-4">
             <p className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-slate-400">
               <FaLanguage />
               Langues
             </p>
-            <p className="mt-2 font-semibold text-slate-100">Francais, Anglais</p>
+            <p className="mt-2 font-semibold text-slate-100">{profile.languages}</p>
           </div>
           <div className="panel-soft rounded-xl p-4">
             <p className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-slate-400">
               <FaTools />
               Statut
             </p>
-            <p className="mt-2 font-semibold text-slate-100">CDI / Missions</p>
+            <p className="mt-2 font-semibold text-slate-100">{profile.status}</p>
           </div>
         </div>
       </article>
@@ -401,19 +369,19 @@ export function CVProfile() {
         </div>
       </article>
 
-      <article className="panel rounded-2xl p-6 text-center">
-        <h3 className="hud-title text-xl font-bold text-cyan-200">Travaillons ensemble</h3>
+      <article id="contact" className="panel rounded-2xl p-6 text-center">
+        <h3 className="hud-title text-xl font-bold text-cyan-200">Contact</h3>
         <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
-          <a href="mailto:ekanir52@gmail.com" className="inline-flex items-center gap-2 rounded-lg border border-slate-600/40 px-3 py-2 text-slate-300 hover:text-cyan-100">
+          <a href={`mailto:${profile.email}`} className="inline-flex items-center gap-2 rounded-lg border border-slate-600/40 px-3 py-2 text-slate-300 hover:text-cyan-100">
             <FaEnvelope className="text-cyan-200" />
-            ekanir52@gmail.com
+            {profile.email}
           </a>
-          <a href="tel:+33612592033" className="inline-flex items-center gap-2 rounded-lg border border-slate-600/40 px-3 py-2 text-slate-300 hover:text-cyan-100">
+          <a href={`tel:${profile.phoneLink}`} className="inline-flex items-center gap-2 rounded-lg border border-slate-600/40 px-3 py-2 text-slate-300 hover:text-cyan-100">
             <FaPhoneAlt className="text-cyan-200" />
-            06 12 59 20 33
+            {profile.phoneDisplay}
           </a>
           <a
-            href="https://www.linkedin.com/in/anir-el-kabiri"
+            href={profile.linkedInUrl}
             target="_blank"
             rel="noreferrer"
             className="inline-flex items-center gap-2 rounded-lg border border-slate-600/40 px-3 py-2 text-slate-300 hover:text-cyan-100"
@@ -422,7 +390,7 @@ export function CVProfile() {
             LinkedIn
           </a>
           <a
-            href="https://github.com/Anir-kata"
+            href={profile.githubUrl}
             target="_blank"
             rel="noreferrer"
             className="inline-flex items-center gap-2 rounded-lg border border-slate-600/40 px-3 py-2 text-slate-300 hover:text-cyan-100"

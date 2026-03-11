@@ -1,0 +1,21 @@
+export const profile = {
+  fullName: 'Anir El Kabiri',
+  title: 'Ingenieur ENSIMAG, Developpeur Fullstack',
+  brand: 'Plateforme Anir El Kabiri',
+  headerSubtitle: 'Portfolio, suivi pedagogique en mathematiques et projets techniques.',
+  email: 'ekanir52@gmail.com',
+  phoneDisplay: '06 12 59 20 33',
+  phoneLink: '+33612592033',
+  linkedInUrl: 'https://www.linkedin.com/in/anir-el-kabiri',
+  githubUrl: 'https://github.com/Anir-kata',
+  location: 'Paris (75014)',
+  availability: 'Immediate',
+  languages: 'Francais, Anglais',
+  status: 'CDI / Missions',
+  cvPdfPath: '/Anir-El-Kabiri-CV.pdf',
+  pitchLines: [
+    'Ingenieur ENSIMAG, je recherche un poste en developpement fullstack.',
+    'Experience en conception d APIs, developpement d applications web, automatisation de processus metiers et deploiement cloud.',
+    'Maitrise de Java et Python, avec une approche orientee qualite (Methodes Agiles, TDD, CI/CD, tests automatises).',
+  ],
+} as const

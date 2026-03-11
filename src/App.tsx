@@ -4,6 +4,7 @@ import { CVProfile } from './components/CVProfile'
 import { StudentList } from './components/StudentList'
 import { Tabs, type TabKey } from './components/Tabs'
 import { mockStudents } from './data/mockStudents'
+import { profile } from './data/profile'
 import type { Student } from './types/student'
 
 function App() {
@@ -26,12 +27,12 @@ function App() {
       <div className="pointer-events-none absolute bottom-[-60px] right-[-40px] h-52 w-52 rounded-full bg-indigo-400/20 blur-3xl" />
 
       <header className="panel scan-line relative rounded-3xl p-6 md:p-8">
-        <p className="text-xs font-medium uppercase tracking-[0.2em] text-cyan-200/90">EKAN : Anir EL KABIRI</p>
+        <p className="text-xs font-medium uppercase tracking-[0.2em] text-cyan-200/90">Plateforme professionnelle</p>
         <h1 className="hud-title mt-3 text-2xl font-black text-slate-100 sm:text-3xl lg:text-4xl">
-          Centre de pilotage
+          {profile.brand}
         </h1>
-        <p className="mt-3 ml-auto w-full max-w-2xl text-right text-sm text-slate-300 sm:text-base">
-          Email: ekanir52@gmail.com | Tel: 06 12 59 20 33 | LinkedIn: linkedin.com/in/anir-el-kabiri
+        <p className="mt-3 w-full max-w-3xl text-sm text-slate-300 sm:text-base">
+          {profile.headerSubtitle}
         </p>
       </header>
 
