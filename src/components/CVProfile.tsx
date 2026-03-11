@@ -423,28 +423,7 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
         </article>
       </Reveal>
 
-      <Reveal delay={100}>
-        <article className="panel rounded-2xl p-6">
-          <h3 className="hud-title text-lg font-bold text-cyan-200">Expertise</h3>
-          <div className="mt-4 grid gap-4 lg:grid-cols-3">
-            {expertiseAreas.map((area) => (
-              <TiltCard key={area.key} className="panel-soft rounded-xl p-4">
-                <p className="text-xs uppercase tracking-[0.16em] text-slate-400">{area.label}</p>
-                <p className="mt-2 text-sm font-semibold text-cyan-100">{area.title}</p>
-                <div className="mt-3 grid gap-2">
-                  {area.points.map((point) => (
-                    <p key={point} className="text-sm text-slate-300">
-                      • {point}
-                    </p>
-                  ))}
-                </div>
-              </TiltCard>
-            ))}
-          </div>
-        </article>
-      </Reveal>
-
-      <Reveal delay={70}>
+      <Reveal delay={90}>
         <article className="panel rounded-2xl p-6">
         <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <TiltCard className="panel-soft rounded-xl p-4">
@@ -476,6 +455,27 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
             <p className="mt-2 font-semibold text-slate-100">{profile.status}</p>
           </TiltCard>
         </div>
+        </article>
+      </Reveal>
+
+      <Reveal delay={100}>
+        <article className="panel rounded-2xl p-6">
+          <h3 className="hud-title text-lg font-bold text-cyan-200">Expertise</h3>
+          <div className="mt-4 grid gap-4 lg:grid-cols-3">
+            {expertiseAreas.map((area) => (
+              <TiltCard key={area.key} className="panel-soft rounded-xl p-4">
+                <p className="text-xs uppercase tracking-[0.16em] text-slate-400">{area.label}</p>
+                <p className="mt-2 text-sm font-semibold text-cyan-100">{area.title}</p>
+                <div className="mt-3 grid gap-2">
+                  {area.points.map((point) => (
+                    <p key={point} className="text-sm text-slate-300">
+                      • {point}
+                    </p>
+                  ))}
+                </div>
+              </TiltCard>
+            ))}
+          </div>
         </article>
       </Reveal>
 
