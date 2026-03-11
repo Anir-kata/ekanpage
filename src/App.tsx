@@ -26,20 +26,22 @@ function App() {
       <div className="pointer-events-none absolute left-[-80px] top-[-90px] h-56 w-56 rounded-full bg-cyan-400/20 blur-3xl" />
       <div className="pointer-events-none absolute bottom-[-60px] right-[-40px] h-52 w-52 rounded-full bg-indigo-400/20 blur-3xl" />
 
-      <header className="panel scan-line relative rounded-3xl p-6 md:p-8">
-        <p className="text-xs font-medium uppercase tracking-[0.2em] text-cyan-200/90">Plateforme professionnelle</p>
-        <h1 className="hud-title mt-3 text-2xl font-black text-slate-100 sm:text-3xl lg:text-4xl">
-          {profile.brand}
-        </h1>
-        <p className="mt-3 w-full max-w-3xl text-sm text-slate-300 sm:text-base">
-          {profile.headerSubtitle}
-        </p>
-      </header>
-
       {activeView === 'portfolio' && <CVProfile onOpenPedagogy={() => setActiveView('dashboard')} />}
 
       {activeView !== 'portfolio' && (
         <>
+          {activeView === 'dashboard' && (
+            <header className="panel scan-line relative rounded-3xl p-6 md:p-8">
+              <p className="text-xs font-medium uppercase tracking-[0.2em] text-cyan-200/90">Plateforme professionnelle</p>
+              <h1 className="hud-title mt-3 text-2xl font-black text-slate-100 sm:text-3xl lg:text-4xl">
+                {profile.brand}
+              </h1>
+              <p className="mt-3 w-full max-w-3xl text-sm text-slate-300 sm:text-base">
+                {profile.headerSubtitle}
+              </p>
+            </header>
+          )}
+
           <section className="panel mt-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl p-4">
             <Tabs activeTab={activeView} onChange={setActiveView} />
             <button

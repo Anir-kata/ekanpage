@@ -12,6 +12,7 @@ import {
   FaPhoneAlt,
   FaRobot,
   FaTools,
+  FaUniversity,
 } from 'react-icons/fa'
 import {
   SiAngular,
@@ -69,6 +70,7 @@ const experiences = [
     role: 'SIJO - Levallois-Perret',
     subtitle: 'Stage fin d etudes + CDD',
     period: '05/2024 - 03/2025',
+    summary: 'Bilan: 90% de reduction du temps de traitement grace a l automatisation OCR + LLM et une app web interne.',
     context1Title: 'Contexte 1 : PFE',
     context1: [
       'Conception et developpement d une application Python/Streamlit permettant l upload de CV heterogenes (PDF, scans) et la generation automatique d un dossier de competences conforme au standard de l entreprise.',
@@ -93,6 +95,7 @@ const experiences = [
     role: 'Save Energies (IDEX) - Boulogne-Billancourt',
     subtitle: 'Stage 6 mois',
     period: '04/2021 - 09/2021',
+    summary: 'Bilan: acceleration des reportings quotidiens via automatisation des collectes, traitements et previsions energetiques.',
     context1Title: 'Missions',
     context1: [
       'Automatisation de processus metiers : collecte de donnees energetiques, traitement/nettoyage des donnees, gestion des erreurs d execution, generation de reportings automatises.',
@@ -107,6 +110,7 @@ const experiences = [
     role: 'HP France SAS - Grenoble',
     subtitle: 'Business Intelligence - Stage 3 mois',
     period: '05/2019 - 08/2019',
+    summary: 'Bilan: amelioration du pilotage business avec des dashboards interactifs et des scripts de mise a jour automatisee.',
     context1Title: 'Missions',
     context1: [
       'Developpement de dashboards decisionnels.',
@@ -166,6 +170,7 @@ type ExperienceItem = {
   role: string
   subtitle: string
   period: string
+  summary: string
   context1Title: string
   context1: string[]
   context2Title?: string
@@ -312,13 +317,14 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
             <div key={experience.role} className="relative pl-9">
               <span className="absolute left-0 top-2 h-5 w-5 rounded-full border border-cyan-300/60 bg-cyan-300/20 shadow-[0_0_14px_rgba(34,211,238,0.45)]" />
               <button
-                className="panel-soft w-full rounded-xl p-4 text-left transition hover:border-cyan-300/55"
+                className="panel-soft w-full rounded-xl p-4 text-left transition hover:scale-[1.02] hover:border-cyan-300/55"
                 onClick={() => setSelectedExperience(experience)}
               >
                 <p className="text-xs uppercase tracking-[0.16em] text-slate-400">{experience.period}</p>
                 <h4 className="mt-1 text-lg font-semibold text-slate-100">{experience.role}</h4>
                 <p className="mt-1 text-sm font-semibold text-cyan-100">{experience.subtitle}</p>
-                <p className="mt-3 text-sm text-slate-300">Cliquer pour ouvrir les details</p>
+                <p className="mt-3 text-sm text-slate-300">{experience.summary}</p>
+                <p className="mt-3 text-right text-sm text-slate-300">Cliquer pour voir les details</p>
               </button>
             </div>
           ))}
@@ -330,7 +336,8 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <div className="panel-soft rounded-xl p-4">
             <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Diplome ingenieur - 2025</p>
-            <p className="mt-2 font-semibold text-slate-100">
+            <p className="mt-2 inline-flex items-center gap-2 font-semibold text-slate-100">
+              <FaUniversity className="text-cyan-200" />
               ENSIMAG - Ecole nationale superieure d informatique et de mathematiques appliquees de Grenoble
             </p>
             <p className="mt-2 text-sm text-slate-300">Specialisation : Ingenierie des Systemes d Information</p>
@@ -348,23 +355,25 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
       </article>
 
       <article className="panel rounded-2xl p-6">
-        <h3 className="hud-title text-lg font-bold text-cyan-200">Projets phares</h3>
+        <h3 className="hud-title text-lg font-bold text-cyan-200">Projets personnels</h3>
         <div className="mt-4 grid gap-4 lg:grid-cols-2">
           {projects.map((project) => (
             <div key={project.title} className="panel-soft rounded-xl p-4">
               <h4 className="text-base font-semibold text-slate-100">{project.title}</h4>
               <p className="mt-2 text-sm text-cyan-100">Stack : {project.stack}</p>
-              <p className="mt-2 text-sm text-slate-300">Resultat : {project.result}</p>
+              <p className="mt-2 text-sm text-slate-300">{project.result}</p>
               {project.link && (
-                <a
-                  href={project.link}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-cyan-200 hover:text-cyan-100"
-                >
-                  <FaGithub />
-                  Voir sur GitHub
-                </a>
+                <div className="mt-3 flex justify-end">
+                  <a
+                    href={project.link}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-2 text-sm font-semibold text-cyan-200 hover:text-cyan-100"
+                  >
+                    <FaGithub />
+                    Voir sur GitHub
+                  </a>
+                </div>
               )}
             </div>
           ))}
@@ -389,9 +398,9 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
         </div>
       </article>
 
-      <article id="contact" className="panel rounded-2xl p-6 text-center">
+      <article id="contact" className="panel rounded-2xl p-6 text-right">
         <h3 className="hud-title text-xl font-bold text-cyan-200">Contact</h3>
-        <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
+        <div className="mt-4 flex flex-wrap items-center justify-end gap-3">
           <a href={`mailto:${profile.email}`} className="inline-flex items-center gap-2 rounded-lg border border-slate-600/40 px-3 py-2 text-slate-300 hover:text-cyan-100">
             <FaEnvelope className="text-cyan-200" />
             {profile.email}
