@@ -1,4 +1,4 @@
-import { useMemo, useState, type ChangeEvent } from 'react'
+import { useEffect, useMemo, useRef, useState, type ChangeEvent } from 'react'
 import type { Student } from '../types/student'
 
 type StudentListProps = {
@@ -7,7 +7,7 @@ type StudentListProps = {
   onAddStudent: (student: Student) => void
 }
 
-const FICHE_ACCESS_CODE = 'anir123'
+const FICHE_ACCESS_PATTERN = '0-1-2-5-8'
 
 type StudentDraft = {
   id: string
@@ -29,13 +29,19 @@ const createEmptyDraft = (): StudentDraft => ({
   notes: '',
 })
 
+const toDateTimeInputValue = (value: string) => value.replace(' ', 'T')
+
+const toStoredDateTime = (value: string) => value.replace('T', ' ')
+
 export function StudentList({ students, onUpdateStudent, onAddStudent }: StudentListProps) {
   const [selectedStudentId, setSelectedStudentId] = useState<string | null>(null)
   const [isCreateMode, setIsCreateMode] = useState(false)
   const [draft, setDraft] = useState<StudentDraft | null>(null)
-  const [accessCode, setAccessCode] = useState('')
+  const [patternAttempt, setPatternAttempt] = useState<number[]>([])
+  const [isDrawingPattern, setIsDrawingPattern] = useState(false)
   const [isUnlocked, setIsUnlocked] = useState(false)
   const [accessError, setAccessError] = useState('')
+  const patternRef = useRef<number[]>([])
 
   const selectedStudent = useMemo(
     () => students.find((student) => student.id === selectedStudentId) ?? null,
@@ -48,7 +54,9 @@ export function StudentList({ students, onUpdateStudent, onAddStudent }: Student
     setSelectedStudentId(null)
     setIsCreateMode(false)
     setDraft(null)
-    setAccessCode('')
+    setPatternAttempt([])
+    patternRef.current = []
+    setIsDrawingPattern(false)
     setIsUnlocked(false)
     setAccessError('')
   }
@@ -57,7 +65,9 @@ export function StudentList({ students, onUpdateStudent, onAddStudent }: Student
     setSelectedStudentId(student.id)
     setIsCreateMode(false)
     setDraft({ ...student })
-    setAccessCode('')
+    setPatternAttempt([])
+    patternRef.current = []
+    setIsDrawingPattern(false)
     setIsUnlocked(false)
     setAccessError('')
   }
@@ -66,19 +76,61 @@ export function StudentList({ students, onUpdateStudent, onAddStudent }: Student
     setSelectedStudentId(null)
     setIsCreateMode(true)
     setDraft(createEmptyDraft())
-    setAccessCode('')
+    setPatternAttempt([])
+    patternRef.current = []
+    setIsDrawingPattern(false)
     setIsUnlocked(false)
     setAccessError('')
   }
 
-  const unlockEdition = () => {
-    if (accessCode.trim() !== FICHE_ACCESS_CODE) {
-      setAccessError('Code d\'accès incorrect.')
+  const applyPattern = (nextPattern: number[]) => {
+    patternRef.current = nextPattern
+    setPatternAttempt(nextPattern)
+  }
+
+  const startPattern = (dot: number) => {
+    if (isUnlocked) return
+    setAccessError('')
+    setIsDrawingPattern(true)
+    applyPattern([dot])
+  }
+
+  const extendPattern = (dot: number) => {
+    if (!isDrawingPattern || isUnlocked) return
+
+    const current = patternRef.current
+    if (current.includes(dot)) return
+    applyPattern([...current, dot])
+  }
+
+  const finishPattern = () => {
+    if (!isDrawingPattern || isUnlocked) return
+    setIsDrawingPattern(false)
+
+    const entered = patternRef.current.join('-')
+    if (entered !== FICHE_ACCESS_PATTERN) {
+      setAccessError('Schéma incorrect.')
+      applyPattern([])
       return
     }
 
     setAccessError('')
     setIsUnlocked(true)
+    applyPattern([])
+  }
+
+  useEffect(() => {
+    if (!isDrawingPattern) return
+
+    const handlePointerUp = () => finishPattern()
+    window.addEventListener('pointerup', handlePointerUp)
+    return () => window.removeEventListener('pointerup', handlePointerUp)
+  }, [isDrawingPattern])
+
+  const resetPattern = () => {
+    applyPattern([])
+    setIsDrawingPattern(false)
+    setAccessError('')
   }
 
   const updateDraft = (field: keyof StudentDraft, value: string | number) => {
@@ -100,7 +152,7 @@ export function StudentList({ students, onUpdateStudent, onAddStudent }: Student
       level: draft.level.trim(),
       objective: draft.objective.trim(),
       sessionsDone: Math.max(0, draft.sessionsDone),
-      nextSessionAt: draft.nextSessionAt.trim(),
+      nextSessionAt: toStoredDateTime(draft.nextSessionAt.trim()),
       notes: draft.notes.trim(),
     }
 
@@ -145,10 +197,6 @@ export function StudentList({ students, onUpdateStudent, onAddStudent }: Student
         </button>
       </div>
 
-      <p className="mt-2 text-xs uppercase tracking-[0.14em] text-slate-400">
-        Les noms sont masqués par confidentialité.
-      </p>
-
       <div className="mt-4 grid gap-4">
         {students.map((student, index) => (
           <article
@@ -166,7 +214,7 @@ export function StudentList({ students, onUpdateStudent, onAddStudent }: Student
             <p className="mt-1 text-sm text-slate-300">Séances faites: {student.sessionsDone}</p>
             <p className="mt-1 text-sm text-slate-300">Prochaine séance: {student.nextSessionAt}</p>
             <p className="mt-3 text-xs uppercase tracking-[0.14em] text-cyan-200/85 group-hover:text-cyan-100">
-              Cliquer pour ouvrir la fiche complète
+              Code requis pour ouvrir la fiche complète
             </p>
           </article>
         ))}
@@ -193,33 +241,50 @@ export function StudentList({ students, onUpdateStudent, onAddStudent }: Student
             {!isUnlocked && (
               <div className="mt-4 rounded-xl bg-slate-900/45 p-4">
                 <p className="text-sm text-slate-300">
-                  Vérification requise pour activer l'édition complète.
+                  Vérification requise pour ouvrir la fiche complète.
                 </p>
-                <div className="mt-3 flex flex-wrap items-center gap-2">
-                  <input
-                    type="password"
-                    value={accessCode}
-                    onChange={(event) => setAccessCode(event.target.value)}
-                    placeholder="Code d'accès"
-                    className="futuristic-input rounded-lg px-3 py-2 text-sm"
-                  />
+                <p className="mt-2 text-xs uppercase tracking-[0.14em] text-slate-400">
+                  Maintenir cliqué et relier les points
+                </p>
+
+                <div className="mt-3 inline-grid grid-cols-3 gap-3 rounded-xl bg-slate-950/60 p-3">
+                  {Array.from({ length: 9 }, (_, dot) => {
+                    const isSelected = patternAttempt.includes(dot)
+                    return (
+                      <button
+                        key={dot}
+                        type="button"
+                        className={`h-12 w-12 rounded-full border transition ${
+                          isSelected
+                            ? 'border-cyan-200 bg-cyan-300/35 shadow-[0_0_16px_rgba(34,211,238,0.45)]'
+                            : 'border-cyan-400/30 bg-slate-900/70 hover:border-cyan-300/60'
+                        }`}
+                        onPointerDown={() => startPattern(dot)}
+                        onPointerEnter={() => extendPattern(dot)}
+                      />
+                    )
+                  })}
+                </div>
+
+                <div className="mt-3">
                   <button
-                    className="rounded-lg bg-cyan-400/20 px-3 py-2 text-xs font-semibold text-cyan-100 transition hover:bg-cyan-300/30"
-                    onClick={unlockEdition}
+                    className="rounded-lg bg-slate-800/70 px-3 py-2 text-xs font-semibold text-slate-200 transition hover:bg-slate-700/80"
+                    onClick={resetPattern}
                   >
-                    Débloquer l'édition
+                    Réinitialiser le schéma
                   </button>
                 </div>
                 {accessError && <p className="mt-2 text-xs text-rose-300">{accessError}</p>}
               </div>
             )}
 
+            {isUnlocked && (
+              <>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <label className="grid gap-1 text-sm text-slate-300">
                 Nom complet
                 <input
-                  disabled={!isUnlocked}
-                  className="futuristic-input rounded-lg px-3 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-45"
+                  className="futuristic-input rounded-lg px-3 py-2 text-sm"
                   value={draft?.fullName ?? selectedStudent?.fullName ?? ''}
                   onChange={(event) => updateDraft('fullName', event.target.value)}
                 />
@@ -228,8 +293,7 @@ export function StudentList({ students, onUpdateStudent, onAddStudent }: Student
               <label className="grid gap-1 text-sm text-slate-300">
                 Niveau
                 <input
-                  disabled={!isUnlocked}
-                  className="futuristic-input rounded-lg px-3 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-45"
+                  className="futuristic-input rounded-lg px-3 py-2 text-sm"
                   value={draft?.level ?? selectedStudent?.level ?? ''}
                   onChange={(event) => updateDraft('level', event.target.value)}
                 />
@@ -238,8 +302,7 @@ export function StudentList({ students, onUpdateStudent, onAddStudent }: Student
               <label className="grid gap-1 text-sm text-slate-300">
                 Objectif
                 <input
-                  disabled={!isUnlocked}
-                  className="futuristic-input rounded-lg px-3 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-45"
+                  className="futuristic-input rounded-lg px-3 py-2 text-sm"
                   value={draft?.objective ?? selectedStudent?.objective ?? ''}
                   onChange={(event) => updateDraft('objective', event.target.value)}
                 />
@@ -250,8 +313,7 @@ export function StudentList({ students, onUpdateStudent, onAddStudent }: Student
                 <input
                   type="number"
                   min={0}
-                  disabled={!isUnlocked}
-                  className="futuristic-input rounded-lg px-3 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-45"
+                  className="futuristic-input rounded-lg px-3 py-2 text-sm"
                   value={draft?.sessionsDone ?? selectedStudent?.sessionsDone ?? 0}
                   onChange={handleSessionsInput}
                 />
@@ -260,18 +322,17 @@ export function StudentList({ students, onUpdateStudent, onAddStudent }: Student
               <label className="sm:col-span-2 grid gap-1 text-sm text-slate-300">
                 Prochaine séance
                 <input
-                  disabled={!isUnlocked}
-                  className="futuristic-input rounded-lg px-3 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-45"
-                  value={draft?.nextSessionAt ?? selectedStudent?.nextSessionAt ?? ''}
-                  onChange={(event) => updateDraft('nextSessionAt', event.target.value)}
+                  type="datetime-local"
+                  className="futuristic-input rounded-lg px-3 py-2 text-sm"
+                  value={toDateTimeInputValue(draft?.nextSessionAt ?? selectedStudent?.nextSessionAt ?? '')}
+                  onChange={(event) => updateDraft('nextSessionAt', toStoredDateTime(event.target.value))}
                 />
               </label>
 
               <label className="sm:col-span-2 grid gap-1 text-sm text-slate-300">
                 Avis de progression
                 <textarea
-                  disabled={!isUnlocked}
-                  className="futuristic-input min-h-28 rounded-lg px-3 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-45"
+                  className="futuristic-input min-h-28 rounded-lg px-3 py-2 text-sm"
                   value={draft?.notes ?? selectedStudent?.notes ?? ''}
                   onChange={(event) => updateDraft('notes', event.target.value)}
                 />
@@ -286,13 +347,14 @@ export function StudentList({ students, onUpdateStudent, onAddStudent }: Student
                 Annuler
               </button>
               <button
-                disabled={!isUnlocked}
-                className="rounded-lg bg-cyan-400/20 px-4 py-2 text-sm font-semibold text-cyan-100 transition hover:bg-cyan-300/30 disabled:cursor-not-allowed disabled:opacity-40"
+                className="rounded-lg bg-cyan-400/20 px-4 py-2 text-sm font-semibold text-cyan-100 transition hover:bg-cyan-300/30"
                 onClick={saveStudent}
               >
                 {isCreateMode ? 'Créer l\'élève' : 'Enregistrer les modifications'}
               </button>
             </div>
+              </>
+            )}
           </div>
         </div>
       )}
