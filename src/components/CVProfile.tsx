@@ -196,6 +196,57 @@ const projects = [
   },
 ]
 
+const universityProjects = [
+  {
+    title: 'Compilateur Déca',
+    subtitle: 'Projet académique - Génie Logiciel (ENSIMAG)',
+    description:
+      "Développement en équipe d'un compilateur pour le langage Déca (langage pédagogique proche de Java), avec implémentation des différentes phases de compilation et application de pratiques modernes de développement logiciel.",
+    tasks: [
+      'Conception et implémentation des phases du compilateur.',
+      "Développement de l'analyse lexicale et syntaxique avec ANTLR.",
+      "Implémentation de l'analyse sémantique (types, symboles).",
+      "Développement de la génération de code cible pour l'exécution.",
+      'Mise en place de tests automatisés et approche TDD.',
+      'Utilisation de la couverture de code pour améliorer la qualité.',
+      'Travail collaboratif avec Git, pair programming et intégration continue.',
+    ],
+    environment: [
+      'Langage: Java',
+      'Outils: ANTLR, Maven, Git',
+      'Qualité: Cobertura, tests automatisés',
+      'IDE: Eclipse / NetBeans',
+      'Méthodes: TDD, intégration continue, programmation par paires',
+    ],
+  },
+  {
+    title: 'Smart Jogging',
+    subtitle: 'Projet FABLAB - Application mobile Android',
+    description:
+      "Application Android d'analyse de performance en course à pied, basée sur des données biomécaniques (accéléromètre, gyroscope, capteurs de pression) avec suivi en temps réel et post-entraînement.",
+    tasks: [
+      "Conception et développement d'une application Android de suivi d'entraînements.",
+      "Implémentation des écrans: authentification, accueil, entraînement, historique, profil.",
+      'Intégration Google Maps pour la géolocalisation et le parcours.',
+      "Développement d'une base locale pour profils et historique.",
+      "Conception d'algorithmes: fréquence de foulée, estimation de vitesse, analyse d'appuis.",
+      'Étude et implémentation de la communication Bluetooth Low Energy (BLE/GATT).',
+      "Mise en place d'une machine d'état pour la lecture séquentielle des capteurs.",
+      'Système de feedback temps réel (alertes visuelles et sonores).',
+      "Participation aux réunions techniques avec des experts systèmes embarqués.",
+    ],
+    environment: [
+      'Langage: Java',
+      'Mobile: Android SDK',
+      'IoT: Bluetooth Low Energy (BLE), GATT',
+      'Capteurs: accéléromètre, gyroscope, capteurs de pression',
+      'Cartographie: Google Maps API',
+      'Stockage: SQLite (Android)',
+      "Traitement: algorithmes d'analyse de signal",
+    ],
+  },
+]
+
 const profileStory = [
   {
     title: 'Mon profil',
@@ -625,6 +676,43 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
             </TiltCard>
           ))}
         </div>
+        </article>
+      </Reveal>
+
+      <Reveal delay={280}>
+        <article className="panel rounded-2xl p-6">
+          <h3 className="hud-title text-lg font-bold text-cyan-200">Projets universitaires</h3>
+          <div className="mt-4 grid gap-4 lg:grid-cols-2">
+            {universityProjects.map((project) => (
+              <TiltCard key={project.title} className="panel-soft rounded-xl p-4">
+                <h4 className="text-base font-semibold text-slate-100">{project.title}</h4>
+                <p className="mt-1 text-sm font-semibold text-cyan-100">{project.subtitle}</p>
+                <p className="mt-3 text-sm text-slate-300">{project.description}</p>
+
+                <div className="mt-4">
+                  <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Tâches</p>
+                  <div className="mt-2 grid gap-1.5">
+                    {project.tasks.map((task) => (
+                      <p key={task} className="text-sm text-slate-300">
+                        • {task}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="mt-4">
+                  <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Environnement technique</p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {project.environment.map((item) => (
+                      <span key={item} className="inline-flex items-center rounded-full bg-slate-900/45 px-2.5 py-1 text-xs text-cyan-100">
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </TiltCard>
+            ))}
+          </div>
         </article>
       </Reveal>
 
