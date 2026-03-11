@@ -31,10 +31,10 @@ function App() {
             <header className="panel scan-line relative rounded-3xl p-6 md:p-8">
               <p className="text-xs font-medium uppercase tracking-[0.2em] text-cyan-200/90">Espace d'enseignement</p>
               <h1 className="hud-title mt-3 text-2xl font-black text-slate-100 sm:text-3xl lg:text-4xl">
-                Tableau de bord pedagogique
+                Tableau de bord pédagogique
               </h1>
               <p className="mt-3 w-full max-w-3xl text-sm text-slate-300 sm:text-base">
-                Suivi des eleves, pilotage des seances et gestion des fiches de progression.
+                Suivi des élèves, pilotage des séances et gestion des fiches de progression.
               </p>
             </header>
           )}
@@ -52,16 +52,16 @@ function App() {
           {activeView === 'dashboard' && (
             <section className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               <article className="panel-soft rounded-2xl p-5 transition hover:-translate-y-0.5 hover:shadow-cyan-400/20">
-                <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Nombre d eleves</p>
+                <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Nombre d'élèves</p>
                 <p className="neon-cyan mt-3 text-4xl font-extrabold">{students.length}</p>
               </article>
               <article className="panel-soft rounded-2xl p-5 transition hover:-translate-y-0.5 hover:shadow-blue-400/20">
-                <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Seances realisees</p>
+                <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Séances réalisées</p>
                 <p className="mt-3 text-4xl font-extrabold text-blue-300">{totalSessions}</p>
               </article>
               <article className="panel-soft rounded-2xl p-5 transition hover:-translate-y-0.5 hover:shadow-indigo-400/20">
-                <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Prochaine etape</p>
-                <p className="mt-3 text-base font-semibold text-indigo-200">Ajouter des fiches de suivi par eleve</p>
+                <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Prochaine étape</p>
+                <p className="mt-3 text-base font-semibold text-indigo-200">Ajouter des fiches de suivi par élève</p>
               </article>
             </section>
           )}

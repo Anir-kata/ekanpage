@@ -19,7 +19,7 @@ export function Tabs({ activeTab, onChange }: TabsProps) {
         Tableau de bord
       </button>
       <button className={tabStyles(activeTab === 'students')} onClick={() => onChange('students')}>
-        Eleves
+        Élèves
       </button>
     </nav>
   )

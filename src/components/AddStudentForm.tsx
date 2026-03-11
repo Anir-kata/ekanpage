@@ -37,7 +37,7 @@ export function AddStudentForm({ onAddStudent }: AddStudentFormProps) {
       level: form.level.trim(),
       objective: form.objective.trim(),
       sessionsDone: 0,
-      nextSessionAt: form.nextSessionAt.trim() || 'A planifier',
+      nextSessionAt: form.nextSessionAt.trim() || 'À planifier',
       notes: form.notes.trim() || 'Aucune note pour le moment.',
     })
 
@@ -46,7 +46,7 @@ export function AddStudentForm({ onAddStudent }: AddStudentFormProps) {
 
   return (
     <section className="panel rounded-2xl p-6">
-      <h2 className="hud-title text-lg font-bold text-cyan-200">Ajouter un eleve</h2>
+      <h2 className="hud-title text-lg font-bold text-cyan-200">Ajouter un élève</h2>
       <form className="mt-4 grid gap-4" onSubmit={handleSubmit}>
         <label className="grid gap-1 text-sm font-medium text-slate-300">
           Nom complet
@@ -74,12 +74,12 @@ export function AddStudentForm({ onAddStudent }: AddStudentFormProps) {
             className="futuristic-input rounded-lg px-3 py-2 transition"
             value={form.objective}
             onChange={(event) => setForm((prev) => ({ ...prev, objective: event.target.value }))}
-            placeholder="Ex: Preparation bac"
+            placeholder="Ex: Préparation bac"
           />
         </label>
 
         <label className="grid gap-1 text-sm font-medium text-slate-300">
-          Prochaine seance
+          Prochaine séance
           <input
             className="futuristic-input rounded-lg px-3 py-2 transition"
             value={form.nextSessionAt}

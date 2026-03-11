@@ -32,15 +32,15 @@ export function StudentList({ students, onUpdateFiche }: StudentListProps) {
   if (!students.length) {
     return (
       <section className="panel rounded-2xl p-6">
-        <h2 className="hud-title text-lg font-bold text-cyan-200">Mes eleves</h2>
-        <p className="mt-3 text-slate-300">Aucun eleve pour le moment.</p>
+        <h2 className="hud-title text-lg font-bold text-cyan-200">Mes élèves</h2>
+        <p className="mt-3 text-slate-300">Aucun élève pour le moment.</p>
       </section>
     )
   }
 
   return (
     <section className="panel rounded-2xl p-6">
-      <h2 className="hud-title text-lg font-bold text-cyan-200">Mes eleves</h2>
+      <h2 className="hud-title text-lg font-bold text-cyan-200">Mes élèves</h2>
       <div className="mt-4 grid gap-4">
         {students.map((student) => (
           <article
@@ -54,8 +54,8 @@ export function StudentList({ students, onUpdateFiche }: StudentListProps) {
               </span>
             </div>
             <p className="mt-2 text-sm text-slate-300">Objectif: {student.objective}</p>
-            <p className="mt-1 text-sm text-slate-300">Seances faites: {student.sessionsDone}</p>
-            <p className="mt-1 text-sm text-slate-300">Prochaine seance: {student.nextSessionAt}</p>
+            <p className="mt-1 text-sm text-slate-300">Séances faites: {student.sessionsDone}</p>
+            <p className="mt-1 text-sm text-slate-300">Prochaine séance: {student.nextSessionAt}</p>
 
             <div className="mt-4 rounded-xl bg-slate-900/35 p-3">
               <p className="text-xs uppercase tracking-[0.14em] text-slate-400">Fiche de suivi</p>
@@ -66,14 +66,14 @@ export function StudentList({ students, onUpdateFiche }: StudentListProps) {
                     type="password"
                     value={codeByStudent[student.id] ?? ''}
                     onChange={(event) => setCodeByStudent((prev) => ({ ...prev, [student.id]: event.target.value }))}
-                    placeholder="Code d'acces"
+                    placeholder="Code d'accès"
                     className="futuristic-input rounded-lg px-3 py-2 text-sm"
                   />
                   <button
                     className="rounded-lg bg-cyan-400/20 px-3 py-2 text-xs font-semibold text-cyan-100 transition hover:bg-cyan-300/30"
                     onClick={() => unlockStudentFiche(student.id)}
                   >
-                    Debloquer la fiche
+                    Débloquer la fiche
                   </button>
                   {errorByStudent[student.id] && <p className="w-full text-xs text-rose-300">{errorByStudent[student.id]}</p>}
                 </div>

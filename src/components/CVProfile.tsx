@@ -67,7 +67,7 @@ const toolingSkills = [
 const experiences = [
   {
     role: 'SIJO - Levallois-Perret',
-    subtitle: "Stage fin d'etudes + CDD",
+    subtitle: "Stage fin d'études + CDD",
     period: '05/2024 - 03/2025',
     stack: [
       { name: 'Python', icon: SiPython },
@@ -81,21 +81,21 @@ const experiences = [
     ],
     context1Title: 'Contexte 1 : PFE',
     context1: [
-      "Conception et developpement d'une application Python/Streamlit permettant l'upload de CV heterogenes (PDF, scans) et la generation automatique d'un dossier de competences conforme au standard de l'entreprise.",
-      "Pipeline automatise : OCR + extraction et structuration d'entites via LLM (GPT-4o).",
-      'Post-traitement par regex et generation dynamique d un document MS Word avec placeholders (manipulation de la structure XML / librairie python-docx).',
-      "Deploiement de l'application sur Microsoft Azure.",
-      'Projet mene avec la methodologie Agile (iterations courtes, echanges reguliers avec les equipes Business, retrospective et amelioration continue).',
-      'Resultat : Reduction de 90% du temps de traitement interne.',
-      'Environnement technique : Python, OCR (DocTR), Streamlit, modele IA GPT-4o, Microsoft Azure',
+      "Conception et développement d'une application Python/Streamlit permettant l'upload de CV hétérogènes (PDF, scans) et la génération automatique d'un dossier de compétences conforme au standard de l'entreprise.",
+      "Pipeline automatisé : OCR + extraction et structuration d'entités via LLM (GPT-4o).",
+      "Post-traitement par regex et génération dynamique d'un document MS Word avec placeholders (manipulation de la structure XML / librairie python-docx).",
+      "Déploiement de l'application sur Microsoft Azure.",
+      'Projet mené avec la méthodologie Agile (itérations courtes, échanges réguliers avec les équipes Business, rétrospective et amélioration continue).',
+      'Résultat : Réduction de 90% du temps de traitement interne.',
+      'Environnement technique : Python, OCR (DocTR), Streamlit, modèle IA GPT-4o, Microsoft Azure',
     ],
     context2Title: 'Contexte 2 : CDD',
     context2: [
       "Application web d'automatisation des relances de mails automatiques.",
-      "Conception et developpement d'une application web interne.",
-      'Developpement du frontend en React + Tailwind CSS.',
-      'Developpement du backend en Node.js avec Express.js.',
-      "Integration de l'authentification via compte Microsoft et deploiement sur Microsoft Azure.",
+      "Conception et développement d'une application web interne.",
+      'Développement du frontend en React + Tailwind CSS.',
+      'Développement du backend en Node.js avec Express.js.',
+      "Intégration de l'authentification via compte Microsoft et déploiement sur Microsoft Azure.",
       'Environnement technique : Node.js, React, Tailwind CSS, REST API, Microsoft Azure',
     ],
   },
@@ -112,11 +112,11 @@ const experiences = [
     ],
     context1Title: 'Missions',
     context1: [
-      "Automatisation de processus metiers : collecte de donnees energetiques, traitement/nettoyage des donnees, gestion des erreurs d'execution, generation de reportings automatises.",
+      "Automatisation de processus métiers : collecte de données énergétiques, traitement/nettoyage des données, gestion des erreurs d'exécution, génération de reportings automatisés.",
       'Automatisation de la collecte via API REST et web scraping.',
-      "Developpement d'un outil de visualisation de donnees d'achat/vente de gaz.",
-      "Developpement de modeles de prevision de consommation energetique et d'outils d'aide a la decision.",
-      'Resultats : Gain de temps et d efficacite sur les reportings quotidiens.',
+      "Développement d'un outil de visualisation de données d'achat/vente de gaz.",
+      "Développement de modèles de prévision de consommation énergétique et d'outils d'aide à la décision.",
+      "Résultats : gain de temps et d'efficacité sur les reportings quotidiens.",
       'Environnement technique : R (Selenium), VBA, PowerShell',
     ],
   },
@@ -132,51 +132,51 @@ const experiences = [
     ],
     context1Title: 'Missions',
     context1: [
-      'Developpement de dashboards decisionnels.',
-      'Automatisation de scripts de mise a jour de donnees.',
+      'Développement de dashboards décisionnels.',
+      'Automatisation de scripts de mise à jour de données.',
       'Conception de dashboards interactifs sous QlikView et Power BI pour le reporting business.',
-      'Nettoyage, structuration et modelisation de donnees (relations, tables de mapping).',
-      "Automatisation de la collecte et de l'actualisation des donnees via scripts Batch.",
-      'Travail en collaboration avec les equipes metiers (logistique, forecast).',
+      'Nettoyage, structuration et modélisation de données (relations, tables de mapping).',
+      "Automatisation de la collecte et de l'actualisation des données via scripts Batch.",
+      'Travail en collaboration avec les équipes métiers (logistique, forecast).',
       'Environnement technique : QlikView, Power BI, SQL, Script Batch',
     ],
   },
 ]
 
 const softSkills = [
-  { name: 'Agilite', icon: FaRobot },
+  { name: 'Agilité', icon: FaRobot },
   { name: 'TDD', icon: FaFlask },
   { name: 'Clean Code', icon: FaCode },
   { name: 'Esprit analytique', icon: FaTools },
-  { name: "Rigueur d'ingenierie", icon: FaTools },
+  { name: "Rigueur d'ingénierie", icon: FaTools },
   { name: 'Autonomie', icon: FaTools },
-  { name: "Capacite d'adaptation", icon: FaTools },
-  { name: 'Travail en equipe', icon: FaTools },
-  { name: 'Ecoute active', icon: FaTools },
+  { name: "Capacité d'adaptation", icon: FaTools },
+  { name: 'Travail en équipe', icon: FaTools },
+  { name: 'Écoute active', icon: FaTools },
   { name: 'Leadership technique', icon: FaTools },
   { name: 'Vulgarisation', icon: FaTools },
-  { name: 'Gestion des priorites', icon: FaTools },
+  { name: 'Gestion des priorités', icon: FaTools },
   { name: 'Communication technique', icon: FaTools },
-  { name: 'Resolution de problemes', icon: FaTools },
+  { name: 'Résolution de problèmes', icon: FaTools },
 ]
 
 const projects = [
   {
     title: 'ekanpage',
     stack: 'TypeScript, React, Tailwind',
-    result: 'Portfolio personnel interactif avec parcours CV et espace pedagogie.',
+    result: 'Portfolio personnel interactif avec parcours CV et espace pédagogie.',
     link: 'https://github.com/Anir-kata/ekanpage',
   },
   {
     title: 'projet_saas',
     stack: 'Java 21, Spring Boot',
-    result: 'Application SaaS backend orientee architecture moderne Java/Spring.',
+    result: 'Application SaaS backend orientée architecture moderne Java/Spring.',
     link: 'https://github.com/Anir-kata/projet_saas',
   },
   {
     title: 'Process_CVs_SpringBoot',
     stack: 'Java, Spring Boot',
-    result: 'Gestion de CV avec API backend et logique metier de traitement.',
+    result: 'Gestion de CV avec API backend et logique métier de traitement.',
     link: 'https://github.com/Anir-kata/Process_CVs_SpringBoot',
   },
   {
@@ -188,7 +188,7 @@ const projects = [
   {
     title: 'analyse_donnees_energetique',
     stack: 'Python, pipeline data',
-    result: 'Pipeline de traitement de donnees energetiques pour analyse operationnelle.',
+    result: 'Pipeline de traitement de données énergétiques pour analyse opérationnelle.',
     link: 'https://github.com/Anir-kata/analyse_donnees_energetique',
   },
 ]
@@ -240,7 +240,7 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
             className="inline-flex items-center gap-2 rounded-xl bg-indigo-400/15 px-4 py-2 text-sm font-semibold text-indigo-100 transition hover:shadow-[0_0_22px_rgba(129,140,248,0.35)]"
           >
             <FaFilePdf />
-            Telecharger PDF
+            Télécharger PDF
           </a>
           <a
             href="#contact"
@@ -253,7 +253,7 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
             className="inline-flex items-center gap-2 rounded-xl bg-cyan-400/15 px-4 py-2 text-sm font-semibold text-cyan-100 transition hover:shadow-[0_0_22px_rgba(34,211,238,0.35)]"
             onClick={onOpenPedagogy}
           >
-            Acceder au tableau de bord d'enseignement
+            Accéder au tableau de bord d'enseignement
           </button>
         </div>
       </article>
@@ -270,7 +270,7 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
           <div className="panel-soft rounded-xl p-4">
             <p className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-slate-400">
               <FaCalendarCheck />
-              Disponibilite
+              Disponibilité
             </p>
             <p className="mt-2 font-semibold text-slate-100">{profile.availability}</p>
           </div>
@@ -292,7 +292,7 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
       </article>
 
       <article className="panel rounded-2xl p-6">
-        <h3 className="hud-title text-lg font-bold text-cyan-200">Competences</h3>
+        <h3 className="hud-title text-lg font-bold text-cyan-200">Compétences</h3>
         <div className="mt-5 grid gap-6 lg:grid-cols-2">
           <div className="grid gap-4">
             <p className="text-sm uppercase tracking-[0.18em] text-slate-400">Frontend</p>
@@ -337,7 +337,7 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
       </article>
 
       <article className="panel rounded-2xl p-6">
-        <h3 className="hud-title text-lg font-bold text-cyan-200">Experiences</h3>
+        <h3 className="hud-title text-lg font-bold text-cyan-200">Expériences</h3>
         <div className="relative mt-5 grid gap-5 before:absolute before:left-2.5 before:top-1 before:h-[calc(100%-10px)] before:w-px before:bg-cyan-300/30 sm:before:left-3">
           {experiences.map((experience) => (
             <div key={experience.role} className="relative pl-9">
@@ -360,7 +360,7 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
                     )
                   })}
                 </div>
-                <p className="mt-3 text-right text-sm text-slate-300">Cliquer pour voir les details</p>
+                <p className="mt-3 text-right text-sm text-slate-300">Cliquer pour voir les détails</p>
               </button>
             </div>
           ))}
@@ -371,26 +371,26 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
         <h3 className="hud-title text-lg font-bold text-cyan-200">Formation et certifications</h3>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <div className="panel-soft rounded-xl p-4">
-            <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Diplome ingenieur - 2025</p>
+            <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Diplôme ingénieur - 2025</p>
             <div className="mt-3 grid gap-2 sm:grid-cols-[96px_1fr]">
               <div className="rounded-xl bg-slate-900/30 p-2">
                 <img src="/logo_ensimag.png" alt="Logo ENSIMAG" className="h-20 w-20 object-contain" />
               </div>
               <div className="rounded-xl bg-slate-900/30 p-3">
                 <p className="font-semibold text-slate-100">
-                  ENSIMAG - Ecole nationale superieure d informatique et de mathematiques appliquees de Grenoble
+                  ENSIMAG - École nationale supérieure d'informatique et de mathématiques appliquées de Grenoble
                 </p>
-                <p className="mt-2 text-sm text-slate-300">Specialisation : Ingenierie des Systemes d'Information</p>
+                <p className="mt-2 text-sm text-slate-300">Spécialisation : Ingénierie des Systèmes d'Information</p>
               </div>
             </div>
           </div>
           <div className="panel-soft rounded-xl p-4">
             <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Autres formations</p>
             <p className="mt-2 text-sm font-semibold text-cyan-100">
-              Classes preparatoires aux grandes ecoles MPSI / MP (Grand Admis au concours CCP)
+              Classes préparatoires aux grandes écoles MPSI / MP (Grand Admis au concours CCP)
             </p>
             <p className="mt-2 text-sm font-semibold text-cyan-100">
-              Baccalaureat Scientifique - Specialite Mathematiques (Mention Tres bien)
+              Baccalauréat Scientifique - Spécialité Mathématiques (Mention Très bien)
             </p>
           </div>
         </div>
@@ -423,19 +423,19 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
       </article>
 
       <article className="panel rounded-2xl p-6">
-        <h3 className="hud-title text-lg font-bold text-cyan-200">Pedagogie d'enseignement</h3>
+        <h3 className="hud-title text-lg font-bold text-cyan-200">Pédagogie d'enseignement</h3>
         <div className="mt-4 grid gap-4 md:grid-cols-3">
           <div className="panel-soft rounded-xl p-4">
-            <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Niveau des eleves coaches</p>
-            <p className="mt-2 text-sm text-slate-300">Eleves de college, lycee et etudiants en mathematiques</p>
+            <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Niveau des élèves coachés</p>
+            <p className="mt-2 text-sm text-slate-300">Élèves de collège, lycée et étudiants en mathématiques</p>
           </div>
           <div className="panel-soft rounded-xl p-4">
-            <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Methode</p>
-            <p className="mt-2 text-sm text-slate-300">Explication progressive des notions mathematiques et mise en pratique par exercices cibles</p>
+            <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Méthode</p>
+            <p className="mt-2 text-sm text-slate-300">Explication progressive des notions mathématiques et mise en pratique par exercices ciblés</p>
           </div>
           <div className="panel-soft rounded-xl p-4">
-            <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Resultats</p>
-            <p className="mt-2 text-sm text-slate-300">Meilleure autonomie, progression reguliere et confiance renforcee en resolution de problemes</p>
+            <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Résultats</p>
+            <p className="mt-2 text-sm text-slate-300">Meilleure autonomie, progression régulière et confiance renforcée en résolution de problèmes</p>
           </div>
         </div>
       </article>
