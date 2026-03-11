@@ -380,7 +380,7 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
                 <p className="font-semibold text-slate-100">
                   ENSIMAG - Ecole nationale superieure d informatique et de mathematiques appliquees de Grenoble
                 </p>
-                <p className="mt-2 text-sm text-slate-300">Specialisation : Ingenierie des Systemes d Information</p>
+                <p className="mt-2 text-sm text-slate-300">Specialisation : Ingenierie des Systemes d'Information</p>
               </div>
             </div>
           </div>
@@ -423,7 +423,7 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
       </article>
 
       <article className="panel rounded-2xl p-6">
-        <h3 className="hud-title text-lg font-bold text-cyan-200">Pedagogie</h3>
+        <h3 className="hud-title text-lg font-bold text-cyan-200">Pedagogie d'enseignement</h3>
         <div className="mt-4 grid gap-4 md:grid-cols-3">
           <div className="panel-soft rounded-xl p-4">
             <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Niveau des eleves coaches</p>
