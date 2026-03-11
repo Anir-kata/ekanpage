@@ -12,7 +12,6 @@ import {
   FaPhoneAlt,
   FaRobot,
   FaTools,
-  FaUniversity,
 } from 'react-icons/fa'
 import {
   SiAngular,
@@ -68,26 +67,26 @@ const toolingSkills = [
 const experiences = [
   {
     role: 'SIJO - Levallois-Perret',
-    subtitle: 'Stage fin d etudes + CDD',
+    subtitle: "Stage fin d'etudes + CDD",
     period: '05/2024 - 03/2025',
-    summary: 'Bilan: 90% de reduction du temps de traitement grace a l automatisation OCR + LLM et une app web interne.',
+    summary: "Bilan: 90% de reduction du temps de traitement grace a l'automatisation OCR + LLM et une app web interne.",
     context1Title: 'Contexte 1 : PFE',
     context1: [
-      'Conception et developpement d une application Python/Streamlit permettant l upload de CV heterogenes (PDF, scans) et la generation automatique d un dossier de competences conforme au standard de l entreprise.',
-      'Pipeline automatise : OCR + extraction et structuration d entites via LLM (GPT-4o).',
+      "Conception et developpement d'une application Python/Streamlit permettant l'upload de CV heterogenes (PDF, scans) et la generation automatique d'un dossier de competences conforme au standard de l'entreprise.",
+      "Pipeline automatise : OCR + extraction et structuration d'entites via LLM (GPT-4o).",
       'Post-traitement par regex et generation dynamique d un document MS Word avec placeholders (manipulation de la structure XML / librairie python-docx).',
-      'Deploiement de l application sur Microsoft Azure.',
+      "Deploiement de l'application sur Microsoft Azure.",
       'Projet mene avec la methodologie Agile (iterations courtes, echanges reguliers avec les equipes Business, retrospective et amelioration continue).',
       'Resultat : Reduction de 90% du temps de traitement interne.',
       'Environnement technique : Python, OCR (DocTR), Streamlit, modele IA GPT-4o, Microsoft Azure',
     ],
     context2Title: 'Contexte 2 : CDD',
     context2: [
-      'Application web d automatisation des relances de mails automatiques.',
-      'Conception et developpement d une application web interne.',
+      "Application web d'automatisation des relances de mails automatiques.",
+      "Conception et developpement d'une application web interne.",
       'Developpement du frontend en React + Tailwind CSS.',
       'Developpement du backend en Node.js avec Express.js.',
-      'Integration de l authentification via compte Microsoft et deploiement sur Microsoft Azure.',
+      "Integration de l'authentification via compte Microsoft et deploiement sur Microsoft Azure.",
       'Environnement technique : Node.js, React, Tailwind CSS, REST API, Microsoft Azure',
     ],
   },
@@ -98,10 +97,10 @@ const experiences = [
     summary: 'Bilan: acceleration des reportings quotidiens via automatisation des collectes, traitements et previsions energetiques.',
     context1Title: 'Missions',
     context1: [
-      'Automatisation de processus metiers : collecte de donnees energetiques, traitement/nettoyage des donnees, gestion des erreurs d execution, generation de reportings automatises.',
+      "Automatisation de processus metiers : collecte de donnees energetiques, traitement/nettoyage des donnees, gestion des erreurs d'execution, generation de reportings automatises.",
       'Automatisation de la collecte via API REST et web scraping.',
-      'Developpement d un outil de visualisation de donnees d achat/vente de gaz.',
-      'Developpement de modeles de prevision de consommation energetique et d outils d aide a la decision.',
+      "Developpement d'un outil de visualisation de donnees d'achat/vente de gaz.",
+      "Developpement de modeles de prevision de consommation energetique et d'outils d'aide a la decision.",
       'Resultats : Gain de temps et d efficacite sur les reportings quotidiens.',
       'Environnement technique : R (Selenium), VBA, PowerShell',
     ],
@@ -117,7 +116,7 @@ const experiences = [
       'Automatisation de scripts de mise a jour de donnees.',
       'Conception de dashboards interactifs sous QlikView et Power BI pour le reporting business.',
       'Nettoyage, structuration et modelisation de donnees (relations, tables de mapping).',
-      'Automatisation de la collecte et de l actualisation des donnees via scripts Batch.',
+      "Automatisation de la collecte et de l'actualisation des donnees via scripts Batch.",
       'Travail en collaboration avec les equipes metiers (logistique, forecast).',
       'Environnement technique : QlikView, Power BI, SQL, Script Batch',
     ],
@@ -179,7 +178,7 @@ type ExperienceItem = {
 
 function SkillOrb({ name, icon: Icon, delay }: { name: string; icon: ComponentType<{ className?: string }>; delay: number }) {
   return (
-    <div className="skill-orb inline-flex items-center gap-2 rounded-full border border-cyan-300/40 bg-cyan-400/10 px-3 py-1 text-xs font-semibold text-cyan-100" style={{ animationDelay: `${delay}ms` }}>
+    <div className="skill-orb inline-flex items-center gap-2 rounded-full bg-cyan-400/10 px-3 py-1 text-xs font-semibold text-cyan-100" style={{ animationDelay: `${delay}ms` }}>
       <Icon className="text-cyan-200" />
       {name}
     </div>
@@ -210,29 +209,28 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
           <a
             href={profile.cvPdfPath}
             download
-            className="inline-flex items-center gap-2 rounded-xl border border-indigo-300/60 bg-indigo-400/15 px-4 py-2 text-sm font-semibold text-indigo-100 transition hover:shadow-[0_0_22px_rgba(129,140,248,0.35)]"
+            className="inline-flex items-center gap-2 rounded-xl bg-indigo-400/15 px-4 py-2 text-sm font-semibold text-indigo-100 transition hover:shadow-[0_0_22px_rgba(129,140,248,0.35)]"
           >
             <FaFilePdf />
             Telecharger PDF
           </a>
           <a
             href="#contact"
-            className="inline-flex items-center gap-2 rounded-xl border border-slate-400/50 bg-slate-800/50 px-4 py-2 text-sm font-semibold text-slate-100 transition hover:border-cyan-300/60 hover:text-cyan-100"
+            className="inline-flex items-center gap-2 rounded-xl bg-slate-800/50 px-4 py-2 text-sm font-semibold text-slate-100 transition hover:bg-slate-700/55 hover:text-cyan-100"
           >
             <FaEnvelope />
             Contact
           </a>
           <button
-            className="inline-flex items-center gap-2 rounded-xl border border-cyan-300/60 bg-cyan-400/15 px-4 py-2 text-sm font-semibold text-cyan-100 transition hover:shadow-[0_0_22px_rgba(34,211,238,0.35)]"
+            className="inline-flex items-center gap-2 rounded-xl bg-cyan-400/15 px-4 py-2 text-sm font-semibold text-cyan-100 transition hover:shadow-[0_0_22px_rgba(34,211,238,0.35)]"
             onClick={onOpenPedagogy}
           >
-            Acceder au tableau de bord d enseignement
+            Acceder au tableau de bord d'enseignement
           </button>
         </div>
       </article>
 
       <article className="panel rounded-2xl p-6">
-        <h3 className="hud-title text-lg font-bold text-cyan-200">Carte d identite pro</h3>
         <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <div className="panel-soft rounded-xl p-4">
             <p className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-slate-400">
@@ -315,9 +313,9 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
         <div className="relative mt-5 grid gap-5 before:absolute before:left-2.5 before:top-1 before:h-[calc(100%-10px)] before:w-px before:bg-cyan-300/30 sm:before:left-3">
           {experiences.map((experience) => (
             <div key={experience.role} className="relative pl-9">
-              <span className="absolute left-0 top-2 h-5 w-5 rounded-full border border-cyan-300/60 bg-cyan-300/20 shadow-[0_0_14px_rgba(34,211,238,0.45)]" />
+              <span className="absolute left-0 top-2 h-5 w-5 rounded-full bg-cyan-300/20 shadow-[0_0_14px_rgba(34,211,238,0.45)]" />
               <button
-                className="panel-soft w-full rounded-xl p-4 text-left transition hover:scale-[1.02] hover:border-cyan-300/55"
+                className="panel-soft w-full rounded-xl p-4 text-left transition hover:scale-[1.02]"
                 onClick={() => setSelectedExperience(experience)}
               >
                 <p className="text-xs uppercase tracking-[0.16em] text-slate-400">{experience.period}</p>
@@ -336,11 +334,17 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <div className="panel-soft rounded-xl p-4">
             <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Diplome ingenieur - 2025</p>
-            <p className="mt-2 inline-flex items-center gap-2 font-semibold text-slate-100">
-              <FaUniversity className="text-cyan-200" />
-              ENSIMAG - Ecole nationale superieure d informatique et de mathematiques appliquees de Grenoble
-            </p>
-            <p className="mt-2 text-sm text-slate-300">Specialisation : Ingenierie des Systemes d Information</p>
+            <div className="mt-3 grid gap-2 sm:grid-cols-[96px_1fr]">
+              <div className="rounded-xl bg-slate-900/30 p-2">
+                <img src="/logo_ensimag.png" alt="Logo ENSIMAG" className="h-20 w-20 object-contain" />
+              </div>
+              <div className="rounded-xl bg-slate-900/30 p-3">
+                <p className="font-semibold text-slate-100">
+                  ENSIMAG - Ecole nationale superieure d informatique et de mathematiques appliquees de Grenoble
+                </p>
+                <p className="mt-2 text-sm text-slate-300">Specialisation : Ingenierie des Systemes d Information</p>
+              </div>
+            </div>
           </div>
           <div className="panel-soft rounded-xl p-4">
             <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Autres formations</p>
@@ -398,14 +402,14 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
         </div>
       </article>
 
-      <article id="contact" className="panel rounded-2xl p-6 text-right">
+      <article id="contact" className="panel rounded-2xl p-6 text-center">
         <h3 className="hud-title text-xl font-bold text-cyan-200">Contact</h3>
-        <div className="mt-4 flex flex-wrap items-center justify-end gap-3">
-          <a href={`mailto:${profile.email}`} className="inline-flex items-center gap-2 rounded-lg border border-slate-600/40 px-3 py-2 text-slate-300 hover:text-cyan-100">
+        <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
+          <a href={`mailto:${profile.email}`} className="inline-flex items-center gap-2 rounded-lg bg-slate-800/45 px-3 py-2 text-slate-300 hover:text-cyan-100">
             <FaEnvelope className="text-cyan-200" />
             {profile.email}
           </a>
-          <a href={`tel:${profile.phoneLink}`} className="inline-flex items-center gap-2 rounded-lg border border-slate-600/40 px-3 py-2 text-slate-300 hover:text-cyan-100">
+          <a href={`tel:${profile.phoneLink}`} className="inline-flex items-center gap-2 rounded-lg bg-slate-800/45 px-3 py-2 text-slate-300 hover:text-cyan-100">
             <FaPhoneAlt className="text-cyan-200" />
             {profile.phoneDisplay}
           </a>
@@ -413,7 +417,7 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
             href={profile.linkedInUrl}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-2 rounded-lg border border-slate-600/40 px-3 py-2 text-slate-300 hover:text-cyan-100"
+            className="inline-flex items-center gap-2 rounded-lg bg-slate-800/45 px-3 py-2 text-slate-300 hover:text-cyan-100"
           >
             <FaLinkedin className="text-cyan-200" />
             LinkedIn
@@ -422,7 +426,7 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
             href={profile.githubUrl}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-2 rounded-lg border border-slate-600/40 px-3 py-2 text-slate-300 hover:text-cyan-100"
+            className="inline-flex items-center gap-2 rounded-lg bg-slate-800/45 px-3 py-2 text-slate-300 hover:text-cyan-100"
           >
             <FaGithub className="text-cyan-200" />
             GitHub
@@ -440,7 +444,7 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
                 <p className="mt-1 text-sm font-semibold text-cyan-100">{selectedExperience.subtitle}</p>
               </div>
               <button
-                className="rounded-lg border border-slate-500/50 bg-slate-900/60 px-3 py-1 text-sm text-slate-200 hover:border-cyan-300/60 hover:text-cyan-100"
+                className="rounded-lg bg-slate-900/60 px-3 py-1 text-sm text-slate-200 hover:bg-slate-800/70 hover:text-cyan-100"
                 onClick={() => setSelectedExperience(null)}
               >
                 Fermer

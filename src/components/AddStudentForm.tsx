@@ -100,7 +100,7 @@ export function AddStudentForm({ onAddStudent }: AddStudentFormProps) {
 
         <button
           type="submit"
-          className="rounded-lg border border-cyan-300/70 bg-cyan-400/20 px-4 py-2 text-sm font-semibold text-cyan-100 transition duration-300 hover:bg-cyan-300/30 hover:shadow-[0_0_22px_rgba(34,211,238,0.36)]"
+          className="rounded-lg bg-cyan-400/20 px-4 py-2 text-sm font-semibold text-cyan-100 transition duration-300 hover:bg-cyan-300/30 hover:shadow-[0_0_22px_rgba(34,211,238,0.36)]"
         >
           Enregistrer l'élève
         </button>

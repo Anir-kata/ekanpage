@@ -45,7 +45,7 @@ function App() {
           <section className="panel mt-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl p-4">
             <Tabs activeTab={activeView} onChange={setActiveView} />
             <button
-              className="rounded-xl border border-slate-500/50 bg-slate-900/60 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:border-cyan-300/60 hover:text-cyan-100"
+              className="rounded-xl bg-slate-900/60 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:bg-slate-800/70 hover:text-cyan-100"
               onClick={() => setActiveView('portfolio')}
             >
               Retour au portfolio
