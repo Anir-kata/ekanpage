@@ -105,6 +105,29 @@ body::before {
   animation: scan 7s linear infinite;
 }
 
+.skill-flow .skill-orb {
+  animation: drift 5.5s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes drift {
+  0% {
+    transform: translateY(0px) scale(1);
+  }
+  25% {
+    transform: translateY(-5px) scale(1.02);
+  }
+  50% {
+    transform: translateY(0px) scale(1);
+  }
+  75% {
+    transform: translateY(4px) scale(0.99);
+  }
+  100% {
+    transform: translateY(0px) scale(1);
+  }
+}
+
 @keyframes scan {
   to {
     transform: translateX(460%);

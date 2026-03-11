@@ -8,7 +8,7 @@ import { profile } from './data/profile'
 import type { Student } from './types/student'
 
 function App() {
-  const [activeTab, setActiveTab] = useState<TabKey>('cv')
+  const [activeView, setActiveView] = useState<'portfolio' | TabKey>('portfolio')
   const [students, setStudents] = useState<Student[]>(mockStudents)
 
   const totalSessions = useMemo(
@@ -18,7 +18,7 @@ function App() {
 
   const addStudent = (student: Student) => {
     setStudents((prev) => [student, ...prev])
-    setActiveTab('students')
+    setActiveView('students')
   }
 
   return (
@@ -36,39 +36,49 @@ function App() {
         </p>
       </header>
 
-      <section className="panel mt-6 rounded-2xl p-4">
-        <Tabs activeTab={activeTab} onChange={setActiveTab} />
-      </section>
+      {activeView === 'portfolio' && <CVProfile onOpenPedagogy={() => setActiveView('dashboard')} />}
 
-      {activeTab === 'cv' && <CVProfile />}
+      {activeView !== 'portfolio' && (
+        <>
+          <section className="panel mt-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl p-4">
+            <Tabs activeTab={activeView} onChange={setActiveView} />
+            <button
+              className="rounded-xl border border-slate-500/50 bg-slate-900/60 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:border-cyan-300/60 hover:text-cyan-100"
+              onClick={() => setActiveView('portfolio')}
+            >
+              Retour au portfolio
+            </button>
+          </section>
 
-      {activeTab === 'dashboard' && (
-        <section className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <article className="panel-soft rounded-2xl p-5 transition hover:-translate-y-0.5 hover:shadow-cyan-400/20">
-            <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Nombre d eleves</p>
-            <p className="neon-cyan mt-3 text-4xl font-extrabold">{students.length}</p>
-          </article>
-          <article className="panel-soft rounded-2xl p-5 transition hover:-translate-y-0.5 hover:shadow-blue-400/20">
-            <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Seances realisees</p>
-            <p className="mt-3 text-4xl font-extrabold text-blue-300">{totalSessions}</p>
-          </article>
-          <article className="panel-soft rounded-2xl p-5 transition hover:-translate-y-0.5 hover:shadow-indigo-400/20">
-            <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Prochaine etape</p>
-            <p className="mt-3 text-base font-semibold text-indigo-200">Ajouter des fiches de suivi par eleve</p>
-          </article>
-        </section>
-      )}
+          {activeView === 'dashboard' && (
+            <section className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <article className="panel-soft rounded-2xl p-5 transition hover:-translate-y-0.5 hover:shadow-cyan-400/20">
+                <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Nombre d eleves</p>
+                <p className="neon-cyan mt-3 text-4xl font-extrabold">{students.length}</p>
+              </article>
+              <article className="panel-soft rounded-2xl p-5 transition hover:-translate-y-0.5 hover:shadow-blue-400/20">
+                <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Seances realisees</p>
+                <p className="mt-3 text-4xl font-extrabold text-blue-300">{totalSessions}</p>
+              </article>
+              <article className="panel-soft rounded-2xl p-5 transition hover:-translate-y-0.5 hover:shadow-indigo-400/20">
+                <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Prochaine etape</p>
+                <p className="mt-3 text-base font-semibold text-indigo-200">Ajouter des fiches de suivi par eleve</p>
+              </article>
+            </section>
+          )}
 
-      {activeTab === 'students' && (
-        <section className="mt-6">
-          <StudentList students={students} />
-        </section>
-      )}
+          {activeView === 'students' && (
+            <section className="mt-6">
+              <StudentList students={students} />
+            </section>
+          )}
 
-      {activeTab === 'add' && (
-        <section className="mt-6">
-          <AddStudentForm onAddStudent={addStudent} />
-        </section>
+          {activeView === 'add' && (
+            <section className="mt-6">
+              <AddStudentForm onAddStudent={addStudent} />
+            </section>
+          )}
+        </>
       )}
     </main>
   )

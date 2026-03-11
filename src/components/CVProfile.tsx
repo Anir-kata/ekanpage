@@ -1,5 +1,8 @@
+import { useState, type ComponentType } from 'react'
 import {
   FaCalendarCheck,
+  FaCode,
+  FaFlask,
   FaEnvelope,
   FaFilePdf,
   FaGithub,
@@ -7,6 +10,7 @@ import {
   FaLinkedin,
   FaMapMarkerAlt,
   FaPhoneAlt,
+  FaRobot,
   FaTools,
 } from 'react-icons/fa'
 import {
@@ -30,22 +34,22 @@ import {
 import { profile } from '../data/profile'
 
 const frontendSkills = [
-  { name: 'React', level: 92, icon: SiReact },
-  { name: 'TypeScript', level: 88, icon: SiTypescript },
-  { name: 'Angular', level: 82, icon: SiAngular },
-  { name: 'HTML5 / CSS', level: 95, icon: SiVite },
-  { name: 'Tailwind', level: 90, icon: SiTailwindcss },
+  { name: 'React', icon: SiReact },
+  { name: 'TypeScript', icon: SiTypescript },
+  { name: 'Angular', icon: SiAngular },
+  { name: 'HTML5 / CSS', icon: SiVite },
+  { name: 'Tailwind', icon: SiTailwindcss },
 ]
 
 const backendSkills = [
-  { name: 'Java', level: 88, icon: SiSpringboot },
-  { name: 'Python', level: 92, icon: SiPython },
-  { name: 'Node.js', level: 84, icon: SiNodedotjs },
-  { name: 'Spring Boot', level: 86, icon: SiSpringboot },
-  { name: 'Django', level: 78, icon: SiDjango },
-  { name: 'FastAPI', level: 87, icon: SiFastapi },
-  { name: 'Express.js', level: 82, icon: SiExpress },
-  { name: 'SQL (PostgreSQL, MySQL)', level: 89, icon: SiPostgresql },
+  { name: 'Java', icon: SiSpringboot },
+  { name: 'Python', icon: SiPython },
+  { name: 'Node.js', icon: SiNodedotjs },
+  { name: 'Spring Boot', icon: SiSpringboot },
+  { name: 'Django', icon: SiDjango },
+  { name: 'FastAPI', icon: SiFastapi },
+  { name: 'Express.js', icon: SiExpress },
+  { name: 'SQL (PostgreSQL, MySQL)', icon: SiPostgresql },
 ]
 
 const toolingSkills = [
@@ -116,51 +120,74 @@ const experiences = [
   },
 ]
 
+const softSkills = [
+  { name: 'Agilite', icon: FaRobot },
+  { name: 'TDD', icon: FaFlask },
+  { name: 'Clean Code', icon: FaCode },
+  { name: 'CI/CD', icon: FaTools },
+  { name: 'Communication technique', icon: FaTools },
+  { name: 'Resolution de problemes', icon: FaTools },
+]
+
 const projects = [
   {
-    title: 'Generateur automatique de dossiers de competences',
-    stack: 'Python, OCR (DocTR), GPT-4o, Streamlit, Azure',
-    result: 'Automatisation complete du traitement de CV et generation de documents structures.',
-    link: profile.githubUrl,
+    title: 'ekanpage',
+    stack: 'TypeScript, React, Tailwind',
+    result: 'Portfolio personnel interactif avec parcours CV et espace pedagogie.',
+    link: 'https://github.com/Anir-kata/ekanpage',
   },
   {
-    title: 'Application d automatisation des relances email',
-    stack: 'React, Node.js, Tailwind, REST API, Azure',
-    result: 'Application interne permettant l envoi et le suivi automatise de relances.',
+    title: 'projet_saas',
+    stack: 'Java 21, Spring Boot',
+    result: 'Application SaaS backend orientee architecture moderne Java/Spring.',
+    link: 'https://github.com/Anir-kata/projet_saas',
   },
   {
-    title: 'Outil de prevision energetique',
-    stack: 'R, Selenium, API REST',
-    result: 'Automatisation de la collecte et creation de modeles de prevision pour la consommation energetique.',
+    title: 'Process_CVs_SpringBoot',
+    stack: 'Java, Spring Boot',
+    result: 'Gestion de CV avec API backend et logique metier de traitement.',
+    link: 'https://github.com/Anir-kata/Process_CVs_SpringBoot',
   },
   {
-    title: 'Dashboards Business Intelligence',
-    stack: 'QlikView, Power BI, SQL',
-    result: 'Visualisation des donnees metier et amelioration du pilotage decisionnel.',
+    title: 'jobs_dashboard_FastAPI',
+    stack: 'Python FastAPI, React',
+    result: 'Dashboard emploi avec backend FastAPI et frontend React.',
+    link: 'https://github.com/Anir-kata/jobs_dashboard_FastAPI',
+  },
+  {
+    title: 'analyse_donnees_energetique',
+    stack: 'Python, pipeline data',
+    result: 'Pipeline de traitement de donnees energetiques pour analyse operationnelle.',
+    link: 'https://github.com/Anir-kata/analyse_donnees_energetique',
   },
 ]
 
-function SkillBar({ name, level, icon: Icon }: { name: string; level: number; icon: React.ComponentType<{ className?: string }> }) {
+type ExperienceItem = {
+  role: string
+  subtitle: string
+  period: string
+  context1Title: string
+  context1: string[]
+  context2Title?: string
+  context2?: string[]
+}
+
+function SkillOrb({ name, icon: Icon, delay }: { name: string; icon: ComponentType<{ className?: string }>; delay: number }) {
   return (
-    <div className="grid gap-2">
-      <div className="flex items-center justify-between text-sm text-slate-300">
-        <span className="flex items-center gap-2">
-          <Icon className="text-cyan-200" />
-          {name}
-        </span>
-        <span className="text-cyan-200">{level}%</span>
-      </div>
-      <div className="h-2 rounded-full bg-slate-900/70">
-        <div
-          className="h-2 rounded-full bg-gradient-to-r from-cyan-300 to-indigo-300 shadow-[0_0_12px_rgba(56,189,248,0.45)]"
-          style={{ width: `${level}%` }}
-        />
-      </div>
+    <div className="skill-orb inline-flex items-center gap-2 rounded-full border border-cyan-300/40 bg-cyan-400/10 px-3 py-1 text-xs font-semibold text-cyan-100" style={{ animationDelay: `${delay}ms` }}>
+      <Icon className="text-cyan-200" />
+      {name}
     </div>
   )
 }
 
-export function CVProfile() {
+type CVProfileProps = {
+  onOpenPedagogy: () => void
+}
+
+export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
+  const [selectedExperience, setSelectedExperience] = useState<ExperienceItem | null>(null)
+
   return (
     <section id="portfolio" className="mt-6 grid gap-6">
       <article className="panel scan-line rounded-3xl p-6 md:p-8">
@@ -174,13 +201,7 @@ export function CVProfile() {
           </p>
         ))}
 
-        <div className="mt-6 flex flex-wrap gap-3">
-          <a
-            href="#portfolio"
-            className="rounded-xl border border-cyan-300/60 bg-cyan-400/15 px-4 py-2 text-sm font-semibold text-cyan-100 transition hover:shadow-[0_0_22px_rgba(34,211,238,0.35)]"
-          >
-            Voir CV
-          </a>
+        <div className="mt-6 flex flex-wrap justify-end gap-3">
           <a
             href={profile.cvPdfPath}
             download
@@ -194,8 +215,14 @@ export function CVProfile() {
             className="inline-flex items-center gap-2 rounded-xl border border-slate-400/50 bg-slate-800/50 px-4 py-2 text-sm font-semibold text-slate-100 transition hover:border-cyan-300/60 hover:text-cyan-100"
           >
             <FaEnvelope />
-            Me contacter
+            Contact
           </a>
+          <button
+            className="inline-flex items-center gap-2 rounded-xl border border-cyan-300/60 bg-cyan-400/15 px-4 py-2 text-sm font-semibold text-cyan-100 transition hover:shadow-[0_0_22px_rgba(34,211,238,0.35)]"
+            onClick={onOpenPedagogy}
+          >
+            Acceder au tableau de bord d enseignement
+          </button>
         </div>
       </article>
 
@@ -238,33 +265,42 @@ export function CVProfile() {
         <div className="mt-5 grid gap-6 lg:grid-cols-2">
           <div className="grid gap-4">
             <p className="text-sm uppercase tracking-[0.18em] text-slate-400">Frontend</p>
-            {frontendSkills.map((skill) => (
-              <SkillBar key={skill.name} name={skill.name} level={skill.level} icon={skill.icon} />
-            ))}
+            <div className="skill-flow flex flex-wrap gap-2">
+              {frontendSkills.map((skill, index) => (
+                <SkillOrb key={skill.name} name={skill.name} icon={skill.icon} delay={index * 120} />
+              ))}
+            </div>
           </div>
+
           <div className="grid gap-4">
             <p className="text-sm uppercase tracking-[0.18em] text-slate-400">Backend</p>
-            {backendSkills.map((skill) => (
-              <SkillBar key={skill.name} name={skill.name} level={skill.level} icon={skill.icon} />
-            ))}
+            <div className="skill-flow flex flex-wrap gap-2">
+              {backendSkills.map((skill, index) => (
+                <SkillOrb key={skill.name} name={skill.name} icon={skill.icon} delay={index * 120} />
+              ))}
+            </div>
           </div>
         </div>
 
-        <div className="mt-6">
-          <p className="text-sm uppercase tracking-[0.18em] text-slate-400">Outils et stack technique</p>
-          <div className="mt-3 flex flex-wrap gap-2">
-            {toolingSkills.map((skill) => {
-              const Icon = skill.icon
-              return (
-                <span
-                  key={skill.name}
-                  className="inline-flex items-center gap-2 rounded-full border border-cyan-300/40 bg-cyan-400/10 px-3 py-1 text-xs font-semibold text-cyan-100"
-                >
-                  <Icon />
-                  {skill.name}
-                </span>
-              )
-            })}
+        <div className="mt-6 grid gap-6 lg:grid-cols-2">
+          <div>
+            <p className="text-sm uppercase tracking-[0.18em] text-slate-400">Outils et stack technique</p>
+            <div className="skill-flow mt-3 flex flex-wrap gap-2">
+              {toolingSkills.map((skill, index) => {
+                const Icon = skill.icon
+                return <SkillOrb key={skill.name} name={skill.name} icon={Icon} delay={index * 100} />
+              })}
+            </div>
+          </div>
+
+          <div>
+            <p className="text-sm uppercase tracking-[0.18em] text-slate-400">Soft skills</p>
+            <div className="skill-flow mt-3 flex flex-wrap gap-2">
+              {softSkills.map((skill, index) => {
+                const Icon = skill.icon
+                return <SkillOrb key={skill.name} name={skill.name} icon={Icon} delay={index * 130} />
+              })}
+            </div>
           </div>
         </div>
       </article>
@@ -275,31 +311,15 @@ export function CVProfile() {
           {experiences.map((experience) => (
             <div key={experience.role} className="relative pl-9">
               <span className="absolute left-0 top-2 h-5 w-5 rounded-full border border-cyan-300/60 bg-cyan-300/20 shadow-[0_0_14px_rgba(34,211,238,0.45)]" />
-              <div className="panel-soft rounded-xl p-4">
+              <button
+                className="panel-soft w-full rounded-xl p-4 text-left transition hover:border-cyan-300/55"
+                onClick={() => setSelectedExperience(experience)}
+              >
                 <p className="text-xs uppercase tracking-[0.16em] text-slate-400">{experience.period}</p>
                 <h4 className="mt-1 text-lg font-semibold text-slate-100">{experience.role}</h4>
                 <p className="mt-1 text-sm font-semibold text-cyan-100">{experience.subtitle}</p>
-
-                <div className="mt-4 grid gap-2">
-                  <p className="text-sm font-semibold text-indigo-200">{experience.context1Title}</p>
-                  {experience.context1.map((line) => (
-                    <p key={line} className="text-sm text-slate-300">
-                      - {line}
-                    </p>
-                  ))}
-                </div>
-
-                {experience.context2Title && experience.context2 && (
-                  <div className="mt-4 grid gap-2">
-                    <p className="text-sm font-semibold text-indigo-200">{experience.context2Title}</p>
-                    {experience.context2.map((line) => (
-                      <p key={line} className="text-sm text-slate-300">
-                        - {line}
-                      </p>
-                    ))}
-                  </div>
-                )}
-              </div>
+                <p className="mt-3 text-sm text-slate-300">Cliquer pour ouvrir les details</p>
+              </button>
             </div>
           ))}
         </div>
@@ -400,6 +420,46 @@ export function CVProfile() {
           </a>
         </div>
       </article>
+
+      {selectedExperience && (
+        <div className="fixed inset-0 z-50 grid place-items-center bg-slate-950/70 p-4">
+          <div className="panel max-h-[85vh] w-full max-w-3xl overflow-y-auto rounded-2xl p-6">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="text-xs uppercase tracking-[0.16em] text-slate-400">{selectedExperience.period}</p>
+                <h4 className="mt-1 text-xl font-semibold text-slate-100">{selectedExperience.role}</h4>
+                <p className="mt-1 text-sm font-semibold text-cyan-100">{selectedExperience.subtitle}</p>
+              </div>
+              <button
+                className="rounded-lg border border-slate-500/50 bg-slate-900/60 px-3 py-1 text-sm text-slate-200 hover:border-cyan-300/60 hover:text-cyan-100"
+                onClick={() => setSelectedExperience(null)}
+              >
+                Fermer
+              </button>
+            </div>
+
+            <div className="mt-5 grid gap-2">
+              <p className="text-sm font-semibold text-indigo-200">{selectedExperience.context1Title}</p>
+              {selectedExperience.context1.map((line) => (
+                <p key={line} className="text-sm text-slate-300">
+                  - {line}
+                </p>
+              ))}
+            </div>
+
+            {selectedExperience.context2Title && selectedExperience.context2 && (
+              <div className="mt-5 grid gap-2">
+                <p className="text-sm font-semibold text-indigo-200">{selectedExperience.context2Title}</p>
+                {selectedExperience.context2.map((line) => (
+                  <p key={line} className="text-sm text-slate-300">
+                    - {line}
+                  </p>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </section>
   )
 }
