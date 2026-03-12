@@ -171,12 +171,6 @@ const projects = [
     link: 'https://github.com/Anir-kata/ekanpage',
   },
   {
-    title: 'projet_saas',
-    stack: 'Java 21, Spring Boot',
-    result: 'Application SaaS backend orientée architecture moderne Java/Spring.',
-    link: 'https://github.com/Anir-kata/projet_saas',
-  },
-  {
     title: 'Process_CVs_SpringBoot',
     stack: 'Java, Spring Boot',
     result: 'Gestion de CV avec API backend et logique métier de traitement.',

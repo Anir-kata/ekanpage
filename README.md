@@ -27,6 +27,33 @@ Le projet contient deux espaces principaux:
 - Tailwind CSS
 - React Icons
 
+## Backend (NestJS + PostgreSQL)
+
+Un backend NestJS a ete initialise dans le dossier `backend`.
+
+### Prerequis
+- Docker Desktop (pour PostgreSQL local)
+- Node.js 20+
+
+### Demarrage de la base PostgreSQL
+
+```bash
+cd backend
+docker compose up -d
+```
+
+### Demarrage du backend NestJS
+
+```bash
+cd backend
+npm install
+npm run start:dev
+```
+
+API par defaut: `http://localhost:3000`
+
+Le backend lit sa configuration depuis `backend/.env`.
+
 ## Démarrage local
 
 1. Installer les dépendances
@@ -58,6 +85,7 @@ npm run preview
 - src/components: composants UI (portfolio, élèves, onglets)
 - src/data: données de profil et jeu de données élèves
 - src/types: types TypeScript métier
+- backend/src: code backend NestJS
 
 ## Note importante
 
