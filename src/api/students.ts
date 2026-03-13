@@ -7,6 +7,8 @@ type StudentApi = {
   level: string
   objective: string
   sessionsDone: number
+  sessionWeekday: number
+  sessionTime: string
   nextSessionAt: string | null
   notes: string
 }
@@ -28,6 +30,28 @@ type StudentsPageApi = {
 }
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3000'
+const TOKEN_STORAGE_KEY = 'ekan_auth_token'
+
+type LoginResponse = {
+  accessToken: string
+}
+
+export function getAuthToken(): string | null {
+  return localStorage.getItem(TOKEN_STORAGE_KEY)
+}
+
+export function clearAuthToken(): void {
+  localStorage.removeItem(TOKEN_STORAGE_KEY)
+}
+
+function saveAuthToken(token: string): void {
+  localStorage.setItem(TOKEN_STORAGE_KEY, token)
+}
+
+function buildAuthHeaders(): HeadersInit {
+  const token = getAuthToken()
+  return token ? { Authorization: `Bearer ${token}` } : {}
+}
 
 const toStudent = (student: StudentApi): Student => ({
   id: student.id,
@@ -35,6 +59,8 @@ const toStudent = (student: StudentApi): Student => ({
   level: student.level,
   objective: student.objective,
   sessionsDone: student.sessionsDone,
+  sessionWeekday: student.sessionWeekday,
+  sessionTime: student.sessionTime,
   nextSessionAt: toUiDateTime(student.nextSessionAt),
   notes: student.notes,
 })
@@ -44,6 +70,8 @@ const toCreatePayload = (student: Omit<Student, 'id'>) => ({
   level: student.level,
   objective: student.objective,
   sessionsDone: student.sessionsDone,
+  sessionWeekday: student.sessionWeekday,
+  sessionTime: student.sessionTime,
   nextSessionAt: toApiDateTime(student.nextSessionAt),
   notes: student.notes,
 })
@@ -53,6 +81,8 @@ const toUpdatePayload = (student: Partial<Omit<Student, 'id'>>) => ({
   level: student.level,
   objective: student.objective,
   sessionsDone: student.sessionsDone,
+  sessionWeekday: student.sessionWeekday,
+  sessionTime: student.sessionTime,
   nextSessionAt: student.nextSessionAt === undefined ? undefined : toApiDateTime(student.nextSessionAt),
   notes: student.notes,
 })
@@ -85,11 +115,16 @@ export async function createStudent(student: Omit<Student, 'id'>): Promise<Stude
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      ...buildAuthHeaders(),
     },
     body: JSON.stringify(toCreatePayload(student)),
   })
 
   if (!response.ok) {
+    if (response.status === 401) {
+      throw new Error('Connectez-vous pour activer le mode modification.')
+    }
+
     throw new Error('Impossible de creer l\'eleve.')
   }
 
@@ -102,11 +137,16 @@ export async function updateStudent(id: string, student: Partial<Omit<Student, '
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
+      ...buildAuthHeaders(),
     },
     body: JSON.stringify(toUpdatePayload(student)),
   })
 
   if (!response.ok) {
+    if (response.status === 401) {
+      throw new Error('Connectez-vous pour activer le mode modification.')
+    }
+
     throw new Error('Impossible de mettre a jour l\'eleve.')
   }
 
@@ -117,9 +157,31 @@ export async function updateStudent(id: string, student: Partial<Omit<Student, '
 export async function deleteStudent(id: string): Promise<void> {
   const response = await fetch(`${API_BASE_URL}/students/${id}`, {
     method: 'DELETE',
+    headers: buildAuthHeaders(),
   })
 
   if (!response.ok) {
+    if (response.status === 401) {
+      throw new Error('Connectez-vous pour activer le mode modification.')
+    }
+
     throw new Error('Impossible de supprimer l\'eleve.')
   }
+}
+
+export async function login(username: string, password: string): Promise<void> {
+  const response = await fetch(`${API_BASE_URL}/auth/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ username, password }),
+  })
+
+  if (!response.ok) {
+    throw new Error('Identifiants invalides.')
+  }
+
+  const data = (await response.json()) as LoginResponse
+  saveAuthToken(data.accessToken)
 }

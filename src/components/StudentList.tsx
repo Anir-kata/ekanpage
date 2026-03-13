@@ -4,16 +4,20 @@ type StudentListProps = {
   students: Student[]
   onRequestCreate: () => void
   onRequestEdit: (student: Student) => void
+  onRequireLogin: () => void
   onDeleteStudent: (studentId: string) => Promise<void>
   onOperationSuccess?: (message: string) => void
+  canEdit: boolean
 }
 
 export function StudentList({
   students,
   onRequestCreate,
   onRequestEdit,
+  onRequireLogin,
   onDeleteStudent,
   onOperationSuccess,
+  canEdit,
 }: StudentListProps) {
   const anonymizedLabel = (index: number) => `Élève #${index + 1}`
 
@@ -35,9 +39,9 @@ export function StudentList({
         <h2 className="hud-title text-lg font-bold text-cyan-200">Mes élèves</h2>
         <button
           className="rounded-lg bg-cyan-400/20 px-4 py-2 text-sm font-semibold text-cyan-100 transition hover:bg-cyan-300/30 hover:shadow-[0_0_20px_rgba(34,211,238,0.26)]"
-          onClick={onRequestCreate}
+          onClick={canEdit ? onRequestCreate : onRequireLogin}
         >
-          Ajouter un élève
+          {canEdit ? 'Ajouter un élève' : 'Se connecter pour modifier'}
         </button>
       </div>
 
@@ -64,13 +68,13 @@ export function StudentList({
               <div className="mt-4 flex justify-end gap-2">
                 <button
                   className="rounded-lg bg-slate-800/60 px-3 py-2 text-sm font-semibold text-slate-200 transition hover:bg-slate-700/70"
-                  onClick={() => onRequestEdit(student)}
+                  onClick={() => (canEdit ? onRequestEdit(student) : onRequireLogin())}
                 >
                   Modifier
                 </button>
                 <button
                   className="rounded-lg bg-rose-500/20 px-3 py-2 text-sm font-semibold text-rose-200 transition hover:bg-rose-500/30"
-                  onClick={() => void handleDelete(student)}
+                  onClick={() => (canEdit ? void handleDelete(student) : onRequireLogin())}
                 >
                   Supprimer
                 </button>

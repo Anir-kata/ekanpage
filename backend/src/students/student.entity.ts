@@ -23,6 +23,12 @@ export class StudentEntity {
   @Column({ type: 'int', default: 0 })
   sessionsDone: number;
 
+  @Column({ type: 'int', default: 0 })
+  sessionWeekday: number;
+
+  @Column({ length: 5, default: '10:00' })
+  sessionTime: string;
+
   @Column({ type: 'timestamp without time zone', nullable: true })
   nextSessionAt: Date | null;
 

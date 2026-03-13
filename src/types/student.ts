@@ -4,6 +4,8 @@ export type Student = {
   level: string
   objective: string
   sessionsDone: number
+  sessionWeekday: number
+  sessionTime: string
   nextSessionAt: string
   notes: string
 }

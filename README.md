@@ -3,7 +3,6 @@
 ## Features
 - Portfolio (profil, experiences, projets, contact)
 - Dashboard pedagogique (liste eleves, CRUD eleves)
-- Ajout et modification des eleves sur une page dediee (sans modale)
 - API backend NestJS + PostgreSQL
 
 ## Lancement rapide

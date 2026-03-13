@@ -22,12 +22,41 @@ export class StudentsService {
   ) {}
 
   async create(dto: CreateStudentDto): Promise<StudentEntity> {
+    const sessionWeekday = dto.sessionWeekday ?? 0;
+    const sessionTime = dto.sessionTime ?? '10:00';
+
     const student = this.studentsRepository.create({
       ...dto,
-      nextSessionAt: dto.nextSessionAt ? new Date(dto.nextSessionAt) : null,
+      sessionWeekday,
+      sessionTime,
+      nextSessionAt: this.computeNextSessionDate(sessionWeekday, sessionTime),
     });
 
     return this.studentsRepository.save(student);
+  }
+
+  private computeNextSessionDate(
+    weekday: number,
+    time: string,
+    now: Date = new Date(),
+  ): Date {
+    const [hours, minutes] = time.split(':').map((value) => Number(value));
+    const current = new Date(now);
+    const target = new Date(now);
+
+    target.setHours(hours, minutes, 0, 0);
+
+    let daysToAdd = weekday - current.getDay();
+    if (daysToAdd < 0) {
+      daysToAdd += 7;
+    }
+
+    if (daysToAdd === 0 && target <= current) {
+      daysToAdd = 7;
+    }
+
+    target.setDate(current.getDate() + daysToAdd);
+    return target;
   }
 
   async findAll(query: ListStudentsQueryDto): Promise<StudentsPage> {
@@ -71,15 +100,13 @@ export class StudentsService {
   async update(id: string, dto: UpdateStudentDto): Promise<StudentEntity> {
     const student = await this.findOne(id);
 
-    Object.assign(student, {
-      ...dto,
-      nextSessionAt:
-        dto.nextSessionAt === undefined
-          ? student.nextSessionAt
-          : dto.nextSessionAt
-            ? new Date(dto.nextSessionAt)
-            : null,
-    });
+    Object.assign(student, dto);
+    const sessionWeekday = student.sessionWeekday ?? 0;
+    const sessionTime = student.sessionTime ?? '10:00';
+    student.nextSessionAt = this.computeNextSessionDate(
+      sessionWeekday,
+      sessionTime,
+    );
 
     return this.studentsRepository.save(student);
   }

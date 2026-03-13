@@ -9,6 +9,8 @@ describe('StudentEntity', () => {
     entity.level = 'Terminale';
     entity.objective = 'Preparation bac';
     entity.sessionsDone = 2;
+    entity.sessionWeekday = 0;
+    entity.sessionTime = '10:00';
     entity.nextSessionAt = new Date('2026-03-20T18:00:00.000Z');
     entity.notes = 'Notes';
     entity.createdAt = new Date('2026-03-01T10:00:00.000Z');
@@ -16,6 +18,7 @@ describe('StudentEntity', () => {
 
     expect(entity.fullName).toBe('John Doe');
     expect(entity.sessionsDone).toBe(2);
+    expect(entity.sessionWeekday).toBe(0);
     expect(entity.nextSessionAt?.toISOString()).toBe(
       '2026-03-20T18:00:00.000Z',
     );

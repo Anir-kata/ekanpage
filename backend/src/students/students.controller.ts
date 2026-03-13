@@ -7,7 +7,9 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { ListStudentsQueryDto } from './dto/list-students-query.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
@@ -19,6 +21,7 @@ export class StudentsController {
   constructor(private readonly studentsService: StudentsService) {}
 
   @Post()
+  @UseGuards(AuthGuard('jwt'))
   create(@Body() dto: CreateStudentDto): Promise<StudentEntity> {
     return this.studentsService.create(dto);
   }
@@ -34,6 +37,7 @@ export class StudentsController {
   }
 
   @Patch(':id')
+  @UseGuards(AuthGuard('jwt'))
   update(
     @Param('id') id: string,
     @Body() dto: UpdateStudentDto,
@@ -42,6 +46,7 @@ export class StudentsController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
   remove(@Param('id') id: string): Promise<void> {
     return this.studentsService.remove(id);
   }

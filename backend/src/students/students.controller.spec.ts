@@ -23,6 +23,8 @@ describe('StudentsController', () => {
       level: 'Terminale',
       objective: 'Goal',
       sessionsDone: 1,
+      sessionWeekday: 0,
+      sessionTime: '10:00',
       nextSessionAt: '2026-03-20T18:00:00.000Z',
       notes: 'Notes',
     };

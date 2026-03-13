@@ -162,6 +162,23 @@ body::before {
   will-change: transform;
 }
 
+.reviews-ticker {
+  display: flex;
+  gap: 0.75rem;
+  width: max-content;
+  animation: reviews-scroll 26s linear infinite;
+}
+
+.reviews-chip {
+  border: 1px solid rgba(34, 211, 238, 0.24);
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.68);
+  color: #cbd5e1;
+  font-size: 0.78rem;
+  padding: 0.45rem 0.85rem;
+  white-space: nowrap;
+}
+
 @keyframes drift {
   0% {
     transform: translateY(0px) scale(1);
@@ -183,6 +200,15 @@ body::before {
 @keyframes scan {
   to {
     transform: translateX(460%);
+  }
+}
+
+@keyframes reviews-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
   }
 }
 

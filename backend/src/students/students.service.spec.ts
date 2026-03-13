@@ -24,7 +24,8 @@ describe('StudentsService', () => {
       level: 'Terminale',
       objective: 'Goal',
       sessionsDone: 1,
-      nextSessionAt: '2026-03-20T18:00:00.000Z',
+      sessionWeekday: 0,
+      sessionTime: '10:00',
       notes: 'Notes',
     };
     const created = { id: '1', ...dto } as unknown as StudentEntity;
@@ -33,18 +34,22 @@ describe('StudentsService', () => {
     repository.save.mockResolvedValue(created);
 
     await expect(service.create(dto)).resolves.toEqual(created);
-    expect(repository.create).toHaveBeenCalledWith({
-      ...dto,
-      nextSessionAt: new Date(dto.nextSessionAt),
-    });
+    expect(repository.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        ...dto,
+        nextSessionAt: expect.any(Date),
+      }),
+    );
   });
 
-  it('create supports null nextSessionAt', async () => {
+  it('create computes nextSessionAt from schedule', async () => {
     const dto = {
       fullName: 'John',
       level: 'Terminale',
       objective: 'Goal',
       sessionsDone: 1,
+      sessionWeekday: 1,
+      sessionTime: '18:30',
       notes: 'Notes',
     };
     const created = { id: '1', ...dto } as unknown as StudentEntity;
@@ -53,10 +58,13 @@ describe('StudentsService', () => {
     repository.save.mockResolvedValue(created);
 
     await expect(service.create(dto)).resolves.toEqual(created);
-    expect(repository.create).toHaveBeenCalledWith({
-      ...dto,
-      nextSessionAt: null,
-    });
+    expect(repository.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        sessionWeekday: 1,
+        sessionTime: '18:30',
+        nextSessionAt: expect.any(Date),
+      }),
+    );
   });
 
   it('findAll returns paginated list', async () => {
@@ -116,9 +124,11 @@ describe('StudentsService', () => {
     await expect(service.findOne('404')).rejects.toThrow(NotFoundException);
   });
 
-  it('update keeps nextSessionAt when undefined', async () => {
+  it('update recalculates nextSessionAt when updating fields', async () => {
     const existing = {
       id: '1',
+      sessionWeekday: 0,
+      sessionTime: '10:00',
       nextSessionAt: new Date('2026-01-01T00:00:00.000Z'),
     } as StudentEntity;
     repository.findOne.mockResolvedValue(existing);
@@ -127,30 +137,24 @@ describe('StudentsService', () => {
     await expect(service.update('1', { notes: 'updated' })).resolves.toEqual(
       existing,
     );
+    expect(existing.nextSessionAt).toBeInstanceOf(Date);
     expect(repository.save).toHaveBeenCalled();
   });
 
-  it('update sets nextSessionAt to parsed date', async () => {
-    const existing = { id: '1', nextSessionAt: null } as StudentEntity;
-    repository.findOne.mockResolvedValue(existing);
-    repository.save.mockResolvedValue(existing);
-
-    await service.update('1', { nextSessionAt: '2026-03-20T18:00:00.000Z' });
-    expect(existing.nextSessionAt).toEqual(
-      new Date('2026-03-20T18:00:00.000Z'),
-    );
-  });
-
-  it('update sets nextSessionAt to null when empty string', async () => {
+  it('update applies schedule changes', async () => {
     const existing = {
       id: '1',
-      nextSessionAt: new Date('2026-01-01T00:00:00.000Z'),
+      sessionWeekday: 1,
+      sessionTime: '08:00',
+      nextSessionAt: null,
     } as StudentEntity;
     repository.findOne.mockResolvedValue(existing);
     repository.save.mockResolvedValue(existing);
 
-    await service.update('1', { nextSessionAt: '' });
-    expect(existing.nextSessionAt).toBeNull();
+    await service.update('1', { sessionWeekday: 3, sessionTime: '09:15' });
+    expect(existing.sessionWeekday).toBe(3);
+    expect(existing.sessionTime).toBe('09:15');
+    expect(existing.nextSessionAt).toBeInstanceOf(Date);
   });
 
   it('remove deletes existing student', async () => {
@@ -163,5 +167,29 @@ describe('StudentsService', () => {
     repository.delete.mockResolvedValue({ affected: 0 });
 
     await expect(service.remove('404')).rejects.toThrow(NotFoundException);
+  });
+
+  it('computeNextSessionDate rolls to next week when same day time has passed', () => {
+    const now = new Date('2026-03-15T12:00:00'); // Sunday
+    const result = (service as unknown as {
+      computeNextSessionDate: (weekday: number, time: string, now: Date) => Date;
+    }).computeNextSessionDate(0, '10:00', now);
+
+    expect(result.getDay()).toBe(0);
+    expect(result.getHours()).toBe(10);
+    expect(result.getMinutes()).toBe(0);
+    expect(result.getTime()).toBeGreaterThan(now.getTime());
+  });
+
+  it('computeNextSessionDate handles weekday already passed', () => {
+    const now = new Date('2026-03-18T09:00:00'); // Wednesday
+    const result = (service as unknown as {
+      computeNextSessionDate: (weekday: number, time: string, now: Date) => Date;
+    }).computeNextSessionDate(1, '10:30', now); // Monday
+
+    expect(result.getDay()).toBe(1);
+    expect(result.getHours()).toBe(10);
+    expect(result.getMinutes()).toBe(30);
+    expect(result.getTime()).toBeGreaterThan(now.getTime());
   });
 });

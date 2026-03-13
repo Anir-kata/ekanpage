@@ -16,9 +16,21 @@ const emptyValues: StudentFormValues = {
   level: '',
   objective: '',
   sessionsDone: 0,
+  sessionWeekday: 0,
+  sessionTime: '10:00',
   nextSessionAt: '',
   notes: '',
 }
+
+const weekdayOptions = [
+  { label: 'Dimanche', value: 0 },
+  { label: 'Lundi', value: 1 },
+  { label: 'Mardi', value: 2 },
+  { label: 'Mercredi', value: 3 },
+  { label: 'Jeudi', value: 4 },
+  { label: 'Vendredi', value: 5 },
+  { label: 'Samedi', value: 6 },
+]
 
 export function StudentFormPage({ mode, initialStudent, onCancel, onSubmit }: StudentFormPageProps) {
   const source = useMemo(() => initialStudent ?? null, [initialStudent])
@@ -30,6 +42,8 @@ export function StudentFormPage({ mode, initialStudent, onCancel, onSubmit }: St
         level: source.level,
         objective: source.objective,
         sessionsDone: source.sessionsDone,
+        sessionWeekday: source.sessionWeekday,
+        sessionTime: source.sessionTime,
         nextSessionAt: source.nextSessionAt,
         notes: source.notes,
       }
@@ -50,11 +64,13 @@ export function StudentFormPage({ mode, initialStudent, onCancel, onSubmit }: St
       level: values.level.trim(),
       objective: values.objective.trim(),
       sessionsDone: Math.max(0, values.sessionsDone),
+      sessionWeekday: values.sessionWeekday,
+      sessionTime: values.sessionTime,
       nextSessionAt: fromInputDateTimeValue(values.nextSessionAt.trim()),
       notes: values.notes.trim(),
     }
 
-    if (!payload.fullName || !payload.level || !payload.objective || !payload.nextSessionAt || !payload.notes) {
+    if (!payload.fullName || !payload.level || !payload.objective || !payload.notes) {
       setFormError('Merci de remplir tous les champs.')
       return
     }
@@ -124,11 +140,36 @@ export function StudentFormPage({ mode, initialStudent, onCancel, onSubmit }: St
           />
         </label>
 
-        <label className="sm:col-span-2 grid gap-1 text-sm text-slate-300">
-          Prochaine séance
-          <input
-            type="datetime-local"
+        <label className="grid gap-1 text-sm text-slate-300">
+          Jour de cours
+          <select
             className="futuristic-input rounded-lg px-3 py-2 text-sm"
+            value={values.sessionWeekday}
+            onChange={(event) => updateField('sessionWeekday', Number(event.target.value))}
+          >
+            {weekdayOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <label className="grid gap-1 text-sm text-slate-300">
+          Heure de cours
+          <input
+            type="time"
+            className="futuristic-input rounded-lg px-3 py-2 text-sm"
+            value={values.sessionTime}
+            onChange={(event) => updateField('sessionTime', event.target.value)}
+          />
+        </label>
+
+        <label className="sm:col-span-2 grid gap-1 text-sm text-slate-300">
+          Prochaine séance (calcul automatique)
+          <input
+            disabled
+            className="futuristic-input rounded-lg px-3 py-2 text-sm opacity-75"
             value={toInputDateTimeValue(values.nextSessionAt)}
             onChange={(event) => updateField('nextSessionAt', fromInputDateTimeValue(event.target.value))}
           />

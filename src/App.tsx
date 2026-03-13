@@ -1,8 +1,11 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react'
 import {
+  clearAuthToken,
   createStudent as createStudentApi,
   deleteStudent as deleteStudentApi,
   fetchStudents,
+  getAuthToken,
+  login as loginApi,
   type StudentsPage,
   updateStudent as updateStudentApi,
 } from './api/students'
@@ -13,11 +16,18 @@ import { Tabs, type TabKey } from './components/Tabs'
 import type { Student } from './types/student'
 
 type StudentsScreen = 'list' | 'create' | 'edit'
+type AuthScreen = 'none' | 'login'
 
 function App() {
   const [activeView, setActiveView] = useState<'portfolio' | TabKey>('portfolio')
   const [studentsView, setStudentsView] = useState<StudentsScreen>('list')
+  const [authScreen, setAuthScreen] = useState<AuthScreen>('none')
   const [editingStudent, setEditingStudent] = useState<Student | null>(null)
+  const [isEditMode, setIsEditMode] = useState(Boolean(getAuthToken()))
+  const [loginUsername, setLoginUsername] = useState('admin')
+  const [loginPassword, setLoginPassword] = useState('admin123')
+  const [loginError, setLoginError] = useState('')
+  const [isLoginLoading, setIsLoginLoading] = useState(false)
   const [students, setStudents] = useState<Student[]>([])
   const [studentsLoading, setStudentsLoading] = useState(true)
   const [studentsError, setStudentsError] = useState('')
@@ -158,11 +168,21 @@ function App() {
   }
 
   const openCreatePage = () => {
+    if (!isEditMode) {
+      setAuthScreen('login')
+      return
+    }
+
     setEditingStudent(null)
     setStudentsView('create')
   }
 
   const openEditPage = (student: Student) => {
+    if (!isEditMode) {
+      setAuthScreen('login')
+      return
+    }
+
     setEditingStudent(student)
     setStudentsView('edit')
   }
@@ -173,6 +193,34 @@ function App() {
   }
 
   const isStudentsListView = studentsView === 'list'
+  const reviews = students
+    .map((student) => student.notes?.trim())
+    .filter((note) => Boolean(note)) as string[]
+
+  const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    setLoginError('')
+
+    try {
+      setIsLoginLoading(true)
+      await loginApi(loginUsername.trim(), loginPassword)
+      setIsEditMode(true)
+      setAuthScreen('none')
+      setOperationFeedback('Mode modification activé.')
+    } catch (error) {
+      setLoginError(error instanceof Error ? error.message : 'Connexion impossible.')
+    } finally {
+      setIsLoginLoading(false)
+    }
+  }
+
+  const handleLogout = () => {
+    clearAuthToken()
+    setIsEditMode(false)
+    setStudentsView('list')
+    setEditingStudent(null)
+    setOperationFeedback('Mode lecture activé.')
+  }
 
   return (
     <main className="relative mx-auto min-h-screen w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
@@ -197,13 +245,69 @@ function App() {
 
           <section className="panel mt-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl p-4">
             <Tabs activeTab={activeView} onChange={setActiveView} />
-            <button
-              className="rounded-xl bg-slate-900/60 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:bg-slate-800/70 hover:text-cyan-100"
-              onClick={() => setActiveView('portfolio')}
-            >
-              Retour au portfolio
-            </button>
+            <div className="flex items-center gap-2">
+              {!isEditMode && (
+                <button
+                  className="rounded-xl bg-cyan-400/20 px-4 py-2 text-sm font-semibold text-cyan-100 transition hover:bg-cyan-300/30"
+                  onClick={() => setAuthScreen('login')}
+                >
+                  Se connecter
+                </button>
+              )}
+              {isEditMode && (
+                <button
+                  className="rounded-xl bg-rose-900/50 px-4 py-2 text-sm font-semibold text-rose-100 transition hover:bg-rose-800/70"
+                  onClick={handleLogout}
+                >
+                  Se deconnecter
+                </button>
+              )}
+              <button
+                className="rounded-xl bg-slate-900/60 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:bg-slate-800/70 hover:text-cyan-100"
+                onClick={() => setActiveView('portfolio')}
+              >
+                Retour au portfolio
+              </button>
+            </div>
           </section>
+
+          {authScreen === 'login' && (
+            <section className="panel mt-6 rounded-2xl p-5">
+              <h3 className="hud-title text-base font-bold text-cyan-200">Se connecter</h3>
+              <form onSubmit={handleLogin} className="mt-4 grid gap-3 sm:grid-cols-2">
+                <input
+                  className="futuristic-input rounded-lg px-3 py-2 text-sm"
+                  value={loginUsername}
+                  onChange={(event) => setLoginUsername(event.target.value)}
+                  placeholder="Nom d'utilisateur"
+                />
+                <input
+                  type="password"
+                  className="futuristic-input rounded-lg px-3 py-2 text-sm"
+                  value={loginPassword}
+                  onChange={(event) => setLoginPassword(event.target.value)}
+                  placeholder="Mot de passe"
+                />
+                <div className="sm:col-span-2 flex justify-end gap-2">
+                  <button
+                    type="button"
+                    className="rounded-lg bg-slate-800/60 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:bg-slate-700/70"
+                    onClick={() => setAuthScreen('none')}
+                  >
+                    Annuler
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isLoginLoading}
+                    className="rounded-lg bg-cyan-400/20 px-4 py-2 text-sm font-semibold text-cyan-100 transition hover:bg-cyan-300/30 disabled:opacity-60"
+                  >
+                    {isLoginLoading ? 'Connexion...' : 'Activer le mode modification'}
+                  </button>
+                </div>
+                {loginError && <p className="sm:col-span-2 text-sm text-rose-300">{loginError}</p>}
+              </form>
+            </section>
+          )}
 
           {activeView === 'dashboard' && (
             <section className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -225,16 +329,17 @@ function App() {
           {activeView === 'dashboard' && (
             <section className="mt-6 panel rounded-2xl p-5">
               <h3 className="hud-title text-base font-bold text-cyan-200">Avis de progression des élèves</h3>
-              <div className="mt-4 grid gap-3 md:grid-cols-3">
-                {students.slice(0, 3).map((student, index) => (
-                  <article
-                    key={student.id}
-                    className="panel-soft rounded-xl p-4 transition hover:-translate-y-0.5 hover:shadow-cyan-400/20"
-                  >
-                    <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Élève #{index + 1}</p>
-                    <p className="mt-2 text-sm text-slate-200">{student.notes}</p>
-                  </article>
-                ))}
+              <div className="mt-4 overflow-hidden rounded-xl border border-cyan-400/20 bg-slate-950/40 p-3">
+                {!!reviews.length && (
+                  <div className="reviews-ticker">
+                    {[...reviews, ...reviews].map((review, index) => (
+                      <span key={`${review}-${index}`} className="reviews-chip">
+                        Avis élève: {review}
+                      </span>
+                    ))}
+                  </div>
+                )}
+                {!reviews.length && <p className="text-sm text-slate-300">Aucun avis pour le moment.</p>}
               </div>
             </section>
           )}
@@ -275,8 +380,10 @@ function App() {
                     students={students}
                     onRequestCreate={openCreatePage}
                     onRequestEdit={openEditPage}
+                    onRequireLogin={() => setAuthScreen('login')}
                     onDeleteStudent={handleDeleteStudent}
                     onOperationSuccess={setOperationFeedback}
+                    canEdit={isEditMode}
                   />
 
                   <div className="panel mt-4 flex items-center justify-between rounded-2xl p-4 text-sm text-slate-300">
