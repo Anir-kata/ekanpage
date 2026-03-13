@@ -17,7 +17,7 @@ describe('AuthController', () => {
     (service.login as jest.Mock).mockResolvedValue({ accessToken: 'token-1' });
 
     await expect(
-      controller.login({ username: 'admin', password: 'admin123' }),
+      controller.login({ username: 'anir', password: 'anir123' }),
     ).resolves.toEqual({ accessToken: 'token-1' });
   });
 });

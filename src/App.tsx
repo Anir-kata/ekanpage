@@ -24,8 +24,8 @@ function App() {
   const [authScreen, setAuthScreen] = useState<AuthScreen>('none')
   const [editingStudent, setEditingStudent] = useState<Student | null>(null)
   const [isEditMode, setIsEditMode] = useState(Boolean(getAuthToken()))
-  const [loginUsername, setLoginUsername] = useState('admin')
-  const [loginPassword, setLoginPassword] = useState('admin123')
+  const [loginUsername, setLoginUsername] = useState('anir')
+  const [loginPassword, setLoginPassword] = useState('anir123')
   const [loginError, setLoginError] = useState('')
   const [isLoginLoading, setIsLoginLoading] = useState(false)
   const [students, setStudents] = useState<Student[]>([])
@@ -334,7 +334,7 @@ function App() {
                   <div className="reviews-ticker">
                     {[...reviews, ...reviews].map((review, index) => (
                       <span key={`${review}-${index}`} className="reviews-chip">
-                        Avis élève: {review}
+                        {review}
                       </span>
                     ))}
                   </div>

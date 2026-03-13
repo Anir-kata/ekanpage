@@ -10,8 +10,8 @@ export class AuthService {
   ) {}
 
   async login(username: string, password: string): Promise<{ accessToken: string }> {
-    const expectedUser = this.configService.get<string>('AUTH_USER', 'admin');
-    const expectedPassword = this.configService.get<string>('AUTH_PASSWORD', 'admin123');
+    const expectedUser = this.configService.get<string>('AUTH_USER', 'anir');
+    const expectedPassword = this.configService.get<string>('AUTH_PASSWORD', 'anir123');
 
     if (username !== expectedUser || password !== expectedPassword) {
       throw new UnauthorizedException('Identifiants invalides');

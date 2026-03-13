@@ -8,9 +8,9 @@ describe('JwtStrategy', () => {
     } as unknown as ConfigService;
 
     const strategy = new JwtStrategy(configService);
-    expect(strategy.validate({ sub: 'admin', username: 'admin' })).toEqual({
-      userId: 'admin',
-      username: 'admin',
+    expect(strategy.validate({ sub: 'anir', username: 'anir' })).toEqual({
+      userId: 'anir',
+      username: 'anir',
     });
   });
 });

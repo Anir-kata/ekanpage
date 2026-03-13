@@ -67,7 +67,7 @@ describe('AppController (e2e)', () => {
   it('/auth/login (POST)', async () => {
     const response = await request(app.getHttpServer())
       .post('/auth/login')
-      .send({ username: 'admin', password: 'admin123' })
+      .send({ username: 'anir', password: 'anir123' })
       .expect(201);
 
     expect(response.body.accessToken).toBeDefined();
@@ -92,7 +92,7 @@ describe('AppController (e2e)', () => {
   it('/students (POST/GET/PATCH/DELETE)', async () => {
     const loginResponse = await request(app.getHttpServer())
       .post('/auth/login')
-      .send({ username: 'admin', password: 'admin123' })
+      .send({ username: 'anir', password: 'anir123' })
       .expect(201);
     authToken = loginResponse.body.accessToken as string;
 
@@ -155,7 +155,7 @@ describe('AppController (e2e)', () => {
   it('/students (POST) should validate payload', async () => {
     const loginResponse = await request(app.getHttpServer())
       .post('/auth/login')
-      .send({ username: 'admin', password: 'admin123' })
+      .send({ username: 'anir', password: 'anir123' })
       .expect(201);
     authToken = loginResponse.body.accessToken as string;
 

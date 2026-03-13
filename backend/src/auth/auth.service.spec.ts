@@ -6,8 +6,8 @@ import { AuthService } from './auth.service';
 describe('AuthService', () => {
   const configService = {
     get: jest.fn((key: string, fallback: string) => {
-      if (key === 'AUTH_USER') return 'admin';
-      if (key === 'AUTH_PASSWORD') return 'admin123';
+      if (key === 'AUTH_USER') return 'anir';
+      if (key === 'AUTH_PASSWORD') return 'anir123';
       return fallback;
     }),
   } as unknown as ConfigService;
@@ -26,17 +26,17 @@ describe('AuthService', () => {
   it('returns access token for valid credentials', async () => {
     (jwtService.signAsync as jest.Mock).mockResolvedValue('token-123');
 
-    await expect(service.login('admin', 'admin123')).resolves.toEqual({
+    await expect(service.login('anir', 'anir123')).resolves.toEqual({
       accessToken: 'token-123',
     });
     expect(jwtService.signAsync).toHaveBeenCalledWith({
-      sub: 'admin',
-      username: 'admin',
+      sub: 'anir',
+      username: 'anir',
     });
   });
 
   it('throws UnauthorizedException for invalid credentials', async () => {
-    await expect(service.login('admin', 'wrong')).rejects.toThrow(
+    await expect(service.login('anir', 'wrong')).rejects.toThrow(
       UnauthorizedException,
     );
   });
