@@ -1,7 +1,7 @@
 {
   "name": "ekanpage-root",
   "private": true,
-  "version": "0.0.4",
+  "version": "4.0.4",
   "scripts": {
     "install:all": "npm --prefix frontend install && npm --prefix backend install",
     "vite": "npm --prefix frontend run vite",
