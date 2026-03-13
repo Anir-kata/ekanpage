@@ -15,6 +15,7 @@ function App() {
   const [students, setStudents] = useState<Student[]>([])
   const [studentsLoading, setStudentsLoading] = useState(true)
   const [studentsError, setStudentsError] = useState('')
+  const [operationFeedback, setOperationFeedback] = useState('')
   const frameRef = useRef<number | null>(null)
   const pointerRef = useRef<{ x: number; y: number } | null>(null)
 
@@ -47,6 +48,13 @@ function App() {
       cancelled = true
     }
   }, [])
+
+  useEffect(() => {
+    if (!operationFeedback) return
+
+    const timeout = setTimeout(() => setOperationFeedback(''), 2500)
+    return () => clearTimeout(timeout)
+  }, [operationFeedback])
 
   useEffect(() => {
     const flushPointer = () => {
@@ -188,11 +196,15 @@ function App() {
               {studentsError && (
                 <div className="panel rounded-2xl p-4 text-sm text-rose-300">{studentsError}</div>
               )}
+              {operationFeedback && (
+                <div className="panel mb-4 rounded-2xl p-4 text-sm text-emerald-300">{operationFeedback}</div>
+              )}
               <StudentList
                 students={students}
                 onUpdateStudent={handleUpdateStudent}
                 onAddStudent={handleAddStudent}
                 onDeleteStudent={handleDeleteStudent}
+                onOperationSuccess={setOperationFeedback}
               />
             </section>
           )}

@@ -7,6 +7,7 @@ type StudentListProps = {
   onUpdateStudent: (student: Student) => Promise<void>
   onAddStudent: (student: Student) => Promise<void>
   onDeleteStudent: (studentId: string) => Promise<void>
+  onOperationSuccess?: (message: string) => void
 }
 
 const FICHE_ACCESS_PATTERN = '0-1-2-5-8'
@@ -32,7 +33,13 @@ const createEmptyDraft = (): StudentDraft => ({
   notes: '',
 })
 
-export function StudentList({ students, onUpdateStudent, onAddStudent, onDeleteStudent }: StudentListProps) {
+export function StudentList({
+  students,
+  onUpdateStudent,
+  onAddStudent,
+  onDeleteStudent,
+  onOperationSuccess,
+}: StudentListProps) {
   const [selectedStudentId, setSelectedStudentId] = useState<string | null>(null)
   const [isCreateMode, setIsCreateMode] = useState(false)
   const [draft, setDraft] = useState<StudentDraft | null>(null)
@@ -175,8 +182,10 @@ export function StudentList({ students, onUpdateStudent, onAddStudent, onDeleteS
       setIsSaving(true)
       if (isCreateMode) {
         await onAddStudent(payload)
+        onOperationSuccess?.('Eleve cree avec succes.')
       } else {
         await onUpdateStudent(payload)
+        onOperationSuccess?.('Eleve mis a jour avec succes.')
       }
 
       closeModal()
@@ -193,6 +202,7 @@ export function StudentList({ students, onUpdateStudent, onAddStudent, onDeleteS
     try {
       setIsSaving(true)
       await onDeleteStudent(selectedStudentId)
+      onOperationSuccess?.('Eleve supprime avec succes.')
       closeModal()
     } catch {
       setAccessError('Suppression impossible pour le moment.')
