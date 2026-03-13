@@ -54,6 +54,31 @@ API par defaut: `http://localhost:3000`
 
 Le backend lit sa configuration depuis `backend/.env`.
 
+### Endpoints disponibles
+
+- `GET /` : endpoint de base (Hello World)
+- `GET /health` : verification de sante de l'API
+- `GET /students` : liste des eleves
+- `GET /students/:id` : detail d'un eleve
+- `POST /students` : creation d'un eleve
+- `PATCH /students/:id` : mise a jour partielle d'un eleve
+- `DELETE /students/:id` : suppression d'un eleve
+
+Exemple de payload `POST /students`:
+
+```json
+{
+	"fullName": "Sarah Benali",
+	"level": "Terminale",
+	"objective": "Preparation bac mathematiques",
+	"sessionsDone": 6,
+	"nextSessionAt": "2026-03-14T18:00:00.000Z",
+	"notes": "Bonne progression"
+}
+```
+
+La validation des DTO est active globalement (champs inconnus refuses, types verifies).
+
 ## Démarrage local
 
 1. Installer les dépendances

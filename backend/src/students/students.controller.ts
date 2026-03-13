@@ -1,0 +1,35 @@
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { CreateStudentDto } from './dto/create-student.dto';
+import { UpdateStudentDto } from './dto/update-student.dto';
+import { StudentEntity } from './student.entity';
+import { StudentsService } from './students.service';
+
+@Controller('students')
+export class StudentsController {
+  constructor(private readonly studentsService: StudentsService) {}
+
+  @Post()
+  create(@Body() dto: CreateStudentDto): Promise<StudentEntity> {
+    return this.studentsService.create(dto);
+  }
+
+  @Get()
+  findAll(): Promise<StudentEntity[]> {
+    return this.studentsService.findAll();
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string): Promise<StudentEntity> {
+    return this.studentsService.findOne(id);
+  }
+
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() dto: UpdateStudentDto): Promise<StudentEntity> {
+    return this.studentsService.update(id, dto);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string): Promise<void> {
+    return this.studentsService.remove(id);
+  }
+}
