@@ -1,154 +1,43 @@
-# Portfolio + Tableau de Bord Pédagogique
+# Projet Portfolio + Dashboard
 
-Application front-end réalisée avec React, TypeScript, Vite et Tailwind CSS.
+## Features
+- Portfolio (profil, experiences, projets, contact)
+- Dashboard pedagogique (liste eleves, CRUD eleves)
+- API backend NestJS + PostgreSQL
 
-Le projet contient deux espaces principaux:
-- un portfolio professionnel interactif
-- un tableau de bord pédagogique pour le suivi des élèves
+## Lancement rapide
 
-## Fonctionnalités
+### 1. Installer les dependances
+```bash
+npm install
+cd backend
+npm install
+cd ..
+```
 
-### Portfolio
-- Interface sci-fi moderne avec animations et effets interactifs
-- Présentation du profil, des compétences, des expériences et des projets
-- Section contact avec accès direct email/téléphone/LinkedIn/GitHub
-
-### Espace pédagogique
-- Liste des élèves avec anonymisation des noms dans l'interface
-- Ajout et modification complète des fiches élèves via fenêtre modale
-- Déverrouillage protégé par schéma (pattern lock) avant affichage de la fiche complète
-- Sélection de la prochaine séance via calendrier (date + heure)
-- Tableau de bord avec indicateurs et avis de progression
-
-## Stack technique
-- React 19
-- TypeScript
-- Vite
-- Tailwind CSS
-- React Icons
-
-## Backend (NestJS + PostgreSQL)
-
-Un backend NestJS a ete initialise dans le dossier `backend`.
-
-### Prerequis
-- Docker Desktop (pour PostgreSQL local)
-- Node.js 20+
-
-### Demarrage de la base PostgreSQL
-
+### 2. Lancer la base PostgreSQL
 ```bash
 cd backend
 docker compose up -d
+cd ..
 ```
 
-### Demarrage du backend NestJS
-
-```bash
-cd backend
-npm install
-npm run start:dev
-```
-
-API par defaut: `http://localhost:3000`
-
-Le backend lit sa configuration depuis `backend/.env`.
-`DB_PASSWORD` est obligatoire et n'est plus defini par defaut dans le code backend.
-
-Le frontend lit l'API sur `http://localhost:3000` par defaut.
-Tu peux surcharger avec `VITE_API_BASE_URL` dans un fichier `.env` a la racine du projet.
-
-### Endpoints disponibles
-
-- `GET /` : endpoint de base (Hello World)
-- `GET /health` : verification de sante de l'API
-- `GET /students` : liste des eleves
-- `GET /students/:id` : detail d'un eleve
-- `POST /students` : creation d'un eleve
-- `PATCH /students/:id` : mise a jour partielle d'un eleve
-- `DELETE /students/:id` : suppression d'un eleve
-
-Exemple de payload `POST /students`:
-
-```json
-{
-	"fullName": "Albert Guerant",
-	"level": "Terminale",
-	"objective": "Preparation bac mathematiques",
-	"sessionsDone": 6,
-	"nextSessionAt": "2026-03-14T18:00:00.000Z",
-	"notes": "Bonne progression"
-}
-```
-
-La validation des DTO est active globalement (champs inconnus refuses, types verifies).
-
-Le front est connecte au backend pour le chargement, la creation, la mise a jour et la suppression des eleves.
-
-`backend/docker-compose.yml` reutilise les variables `DB_USER`, `DB_PASSWORD` et `DB_NAME` pour rester aligne avec `backend/.env`.
-
-Les tests e2e backend couvrent maintenant `health`, validation DTO et CRUD `students`.
-
-Le front normalise maintenant les dates via un utilitaire partage (`src/utils/dateTime.ts`) pour garantir la coherence entre format UI (`YYYY-MM-DD HH:mm`) et format API (ISO).
-
-## Démarrage local
-
-1. Installer les dépendances
-
-```bash
-npm install
-```
-
-2. Lancer le serveur de développement
-
-```bash
-npm run dev
-```
-
-2bis. Lancer frontend + backend ensemble (un seul script)
-
+### 3. Lancer front + back ensemble
 ```bash
 npm run dev:full
 ```
 
-Cette commande lance Vite (frontend) et NestJS (backend) en parallele.
+Frontend: `http://localhost:5173`
+Backend: `http://localhost:3000`
 
-2ter. Verifier la qualite apres chaque ajout de code (coverage + tests e2e + build front/back)
+## Commandes utiles
 
+### Verification complete (tests + coverage + build)
 ```bash
 npm run verify:all
 ```
 
-Cette commande execute:
-- `npm --prefix backend run test:cov`
-- `npm --prefix backend run test:e2e`
-- `npm run build:full` (build front puis build back)
-
-3. Générer le build de production
-
-```bash
-npm run build
-```
-
-Build complet front + back:
-
+### Build front + back
 ```bash
 npm run build:full
 ```
-
-4. Prévisualiser le build
-
-```bash
-npm run preview
-```
-
-## Structure rapide
-
-- src/components: composants UI (portfolio, élèves, onglets)
-- src/data: donnees de profil
-- src/types: types TypeScript métier
-- backend/src: code backend NestJS
-
-## Note importante
-
-Le verrouillage par schéma est actuellement géré côté front. Pour une sécurité forte en production, il faut ajouter une authentification côté backend et des endpoints protégés.
