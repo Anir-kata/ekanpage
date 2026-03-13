@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type ChangeEvent } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, type ChangeEvent } from 'react'
 import type { Student } from '../types/student'
 import { fromInputDateTimeValue, toInputDateTimeValue } from '../utils/dateTime'
 
@@ -124,10 +124,10 @@ export function StudentList({ students, onUpdateStudent, onAddStudent, onDeleteS
     validatePatternProgress(nextPattern)
   }
 
-  const finishPattern = () => {
+  const finishPattern = useCallback(() => {
     if (!isDrawingPattern || isUnlocked) return
     setIsDrawingPattern(false)
-  }
+  }, [isDrawingPattern, isUnlocked])
 
   useEffect(() => {
     if (!isDrawingPattern) return
@@ -135,7 +135,7 @@ export function StudentList({ students, onUpdateStudent, onAddStudent, onDeleteS
     const handlePointerUp = () => finishPattern()
     window.addEventListener('pointerup', handlePointerUp)
     return () => window.removeEventListener('pointerup', handlePointerUp)
-  }, [isDrawingPattern])
+  }, [finishPattern, isDrawingPattern])
 
   const resetPattern = () => {
     applyPattern([])

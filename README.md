@@ -145,7 +145,7 @@ npm run preview
 ## Structure rapide
 
 - src/components: composants UI (portfolio, élèves, onglets)
-- src/data: données de profil et jeu de données élèves
+- src/data: donnees de profil
 - src/types: types TypeScript métier
 - backend/src: code backend NestJS
 

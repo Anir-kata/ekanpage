@@ -1,11 +1,19 @@
+import { NestFactory } from '@nestjs/core';
+import { bootstrap } from './main';
+
+jest.mock('@nestjs/core', () => ({
+  NestFactory: {
+    create: jest.fn(),
+  },
+}));
+
 describe('main bootstrap', () => {
-  const createMock = jest.fn();
-  const enableCorsMock = jest.fn();
-  const useGlobalPipesMock = jest.fn();
-  const listenMock = jest.fn();
+  const enableCorsMock = jest.fn<void, [unknown]>();
+  const useGlobalPipesMock = jest.fn<void, [unknown]>();
+  const listenMock = jest.fn<Promise<void>, [string | number]>();
+  const createMock = jest.spyOn(NestFactory, 'create');
 
   beforeEach(() => {
-    jest.resetModules();
     createMock.mockReset();
     enableCorsMock.mockReset();
     useGlobalPipesMock.mockReset();
@@ -20,24 +28,18 @@ describe('main bootstrap', () => {
     process.env.CORS_ORIGIN = 'http://localhost:5173';
     process.env.PORT = '3000';
 
-    jest.doMock('@nestjs/core', () => ({
-      NestFactory: {
-        create: createMock,
-      },
-    }));
+    listenMock.mockResolvedValue(undefined);
   });
 
   it('configures CORS, global pipes and listen port', async () => {
-    const { bootstrap } = require('./main');
-
     await bootstrap();
 
-    expect(createMock).toHaveBeenCalledTimes(2);
+    expect(createMock).toHaveBeenCalledTimes(1);
     expect(enableCorsMock).toHaveBeenCalledWith({
       origin: 'http://localhost:5173',
       credentials: true,
     });
-    expect(useGlobalPipesMock).toHaveBeenCalledTimes(2);
+    expect(useGlobalPipesMock).toHaveBeenCalledTimes(1);
     expect(listenMock).toHaveBeenCalledWith('3000');
   });
 });

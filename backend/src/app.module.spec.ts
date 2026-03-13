@@ -28,7 +28,9 @@ describe('AppModule', () => {
 
   it('buildTypeOrmOptions handles sync false', () => {
     const configService = {
-      get: jest.fn((key: string, defaultValue: string) => (key === 'DB_SYNC' ? 'false' : defaultValue)),
+      get: jest.fn((key: string, defaultValue: string) =>
+        key === 'DB_SYNC' ? 'false' : defaultValue,
+      ),
       getOrThrow: jest.fn(() => 'secret'),
     } as unknown as ConfigService;
 

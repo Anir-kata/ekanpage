@@ -16,6 +16,8 @@ describe('StudentEntity', () => {
 
     expect(entity.fullName).toBe('John Doe');
     expect(entity.sessionsDone).toBe(2);
-    expect(entity.nextSessionAt?.toISOString()).toBe('2026-03-20T18:00:00.000Z');
+    expect(entity.nextSessionAt?.toISOString()).toBe(
+      '2026-03-20T18:00:00.000Z',
+    );
   });
 });

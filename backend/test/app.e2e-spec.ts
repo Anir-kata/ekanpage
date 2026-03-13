@@ -4,6 +4,17 @@ import request from 'supertest';
 import { App } from 'supertest/types';
 import { AppModule } from './../src/app.module';
 
+type HealthResponse = {
+  status: string;
+  timestamp: string;
+};
+
+type StudentResponse = {
+  id: string;
+  fullName: string;
+  sessionsDone: number;
+};
+
 describe('AppController (e2e)', () => {
   let app: INestApplication<App>;
   let createdStudentId: string | null = null;
@@ -36,8 +47,12 @@ describe('AppController (e2e)', () => {
   });
 
   it('/health (GET)', async () => {
-    const response = await request(app.getHttpServer()).get('/health').expect(200);
-    expect(response.body.status).toBe('ok');
+    const response = await request(app.getHttpServer())
+      .get('/health')
+      .expect(200);
+
+    const body = response.body as HealthResponse;
+    expect(body.status).toBe('ok');
   });
 
   it('/students (POST/GET/PATCH/DELETE)', async () => {
@@ -55,25 +70,40 @@ describe('AppController (e2e)', () => {
       .send(createPayload)
       .expect(201);
 
-    createdStudentId = createdResponse.body.id;
+    const createdBody = createdResponse.body as StudentResponse;
+    createdStudentId = createdBody.id;
     expect(createdStudentId).toBeDefined();
 
-    const listResponse = await request(app.getHttpServer()).get('/students').expect(200);
-    expect(Array.isArray(listResponse.body)).toBe(true);
-    expect(listResponse.body.some((student: { id: string }) => student.id === createdStudentId)).toBe(true);
+    const listResponse = await request(app.getHttpServer())
+      .get('/students')
+      .expect(200);
+
+    const listBody = listResponse.body as StudentResponse[];
+    expect(Array.isArray(listBody)).toBe(true);
+    expect(
+      listBody.some(
+        (student: StudentResponse) => student.id === createdStudentId,
+      ),
+    ).toBe(true);
 
     const oneResponse = await request(app.getHttpServer())
       .get(`/students/${createdStudentId}`)
       .expect(200);
-    expect(oneResponse.body.fullName).toBe('Eleve E2E');
+
+    const oneBody = oneResponse.body as StudentResponse;
+    expect(oneBody.fullName).toBe('Eleve E2E');
 
     const patchResponse = await request(app.getHttpServer())
       .patch(`/students/${createdStudentId}`)
       .send({ sessionsDone: 2, notes: 'Maj e2e' })
       .expect(200);
-    expect(patchResponse.body.sessionsDone).toBe(2);
 
-    await request(app.getHttpServer()).delete(`/students/${createdStudentId}`).expect(200);
+    const patchBody = patchResponse.body as StudentResponse;
+    expect(patchBody.sessionsDone).toBe(2);
+
+    await request(app.getHttpServer())
+      .delete(`/students/${createdStudentId}`)
+      .expect(200);
     createdStudentId = null;
   });
 

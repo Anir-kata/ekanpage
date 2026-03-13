@@ -50,7 +50,9 @@ describe('StudentsController', () => {
     const updated = { id: '1', sessionsDone: 2 } as StudentEntity;
     (service.update as jest.Mock).mockResolvedValue(updated);
 
-    await expect(controller.update('1', { sessionsDone: 2 })).resolves.toEqual(updated);
+    await expect(controller.update('1', { sessionsDone: 2 })).resolves.toEqual(
+      updated,
+    );
   });
 
   it('remove delegates to service', async () => {

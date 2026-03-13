@@ -64,7 +64,9 @@ describe('StudentsService', () => {
     repository.find.mockResolvedValue(list);
 
     await expect(service.findAll()).resolves.toEqual(list);
-    expect(repository.find).toHaveBeenCalledWith({ order: { createdAt: 'DESC' } });
+    expect(repository.find).toHaveBeenCalledWith({
+      order: { createdAt: 'DESC' },
+    });
   });
 
   it('findOne returns student when found', async () => {
@@ -81,11 +83,16 @@ describe('StudentsService', () => {
   });
 
   it('update keeps nextSessionAt when undefined', async () => {
-    const existing = { id: '1', nextSessionAt: new Date('2026-01-01T00:00:00.000Z') } as StudentEntity;
+    const existing = {
+      id: '1',
+      nextSessionAt: new Date('2026-01-01T00:00:00.000Z'),
+    } as StudentEntity;
     repository.findOne.mockResolvedValue(existing);
     repository.save.mockResolvedValue(existing);
 
-    await expect(service.update('1', { notes: 'updated' })).resolves.toEqual(existing);
+    await expect(service.update('1', { notes: 'updated' })).resolves.toEqual(
+      existing,
+    );
     expect(repository.save).toHaveBeenCalled();
   });
 
@@ -95,11 +102,16 @@ describe('StudentsService', () => {
     repository.save.mockResolvedValue(existing);
 
     await service.update('1', { nextSessionAt: '2026-03-20T18:00:00.000Z' });
-    expect(existing.nextSessionAt).toEqual(new Date('2026-03-20T18:00:00.000Z'));
+    expect(existing.nextSessionAt).toEqual(
+      new Date('2026-03-20T18:00:00.000Z'),
+    );
   });
 
   it('update sets nextSessionAt to null when empty string', async () => {
-    const existing = { id: '1', nextSessionAt: new Date('2026-01-01T00:00:00.000Z') } as StudentEntity;
+    const existing = {
+      id: '1',
+      nextSessionAt: new Date('2026-01-01T00:00:00.000Z'),
+    } as StudentEntity;
     repository.findOne.mockResolvedValue(existing);
     repository.save.mockResolvedValue(existing);
 
