@@ -176,7 +176,7 @@ export function StudentFormPage({ mode, initialStudent, onCancel, onSubmit }: St
         </label>
 
         <label className="sm:col-span-2 grid gap-1 text-sm text-slate-300">
-          Avis de progression
+          Avis sur les élèves, points à améliorer, etc.
           <textarea
             className="futuristic-input min-h-28 rounded-lg px-3 py-2 text-sm"
             value={values.notes}

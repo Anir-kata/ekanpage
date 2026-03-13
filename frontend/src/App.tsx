@@ -353,7 +353,7 @@ function App() {
 
           {activeView === 'dashboard' && (
             <section className="mt-6 panel rounded-2xl p-5">
-              <h3 className="hud-title text-base font-bold text-cyan-200">Avis de progression des élèves</h3>
+              <h3 className="hud-title text-base font-bold text-cyan-200">Avis sur les élèves, points à améliorer, etc..</h3>
               <div className="mt-4">
                 <article className="review-spotlight relative overflow-hidden rounded-xl p-4 sm:p-5">
                   {activeReview && (
@@ -363,13 +363,10 @@ function App() {
                       </p>
                       <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-slate-300">
                         <span className="rounded-full border border-cyan-400/30 bg-cyan-500/10 px-2 py-1">
-                          Niveau: {activeReview.level}
+                          {activeReview.level}
                         </span>
                         <span className="rounded-full border border-blue-400/30 bg-blue-500/10 px-2 py-1">
-                          Sessions: {activeReview.sessionsDone}
-                        </span>
-                        <span className="rounded-full border border-indigo-400/30 bg-indigo-500/10 px-2 py-1">
-                          Prochaine: {activeReview.nextSessionAt}
+                          nombre de séances: {activeReview.sessionsDone}
                         </span>
                       </div>
                     </div>
@@ -421,7 +418,7 @@ function App() {
                       Rechercher
                     </button>
                     <div className="rounded-lg bg-slate-900/50 px-3 py-2 text-xs text-slate-300">
-                      {studentsPage.total} eleve(s)
+                      {studentsPage.total} élèves
                     </div>
                   </div>
 
