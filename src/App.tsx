@@ -1,15 +1,47 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { fetchStudents } from './api/students'
 import { CVProfile } from './components/CVProfile'
 import { StudentList } from './components/StudentList'
 import { Tabs, type TabKey } from './components/Tabs'
-import { mockStudents } from './data/mockStudents'
 import type { Student } from './types/student'
 
 function App() {
   const [activeView, setActiveView] = useState<'portfolio' | TabKey>('portfolio')
-  const [students, setStudents] = useState<Student[]>(mockStudents)
+  const [students, setStudents] = useState<Student[]>([])
+  const [studentsLoading, setStudentsLoading] = useState(true)
+  const [studentsError, setStudentsError] = useState('')
   const frameRef = useRef<number | null>(null)
   const pointerRef = useRef<{ x: number; y: number } | null>(null)
+
+  useEffect(() => {
+    let cancelled = false
+
+    const loadStudents = async () => {
+      setStudentsLoading(true)
+      setStudentsError('')
+
+      try {
+        const loadedStudents = await fetchStudents()
+        if (!cancelled) {
+          setStudents(loadedStudents)
+        }
+      } catch (error) {
+        if (!cancelled) {
+          setStudentsError(error instanceof Error ? error.message : 'Erreur inconnue de chargement.')
+        }
+      } finally {
+        if (!cancelled) {
+          setStudentsLoading(false)
+        }
+      }
+    }
+
+    void loadStudents()
+
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
   useEffect(() => {
     const flushPointer = () => {
@@ -124,6 +156,12 @@ function App() {
 
           {activeView === 'students' && (
             <section className="mt-6">
+              {studentsLoading && (
+                <div className="panel rounded-2xl p-4 text-sm text-slate-300">Chargement des eleves...</div>
+              )}
+              {studentsError && (
+                <div className="panel rounded-2xl p-4 text-sm text-rose-300">{studentsError}</div>
+              )}
               <StudentList students={students} onUpdateStudent={updateStudent} onAddStudent={addStudent} />
             </section>
           )}

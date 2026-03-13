@@ -316,7 +316,7 @@ const faqItems = [
   },
   {
     question: 'Quelles technologies je maîtrise le mieux ?',
-    answer: 'Java, Python, TypeScript, Node.js et R, avec React/Tailwind/Angular côté interface.',
+    answer: 'Java, Python, TypeScript, Node.js et R, avec React/Angular côté frontend.',
   },
   {
     question: 'Disponible pour échanger ?',

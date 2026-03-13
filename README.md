@@ -54,6 +54,9 @@ API par defaut: `http://localhost:3000`
 
 Le backend lit sa configuration depuis `backend/.env`.
 
+Le frontend lit l'API sur `http://localhost:3000` par defaut.
+Tu peux surcharger avec `VITE_API_BASE_URL` dans un fichier `.env` a la racine du projet.
+
 ### Endpoints disponibles
 
 - `GET /` : endpoint de base (Hello World)
