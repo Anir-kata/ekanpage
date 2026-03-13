@@ -113,10 +113,27 @@ npm run dev:full
 
 Cette commande lance Vite (frontend) et NestJS (backend) en parallele.
 
+2ter. Verifier la qualite apres chaque ajout de code (coverage + tests e2e + build front/back)
+
+```bash
+npm run verify:all
+```
+
+Cette commande execute:
+- `npm --prefix backend run test:cov`
+- `npm --prefix backend run test:e2e`
+- `npm run build:full` (build front puis build back)
+
 3. Générer le build de production
 
 ```bash
 npm run build
+```
+
+Build complet front + back:
+
+```bash
+npm run build:full
 ```
 
 4. Prévisualiser le build
