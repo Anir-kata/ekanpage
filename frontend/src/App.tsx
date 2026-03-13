@@ -24,8 +24,8 @@ function App() {
   const [authScreen, setAuthScreen] = useState<AuthScreen>('none')
   const [editingStudent, setEditingStudent] = useState<Student | null>(null)
   const [isEditMode, setIsEditMode] = useState(Boolean(getAuthToken()))
-  const [loginUsername, setLoginUsername] = useState('anir')
-  const [loginPassword, setLoginPassword] = useState('anir123')
+  const [loginUsername, setLoginUsername] = useState('')
+  const [loginPassword, setLoginPassword] = useState('')
   const [loginError, setLoginError] = useState('')
   const [isLoginLoading, setIsLoginLoading] = useState(false)
   const [students, setStudents] = useState<Student[]>([])
@@ -33,7 +33,7 @@ function App() {
   const [studentsError, setStudentsError] = useState('')
   const [operationFeedback, setOperationFeedback] = useState('')
   const [activeReviewIndex, setActiveReviewIndex] = useState(0)
-  const [searchInput, setSearchInput] = useState('')
+  const [searchInput] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
   const [studentsPage, setStudentsPage] = useState<StudentsPage>({
     items: [],
@@ -404,23 +404,6 @@ function App() {
 
               {isStudentsListView && (
                 <>
-                  <div className="panel mb-4 grid gap-3 rounded-2xl p-4 sm:grid-cols-[1fr_auto_auto]">
-                    <input
-                      className="futuristic-input rounded-lg px-3 py-2 text-sm"
-                      value={searchInput}
-                      onChange={(event) => setSearchInput(event.target.value)}
-                      placeholder="Rechercher un eleve, niveau ou objectif"
-                    />
-                    <button
-                      className="rounded-lg bg-cyan-400/20 px-4 py-2 text-sm font-semibold text-cyan-100 transition hover:bg-cyan-300/30"
-                      onClick={applySearch}
-                    >
-                      Rechercher
-                    </button>
-                    <div className="rounded-lg bg-slate-900/50 px-3 py-2 text-xs text-slate-300">
-                      {studentsPage.total} élèves
-                    </div>
-                  </div>
 
                   <StudentList
                     students={students}
