@@ -9,6 +9,7 @@
 - Contrat d'erreur API standardise (statusCode, message, timestamp, path, method)
 - Feedback utilisateur sur les operations CRUD (succes/erreur)
 - CI GitHub Actions (verify:all sur push/PR)
+- Seuils de couverture Jest imposes sur le backend
 
 ## Lancement rapide
 
