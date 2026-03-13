@@ -32,6 +32,7 @@ function App() {
   const [studentsLoading, setStudentsLoading] = useState(true)
   const [studentsError, setStudentsError] = useState('')
   const [operationFeedback, setOperationFeedback] = useState('')
+  const [activeReviewIndex, setActiveReviewIndex] = useState(0)
   const [searchInput, setSearchInput] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
   const [studentsPage, setStudentsPage] = useState<StudentsPage>({
@@ -193,9 +194,33 @@ function App() {
   }
 
   const isStudentsListView = studentsView === 'list'
-  const reviews = students
-    .map((student) => student.notes?.trim())
-    .filter((note) => Boolean(note)) as string[]
+  const reviewFeed = useMemo(
+    () =>
+      students
+        .filter((student) => Boolean(student.notes?.trim()))
+        .map((student) => ({
+          note: student.notes.trim(),
+          level: student.level,
+          sessionsDone: student.sessionsDone,
+          nextSessionAt: student.nextSessionAt,
+        })),
+    [students],
+  )
+
+  useEffect(() => {
+    if (!reviewFeed.length) {
+      setActiveReviewIndex(0)
+      return
+    }
+
+    const interval = setInterval(() => {
+      setActiveReviewIndex((previous) => (previous + 1) % reviewFeed.length)
+    }, 4200)
+
+    return () => clearInterval(interval)
+  }, [reviewFeed.length])
+
+  const activeReview = reviewFeed.length ? reviewFeed[activeReviewIndex % reviewFeed.length] : null
 
   const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -329,18 +354,63 @@ function App() {
           {activeView === 'dashboard' && (
             <section className="mt-6 panel rounded-2xl p-5">
               <h3 className="hud-title text-base font-bold text-cyan-200">Avis de progression des élèves</h3>
-              <div className="mt-4 overflow-hidden rounded-xl border border-cyan-400/20 bg-slate-950/40 p-3">
-                {!!reviews.length && (
-                  <div className="reviews-ticker">
-                    {[...reviews, ...reviews].map((review, index) => (
-                      <span key={`${review}-${index}`} className="reviews-chip">
-                        {review}
-                      </span>
-                    ))}
-                  </div>
-                )}
-                {!reviews.length && <p className="text-sm text-slate-300">Aucun avis pour le moment.</p>}
+              <div className="mt-4 grid gap-4 lg:grid-cols-[1.25fr_1fr]">
+                <article className="review-spotlight relative overflow-hidden rounded-xl p-4 sm:p-5">
+                  {activeReview && (
+                    <>
+                      <p className="text-xs uppercase tracking-[0.22em] text-cyan-200/80">Signal principal</p>
+                      <p className="review-quote mt-3 text-base leading-relaxed text-slate-100 sm:text-lg">
+                        "{activeReview.note}"
+                      </p>
+                      <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-slate-300">
+                        <span className="rounded-full border border-cyan-400/30 bg-cyan-500/10 px-2 py-1">
+                          Niveau: {activeReview.level}
+                        </span>
+                        <span className="rounded-full border border-blue-400/30 bg-blue-500/10 px-2 py-1">
+                          Sessions: {activeReview.sessionsDone}
+                        </span>
+                        <span className="rounded-full border border-indigo-400/30 bg-indigo-500/10 px-2 py-1">
+                          Prochaine: {activeReview.nextSessionAt}
+                        </span>
+                      </div>
+                      <p className="mt-4 text-xs tracking-[0.2em] text-cyan-300/70">***** FEEDBACK VERIFIED *****</p>
+                    </>
+                  )}
+                  {!activeReview && <p className="text-sm text-slate-300">Aucun avis pour le moment.</p>}
+                </article>
+
+                <div className="rounded-xl border border-cyan-400/20 bg-slate-950/35 p-3">
+                  {!!reviewFeed.length && (
+                    <>
+                      <div className="reviews-ticker">
+                        {[...reviewFeed, ...reviewFeed].map((review, index) => (
+                          <span key={`${review.note}-${index}`} className="reviews-chip">
+                            {review.note}
+                          </span>
+                        ))}
+                      </div>
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        {reviewFeed.slice(0, 8).map((review, index) => (
+                          <button
+                            key={`${review.note}-${index}-dot`}
+                            type="button"
+                            className={`review-dot ${index === activeReviewIndex % reviewFeed.length ? 'review-dot--active' : ''}`}
+                            onClick={() => setActiveReviewIndex(index)}
+                            aria-label={`Afficher l'avis ${index + 1}`}
+                          />
+                        ))}
+                      </div>
+                    </>
+                  )}
+                  {!reviewFeed.length && <p className="text-sm text-slate-300">Aucun avis pour le moment.</p>}
+                </div>
               </div>
+
+              {!!reviewFeed.length && (
+                <div className="mt-4 text-xs text-slate-400">
+                  Rotation automatique toutes les 4.2 secondes. Cliquez sur un indicateur pour figer un avis.
+                </div>
+              )}
             </section>
           )}
 

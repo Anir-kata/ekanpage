@@ -24,7 +24,9 @@ body {
     radial-gradient(circle at 88% 12%, rgba(96, 165, 250, 0.17) 0%, rgba(96, 165, 250, 0) 36%),
     radial-gradient(circle at 50% 86%, rgba(129, 140, 248, 0.14) 0%, rgba(129, 140, 248, 0) 36%),
     linear-gradient(145deg, var(--bg-1) 0%, var(--bg-2) 58%, #020617 100%);
+  background-size: 135% 135%;
   background-attachment: fixed;
+  animation: aurora-shift 20s ease-in-out infinite alternate;
 }
 
 body::before {
@@ -38,6 +40,18 @@ body::before {
   background-size: 44px 44px;
   mask-image: radial-gradient(circle at center, black 25%, transparent 88%);
   opacity: 0.55;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 20% 30%, rgba(34, 211, 238, 0.08), transparent 40%),
+    radial-gradient(circle at 80% 60%, rgba(129, 140, 248, 0.08), transparent 44%);
+  mix-blend-mode: screen;
+  animation: nebula-float 18s ease-in-out infinite;
+  z-index: -2;
 }
 
 #root {
@@ -61,12 +75,23 @@ body::before {
 }
 
 .panel {
+  position: relative;
   border: none;
   background: linear-gradient(160deg, rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.55));
   backdrop-filter: blur(10px);
   box-shadow:
     inset 0 1px 0 rgba(226, 232, 240, 0.04),
     0 10px 26px rgba(2, 6, 23, 0.35);
+  overflow: hidden;
+}
+
+.panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(34, 211, 238, 0.12);
+  border-radius: inherit;
+  pointer-events: none;
 }
 
 .panel-soft {
@@ -172,11 +197,59 @@ body::before {
 .reviews-chip {
   border: 1px solid rgba(34, 211, 238, 0.24);
   border-radius: 999px;
-  background: rgba(15, 23, 42, 0.68);
+  background: linear-gradient(145deg, rgba(15, 23, 42, 0.8), rgba(30, 41, 59, 0.66));
   color: #cbd5e1;
   font-size: 0.78rem;
   padding: 0.45rem 0.85rem;
   white-space: nowrap;
+  transition: transform 170ms ease, border-color 170ms ease, box-shadow 170ms ease;
+}
+
+.reviews-chip:hover {
+  transform: translateY(-2px);
+  border-color: rgba(34, 211, 238, 0.42);
+  box-shadow: 0 0 16px rgba(34, 211, 238, 0.18);
+}
+
+.review-spotlight {
+  border: 1px solid rgba(34, 211, 238, 0.24);
+  background:
+    radial-gradient(circle at 0% 0%, rgba(34, 211, 238, 0.16), transparent 42%),
+    radial-gradient(circle at 100% 100%, rgba(129, 140, 248, 0.16), transparent 42%),
+    linear-gradient(140deg, rgba(15, 23, 42, 0.86), rgba(15, 23, 42, 0.66));
+}
+
+.review-spotlight::before {
+  content: "";
+  position: absolute;
+  left: -30%;
+  top: 0;
+  width: 28%;
+  height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(103, 232, 249, 0.2), transparent);
+  animation: sweep 5.8s linear infinite;
+}
+
+.review-quote {
+  text-wrap: balance;
+}
+
+.review-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(34, 211, 238, 0.5);
+  background: rgba(34, 211, 238, 0.14);
+  transition: transform 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
+}
+
+.review-dot:hover {
+  transform: scale(1.15);
+}
+
+.review-dot--active {
+  background: rgba(34, 211, 238, 0.9);
+  box-shadow: 0 0 12px rgba(34, 211, 238, 0.45);
 }
 
 @keyframes drift {
@@ -203,12 +276,50 @@ body::before {
   }
 }
 
+@keyframes sweep {
+  to {
+    transform: translateX(520%);
+  }
+}
+
 @keyframes reviews-scroll {
   from {
     transform: translateX(0);
   }
   to {
     transform: translateX(-50%);
+  }
+}
+
+@keyframes aurora-shift {
+  from {
+    background-position: 0% 0%;
+  }
+  to {
+    background-position: 100% 100%;
+  }
+}
+
+@keyframes nebula-float {
+  0% {
+    transform: translate3d(-2%, -1%, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(1%, 1.5%, 0) scale(1.04);
+  }
+  100% {
+    transform: translate3d(-1%, 1%, 0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body,
+  body::after,
+  .scan-line::after,
+  .review-spotlight::before,
+  .reviews-ticker,
+  .skill-flow .skill-orb {
+    animation: none !important;
   }
 }
 
