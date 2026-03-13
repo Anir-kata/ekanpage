@@ -354,10 +354,10 @@ function App() {
           {activeView === 'dashboard' && (
             <section className="mt-6 panel rounded-2xl p-5">
               <h3 className="hud-title text-base font-bold text-cyan-200">Avis de progression des élèves</h3>
-              <div className="mt-4 grid gap-4 lg:grid-cols-[1.25fr_1fr]">
+              <div className="mt-4">
                 <article className="review-spotlight relative overflow-hidden rounded-xl p-4 sm:p-5">
                   {activeReview && (
-                    <>
+                    <div className="relative z-10">
                       <p className="text-xs uppercase tracking-[0.22em] text-cyan-200/80">Signal principal</p>
                       <p className="review-quote mt-3 text-base leading-relaxed text-slate-100 sm:text-lg">
                         "{activeReview.note}"
@@ -374,41 +374,28 @@ function App() {
                         </span>
                       </div>
                       <p className="mt-4 text-xs tracking-[0.2em] text-cyan-300/70">***** FEEDBACK VERIFIED *****</p>
-                    </>
+                    </div>
                   )}
                   {!activeReview && <p className="text-sm text-slate-300">Aucun avis pour le moment.</p>}
                 </article>
-
-                <div className="rounded-xl border border-cyan-400/20 bg-slate-950/35 p-3">
-                  {!!reviewFeed.length && (
-                    <>
-                      <div className="reviews-ticker">
-                        {[...reviewFeed, ...reviewFeed].map((review, index) => (
-                          <span key={`${review.note}-${index}`} className="reviews-chip">
-                            {review.note}
-                          </span>
-                        ))}
-                      </div>
-                      <div className="mt-4 flex flex-wrap gap-2">
-                        {reviewFeed.slice(0, 8).map((review, index) => (
-                          <button
-                            key={`${review.note}-${index}-dot`}
-                            type="button"
-                            className={`review-dot ${index === activeReviewIndex % reviewFeed.length ? 'review-dot--active' : ''}`}
-                            onClick={() => setActiveReviewIndex(index)}
-                            aria-label={`Afficher l'avis ${index + 1}`}
-                          />
-                        ))}
-                      </div>
-                    </>
-                  )}
-                  {!reviewFeed.length && <p className="text-sm text-slate-300">Aucun avis pour le moment.</p>}
-                </div>
+                {!!reviewFeed.length && (
+                  <div className="mt-4 flex flex-wrap items-center gap-2">
+                    {reviewFeed.slice(0, 8).map((review, index) => (
+                      <button
+                        key={`${review.note}-${index}-dot`}
+                        type="button"
+                        className={`review-dot ${index === activeReviewIndex % reviewFeed.length ? 'review-dot--active' : ''}`}
+                        onClick={() => setActiveReviewIndex(index)}
+                        aria-label={`Afficher l'avis ${index + 1}`}
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
 
               {!!reviewFeed.length && (
                 <div className="mt-4 text-xs text-slate-400">
-                  Rotation automatique toutes les 4.2 secondes. Cliquez sur un indicateur pour figer un avis.
+                  Rotation automatique toutes les 4.2 secondes. Les indicateurs permettent de choisir un avis.
                 </div>
               )}
             </section>

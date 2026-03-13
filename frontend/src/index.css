@@ -157,61 +157,13 @@ body::after {
 }
 
 .interactive-card {
-  position: relative;
-  transform-style: preserve-3d;
-  transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
-  transition: transform 180ms ease, box-shadow 180ms ease;
+  isolation: isolate;
   overflow: hidden;
 }
 
-.interactive-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), rgba(103, 232, 249, 0.22), transparent 46%);
-  opacity: 0;
-  transition: opacity 180ms ease;
-}
-
-.interactive-card:hover {
-  box-shadow: 0 14px 34px rgba(8, 47, 73, 0.34);
-}
-
-.interactive-card:hover::before {
-  opacity: 1;
-}
-
-.skill-flow .skill-orb {
-  animation: drift 5.5s ease-in-out infinite;
-  will-change: transform;
-}
-
-.reviews-ticker {
-  display: flex;
-  gap: 0.75rem;
-  width: max-content;
-  animation: reviews-scroll 26s linear infinite;
-}
-
-.reviews-chip {
-  border: 1px solid rgba(34, 211, 238, 0.24);
-  border-radius: 999px;
-  background: linear-gradient(145deg, rgba(15, 23, 42, 0.8), rgba(30, 41, 59, 0.66));
-  color: #cbd5e1;
-  font-size: 0.78rem;
-  padding: 0.45rem 0.85rem;
-  white-space: nowrap;
-  transition: transform 170ms ease, border-color 170ms ease, box-shadow 170ms ease;
-}
-
-.reviews-chip:hover {
-  transform: translateY(-2px);
-  border-color: rgba(34, 211, 238, 0.42);
-  box-shadow: 0 0 16px rgba(34, 211, 238, 0.18);
-}
-
 .review-spotlight {
+  position: relative;
+  isolation: isolate;
   border: 1px solid rgba(34, 211, 238, 0.24);
   background:
     radial-gradient(circle at 0% 0%, rgba(34, 211, 238, 0.16), transparent 42%),
@@ -228,9 +180,12 @@ body::after {
   height: 100%;
   background: linear-gradient(100deg, transparent, rgba(103, 232, 249, 0.2), transparent);
   animation: sweep 5.8s linear infinite;
+  z-index: 0;
 }
 
 .review-quote {
+  position: relative;
+  z-index: 1;
   text-wrap: balance;
 }
 
@@ -282,15 +237,6 @@ body::after {
   }
 }
 
-@keyframes reviews-scroll {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-
 @keyframes aurora-shift {
   from {
     background-position: 0% 0%;
@@ -317,7 +263,6 @@ body::after {
   body::after,
   .scan-line::after,
   .review-spotlight::before,
-  .reviews-ticker,
   .skill-flow .skill-orb {
     animation: none !important;
   }
