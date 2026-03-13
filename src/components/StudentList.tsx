@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ChangeEvent } from 'react'
+import { createPortal } from 'react-dom'
 import type { Student } from '../types/student'
 import { fromInputDateTimeValue, toInputDateTimeValue } from '../utils/dateTime'
 
@@ -252,8 +253,8 @@ export function StudentList({
         </div>
       )}
 
-      {(draft || selectedStudent || isCreateMode) && (
-        <div className="fixed inset-0 z-50 grid place-items-center bg-slate-950/75 p-4">
+      {(draft || selectedStudent || isCreateMode) && createPortal(
+        <div className="fixed inset-0 z-[999] grid place-items-center bg-slate-950/75 p-4">
           <div className="panel scan-line w-full max-w-2xl rounded-2xl p-5">
             <div className="flex items-start justify-between gap-3">
               <div>
@@ -401,7 +402,8 @@ export function StudentList({
               </>
             )}
           </div>
-        </div>
+        </div>,
+        document.body,
       )}
     </section>
   )
