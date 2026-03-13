@@ -8,6 +8,7 @@
 - API backend NestJS + PostgreSQL
 - Contrat d'erreur API standardise (statusCode, message, timestamp, path, method)
 - Feedback utilisateur sur les operations CRUD (succes/erreur)
+- CI GitHub Actions (verify:all sur push/PR)
 
 ## Lancement rapide
 
