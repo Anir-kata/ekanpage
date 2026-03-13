@@ -26,7 +26,6 @@ type StudentsPageResponse = {
 describe('AppController (e2e)', () => {
   let app: INestApplication<App>;
   let createdStudentId: string | null = null;
-  let authToken = '';
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -64,27 +63,7 @@ describe('AppController (e2e)', () => {
     expect(body.status).toBe('ok');
   });
 
-  it('/auth/login (POST)', async () => {
-    const response = await request(app.getHttpServer())
-      .post('/auth/login')
-      .send({ username: 'admin', password: 'admin123' })
-      .expect(201);
-
-    expect(response.body.accessToken).toBeDefined();
-    authToken = response.body.accessToken as string;
-  });
-
-  it('/students (GET) requires authentication', async () => {
-    await request(app.getHttpServer()).get('/students').expect(401);
-  });
-
   it('/students (POST/GET/PATCH/DELETE)', async () => {
-    const loginResponse = await request(app.getHttpServer())
-      .post('/auth/login')
-      .send({ username: 'admin', password: 'admin123' })
-      .expect(201);
-    authToken = loginResponse.body.accessToken as string;
-
     const createPayload = {
       fullName: 'Eleve E2E',
       level: 'Terminale',
@@ -96,7 +75,6 @@ describe('AppController (e2e)', () => {
 
     const createdResponse = await request(app.getHttpServer())
       .post('/students')
-      .set('Authorization', `Bearer ${authToken}`)
       .send(createPayload)
       .expect(201);
 
@@ -106,7 +84,6 @@ describe('AppController (e2e)', () => {
 
     const listResponse = await request(app.getHttpServer())
       .get('/students')
-      .set('Authorization', `Bearer ${authToken}`)
       .expect(200);
 
     const listBody = listResponse.body as StudentsPageResponse;
@@ -119,7 +96,6 @@ describe('AppController (e2e)', () => {
 
     const oneResponse = await request(app.getHttpServer())
       .get(`/students/${createdStudentId}`)
-      .set('Authorization', `Bearer ${authToken}`)
       .expect(200);
 
     const oneBody = oneResponse.body as StudentResponse;
@@ -127,7 +103,6 @@ describe('AppController (e2e)', () => {
 
     const patchResponse = await request(app.getHttpServer())
       .patch(`/students/${createdStudentId}`)
-      .set('Authorization', `Bearer ${authToken}`)
       .send({ sessionsDone: 2, notes: 'Maj e2e' })
       .expect(200);
 
@@ -136,21 +111,13 @@ describe('AppController (e2e)', () => {
 
     await request(app.getHttpServer())
       .delete(`/students/${createdStudentId}`)
-      .set('Authorization', `Bearer ${authToken}`)
       .expect(200);
     createdStudentId = null;
   });
 
   it('/students (POST) should validate payload', async () => {
-    const loginResponse = await request(app.getHttpServer())
-      .post('/auth/login')
-      .send({ username: 'admin', password: 'admin123' })
-      .expect(201);
-    authToken = loginResponse.body.accessToken as string;
-
     await request(app.getHttpServer())
       .post('/students')
-      .set('Authorization', `Bearer ${authToken}`)
       .send({
         fullName: 'A',
         level: '',

@@ -1,30 +1,27 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import {
-  clearAuthToken,
   createStudent as createStudentApi,
   deleteStudent as deleteStudentApi,
   fetchStudents,
-  getAuthToken,
-  login as loginApi,
   type StudentsPage,
   updateStudent as updateStudentApi,
 } from './api/students'
 import { CVProfile } from './components/CVProfile'
+import { StudentFormPage, type StudentFormValues } from './components/StudentFormPage'
 import { StudentList } from './components/StudentList'
 import { Tabs, type TabKey } from './components/Tabs'
 import type { Student } from './types/student'
 
+type StudentsScreen = 'list' | 'create' | 'edit'
+
 function App() {
   const [activeView, setActiveView] = useState<'portfolio' | TabKey>('portfolio')
+  const [studentsView, setStudentsView] = useState<StudentsScreen>('list')
+  const [editingStudent, setEditingStudent] = useState<Student | null>(null)
   const [students, setStudents] = useState<Student[]>([])
   const [studentsLoading, setStudentsLoading] = useState(true)
   const [studentsError, setStudentsError] = useState('')
   const [operationFeedback, setOperationFeedback] = useState('')
-  const [isAuthenticated, setIsAuthenticated] = useState(Boolean(getAuthToken()))
-  const [loginUsername, setLoginUsername] = useState('admin')
-  const [loginPassword, setLoginPassword] = useState('admin123')
-  const [loginError, setLoginError] = useState('')
-  const [isLoginLoading, setIsLoginLoading] = useState(false)
   const [searchInput, setSearchInput] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
   const [studentsPage, setStudentsPage] = useState<StudentsPage>({
@@ -38,13 +35,6 @@ function App() {
   const pointerRef = useRef<{ x: number; y: number } | null>(null)
 
   const loadStudents = async (params?: { search?: string; page?: number }) => {
-    if (!isAuthenticated) {
-      setStudents([])
-      setStudentsPage((prev) => ({ ...prev, items: [], total: 0, page: 1, totalPages: 1 }))
-      setStudentsLoading(false)
-      return
-    }
-
     setStudentsLoading(true)
     setStudentsError('')
 
@@ -65,14 +55,9 @@ function App() {
   }
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      setStudentsLoading(false)
-      return
-    }
-
     let cancelled = false
 
-    const loadStudents = async () => {
+    const loadInitialStudents = async () => {
       try {
         const loadedStudents = await fetchStudents({ page: 1, limit: 10 })
         if (!cancelled) {
@@ -90,12 +75,12 @@ function App() {
       }
     }
 
-    void loadStudents()
+    void loadInitialStudents()
 
     return () => {
       cancelled = true
     }
-  }, [isAuthenticated])
+  }, [])
 
   useEffect(() => {
     if (!operationFeedback) return
@@ -140,38 +125,26 @@ function App() {
     [students],
   )
 
-  const handleUpdateStudent = async (updatedStudent: Student) => {
-    const saved = await updateStudentApi(updatedStudent.id, {
-      fullName: updatedStudent.fullName,
-      level: updatedStudent.level,
-      objective: updatedStudent.objective,
-      sessionsDone: updatedStudent.sessionsDone,
-      nextSessionAt: updatedStudent.nextSessionAt,
-      notes: updatedStudent.notes,
-    })
-
-    setStudents((prev) => prev.map((student) => (student.id === saved.id ? saved : student)))
-    void loadStudents()
+  const handleCreateStudent = async (values: StudentFormValues) => {
+    await createStudentApi(values)
+    await loadStudents({ page: 1, search: searchTerm })
+    setStudentsView('list')
+    setOperationFeedback('Eleve cree avec succes.')
   }
 
-  const handleAddStudent = async (student: Student) => {
-    const saved = await createStudentApi({
-      fullName: student.fullName,
-      level: student.level,
-      objective: student.objective,
-      sessionsDone: student.sessionsDone,
-      nextSessionAt: student.nextSessionAt,
-      notes: student.notes,
-    })
+  const handleUpdateStudent = async (values: StudentFormValues) => {
+    if (!editingStudent) return
 
-    setStudents((prev) => [saved, ...prev])
-    void loadStudents({ page: 1 })
+    await updateStudentApi(editingStudent.id, values)
+    await loadStudents({ page: studentsPage.page, search: searchTerm })
+    setStudentsView('list')
+    setEditingStudent(null)
+    setOperationFeedback('Eleve mis a jour avec succes.')
   }
 
   const handleDeleteStudent = async (studentId: string) => {
     await deleteStudentApi(studentId)
-    setStudents((prev) => prev.filter((student) => student.id !== studentId))
-    void loadStudents()
+    await loadStudents({ page: studentsPage.page, search: searchTerm })
   }
 
   const applySearch = () => {
@@ -184,33 +157,22 @@ function App() {
     void loadStudents({ page })
   }
 
-  const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    setLoginError('')
-
-    try {
-      setIsLoginLoading(true)
-      await loginApi(loginUsername.trim(), loginPassword)
-      setIsAuthenticated(true)
-      setOperationFeedback('Connexion reussie.')
-      void loadStudents({ page: 1, search: '' })
-    } catch (error) {
-      setLoginError(error instanceof Error ? error.message : 'Connexion impossible.')
-    } finally {
-      setIsLoginLoading(false)
-    }
+  const openCreatePage = () => {
+    setEditingStudent(null)
+    setStudentsView('create')
   }
 
-  const handleLogout = () => {
-    clearAuthToken()
-    setIsAuthenticated(false)
-    setStudents([])
-    setStudentsError('')
-    setSearchInput('')
-    setSearchTerm('')
-    setStudentsPage({ items: [], total: 0, page: 1, limit: 10, totalPages: 1 })
-    setOperationFeedback('Session deconnectee.')
+  const openEditPage = (student: Student) => {
+    setEditingStudent(student)
+    setStudentsView('edit')
   }
+
+  const closeFormPage = () => {
+    setEditingStudent(null)
+    setStudentsView('list')
+  }
+
+  const isStudentsListView = studentsView === 'list'
 
   return (
     <main className="relative mx-auto min-h-screen w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
@@ -235,22 +197,12 @@ function App() {
 
           <section className="panel mt-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl p-4">
             <Tabs activeTab={activeView} onChange={setActiveView} />
-            <div className="flex items-center gap-2">
-              {isAuthenticated && (
-                <button
-                  className="rounded-xl bg-rose-900/50 px-4 py-2 text-sm font-semibold text-rose-100 transition hover:bg-rose-800/70"
-                  onClick={handleLogout}
-                >
-                  Deconnexion
-                </button>
-              )}
-              <button
-                className="rounded-xl bg-slate-900/60 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:bg-slate-800/70 hover:text-cyan-100"
-                onClick={() => setActiveView('portfolio')}
-              >
-                Retour au portfolio
-              </button>
-            </div>
+            <button
+              className="rounded-xl bg-slate-900/60 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:bg-slate-800/70 hover:text-cyan-100"
+              onClick={() => setActiveView('portfolio')}
+            >
+              Retour au portfolio
+            </button>
           </section>
 
           {activeView === 'dashboard' && (
@@ -289,35 +241,6 @@ function App() {
 
           {activeView === 'students' && (
             <section className="mt-6">
-              {!isAuthenticated && (
-                <form onSubmit={handleLogin} className="panel mb-4 grid gap-3 rounded-2xl p-5 sm:grid-cols-2">
-                  <h3 className="sm:col-span-2 text-sm font-semibold text-cyan-100">Connexion requise</h3>
-                  <input
-                    className="futuristic-input rounded-lg px-3 py-2 text-sm"
-                    value={loginUsername}
-                    onChange={(event) => setLoginUsername(event.target.value)}
-                    placeholder="Nom d'utilisateur"
-                  />
-                  <input
-                    type="password"
-                    className="futuristic-input rounded-lg px-3 py-2 text-sm"
-                    value={loginPassword}
-                    onChange={(event) => setLoginPassword(event.target.value)}
-                    placeholder="Mot de passe"
-                  />
-                  <button
-                    type="submit"
-                    disabled={isLoginLoading}
-                    className="sm:col-span-2 rounded-lg bg-cyan-400/20 px-4 py-2 text-sm font-semibold text-cyan-100 transition hover:bg-cyan-300/30 disabled:opacity-60"
-                  >
-                    {isLoginLoading ? 'Connexion...' : 'Se connecter'}
-                  </button>
-                  {loginError && <p className="sm:col-span-2 text-sm text-rose-300">{loginError}</p>}
-                </form>
-              )}
-
-              {isAuthenticated && (
-                <>
               {studentsLoading && (
                 <div className="panel rounded-2xl p-4 text-sm text-slate-300">Chargement des eleves...</div>
               )}
@@ -327,50 +250,68 @@ function App() {
               {operationFeedback && (
                 <div className="panel mb-4 rounded-2xl p-4 text-sm text-emerald-300">{operationFeedback}</div>
               )}
-              <div className="panel mb-4 grid gap-3 rounded-2xl p-4 sm:grid-cols-[1fr_auto_auto]">
-                <input
-                  className="futuristic-input rounded-lg px-3 py-2 text-sm"
-                  value={searchInput}
-                  onChange={(event) => setSearchInput(event.target.value)}
-                  placeholder="Rechercher un eleve, niveau ou objectif"
-                />
-                <button
-                  className="rounded-lg bg-cyan-400/20 px-4 py-2 text-sm font-semibold text-cyan-100 transition hover:bg-cyan-300/30"
-                  onClick={applySearch}
-                >
-                  Rechercher
-                </button>
-                <div className="rounded-lg bg-slate-900/50 px-3 py-2 text-xs text-slate-300">
-                  {studentsPage.total} eleve(s)
-                </div>
-              </div>
-              <StudentList
-                students={students}
-                onUpdateStudent={handleUpdateStudent}
-                onAddStudent={handleAddStudent}
-                onDeleteStudent={handleDeleteStudent}
-                onOperationSuccess={setOperationFeedback}
-              />
-              <div className="panel mt-4 flex items-center justify-between rounded-2xl p-4 text-sm text-slate-300">
-                <button
-                  className="rounded-lg bg-slate-900/60 px-3 py-2 transition hover:bg-slate-800/70 disabled:opacity-40"
-                  onClick={() => goToPage(studentsPage.page - 1)}
-                  disabled={studentsPage.page <= 1}
-                >
-                  Page precedente
-                </button>
-                <span>
-                  Page {studentsPage.page} / {studentsPage.totalPages}
-                </span>
-                <button
-                  className="rounded-lg bg-slate-900/60 px-3 py-2 transition hover:bg-slate-800/70 disabled:opacity-40"
-                  onClick={() => goToPage(studentsPage.page + 1)}
-                  disabled={studentsPage.page >= studentsPage.totalPages}
-                >
-                  Page suivante
-                </button>
-              </div>
+
+              {isStudentsListView && (
+                <>
+                  <div className="panel mb-4 grid gap-3 rounded-2xl p-4 sm:grid-cols-[1fr_auto_auto]">
+                    <input
+                      className="futuristic-input rounded-lg px-3 py-2 text-sm"
+                      value={searchInput}
+                      onChange={(event) => setSearchInput(event.target.value)}
+                      placeholder="Rechercher un eleve, niveau ou objectif"
+                    />
+                    <button
+                      className="rounded-lg bg-cyan-400/20 px-4 py-2 text-sm font-semibold text-cyan-100 transition hover:bg-cyan-300/30"
+                      onClick={applySearch}
+                    >
+                      Rechercher
+                    </button>
+                    <div className="rounded-lg bg-slate-900/50 px-3 py-2 text-xs text-slate-300">
+                      {studentsPage.total} eleve(s)
+                    </div>
+                  </div>
+
+                  <StudentList
+                    students={students}
+                    onRequestCreate={openCreatePage}
+                    onRequestEdit={openEditPage}
+                    onDeleteStudent={handleDeleteStudent}
+                    onOperationSuccess={setOperationFeedback}
+                  />
+
+                  <div className="panel mt-4 flex items-center justify-between rounded-2xl p-4 text-sm text-slate-300">
+                    <button
+                      className="rounded-lg bg-slate-900/60 px-3 py-2 transition hover:bg-slate-800/70 disabled:opacity-40"
+                      onClick={() => goToPage(studentsPage.page - 1)}
+                      disabled={studentsPage.page <= 1}
+                    >
+                      Page precedente
+                    </button>
+                    <span>
+                      Page {studentsPage.page} / {studentsPage.totalPages}
+                    </span>
+                    <button
+                      className="rounded-lg bg-slate-900/60 px-3 py-2 transition hover:bg-slate-800/70 disabled:opacity-40"
+                      onClick={() => goToPage(studentsPage.page + 1)}
+                      disabled={studentsPage.page >= studentsPage.totalPages}
+                    >
+                      Page suivante
+                    </button>
+                  </div>
                 </>
+              )}
+
+              {studentsView === 'create' && (
+                <StudentFormPage mode="create" onCancel={closeFormPage} onSubmit={handleCreateStudent} />
+              )}
+
+              {studentsView === 'edit' && (
+                <StudentFormPage
+                  mode="edit"
+                  initialStudent={editingStudent}
+                  onCancel={closeFormPage}
+                  onSubmit={handleUpdateStudent}
+                />
               )}
             </section>
           )}
