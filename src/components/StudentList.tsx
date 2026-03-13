@@ -211,20 +211,7 @@ export function StudentList({
     }
   }
 
-  if (!students.length) {
-    return (
-      <section className="panel rounded-2xl p-6">
-        <h2 className="hud-title text-lg font-bold text-cyan-200">Mes élèves</h2>
-        <p className="mt-3 text-slate-300">Aucun élève pour le moment.</p>
-        <button
-          className="mt-4 rounded-lg bg-cyan-400/20 px-4 py-2 text-sm font-semibold text-cyan-100 transition hover:bg-cyan-300/30"
-          onClick={openCreateModal}
-        >
-          Ajouter un élève
-        </button>
-      </section>
-    )
-  }
+  const hasStudents = students.length > 0
 
   return (
     <section className="panel rounded-2xl p-6">
@@ -238,28 +225,32 @@ export function StudentList({
         </button>
       </div>
 
-      <div className="mt-4 grid gap-4">
-        {students.map((student, index) => (
-          <article
-            key={student.id}
-            className="panel-soft group cursor-pointer rounded-xl p-4 transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_18px_rgba(34,211,238,0.18)]"
-            onClick={() => openEditModal(student)}
-          >
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <h3 className="text-lg font-semibold text-slate-100">{anonymizedLabel(index)}</h3>
-              <span className="rounded-full bg-cyan-400/10 px-3 py-1 text-xs font-semibold text-cyan-200">
-                {student.level}
-              </span>
-            </div>
-            <p className="mt-2 text-sm text-slate-300">Objectif: {student.objective}</p>
-            <p className="mt-1 text-sm text-slate-300">Séances faites: {student.sessionsDone}</p>
-            <p className="mt-1 text-sm text-slate-300">Prochaine séance: {student.nextSessionAt}</p>
-            <p className="mt-3 text-xs uppercase tracking-[0.14em] text-cyan-200/85 group-hover:text-cyan-100">
-              Code requis pour ouvrir la fiche complète
-            </p>
-          </article>
-        ))}
-      </div>
+      {!hasStudents && <p className="mt-3 text-slate-300">Aucun élève pour le moment.</p>}
+
+      {hasStudents && (
+        <div className="mt-4 grid gap-4">
+          {students.map((student, index) => (
+            <article
+              key={student.id}
+              className="panel-soft group cursor-pointer rounded-xl p-4 transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_18px_rgba(34,211,238,0.18)]"
+              onClick={() => openEditModal(student)}
+            >
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <h3 className="text-lg font-semibold text-slate-100">{anonymizedLabel(index)}</h3>
+                <span className="rounded-full bg-cyan-400/10 px-3 py-1 text-xs font-semibold text-cyan-200">
+                  {student.level}
+                </span>
+              </div>
+              <p className="mt-2 text-sm text-slate-300">Objectif: {student.objective}</p>
+              <p className="mt-1 text-sm text-slate-300">Séances faites: {student.sessionsDone}</p>
+              <p className="mt-1 text-sm text-slate-300">Prochaine séance: {student.nextSessionAt}</p>
+              <p className="mt-3 text-xs uppercase tracking-[0.14em] text-cyan-200/85 group-hover:text-cyan-100">
+                Code requis pour ouvrir la fiche complète
+              </p>
+            </article>
+          ))}
+        </div>
+      )}
 
       {(draft || selectedStudent || isCreateMode) && (
         <div className="fixed inset-0 z-50 grid place-items-center bg-slate-950/75 p-4">
