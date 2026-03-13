@@ -1,5 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { fetchStudents } from './api/students'
+import {
+  createStudent as createStudentApi,
+  deleteStudent as deleteStudentApi,
+  fetchStudents,
+  updateStudent as updateStudentApi,
+} from './api/students'
 import { CVProfile } from './components/CVProfile'
 import { StudentList } from './components/StudentList'
 import { Tabs, type TabKey } from './components/Tabs'
@@ -79,14 +84,35 @@ function App() {
     [students],
   )
 
-  const updateStudent = (updatedStudent: Student) => {
-    setStudents((prev) =>
-      prev.map((student) => (student.id === updatedStudent.id ? updatedStudent : student)),
-    )
+  const handleUpdateStudent = async (updatedStudent: Student) => {
+    const saved = await updateStudentApi(updatedStudent.id, {
+      fullName: updatedStudent.fullName,
+      level: updatedStudent.level,
+      objective: updatedStudent.objective,
+      sessionsDone: updatedStudent.sessionsDone,
+      nextSessionAt: updatedStudent.nextSessionAt,
+      notes: updatedStudent.notes,
+    })
+
+    setStudents((prev) => prev.map((student) => (student.id === saved.id ? saved : student)))
   }
 
-  const addStudent = (student: Student) => {
-    setStudents((prev) => [student, ...prev])
+  const handleAddStudent = async (student: Student) => {
+    const saved = await createStudentApi({
+      fullName: student.fullName,
+      level: student.level,
+      objective: student.objective,
+      sessionsDone: student.sessionsDone,
+      nextSessionAt: student.nextSessionAt,
+      notes: student.notes,
+    })
+
+    setStudents((prev) => [saved, ...prev])
+  }
+
+  const handleDeleteStudent = async (studentId: string) => {
+    await deleteStudentApi(studentId)
+    setStudents((prev) => prev.filter((student) => student.id !== studentId))
   }
 
   return (
@@ -162,7 +188,12 @@ function App() {
               {studentsError && (
                 <div className="panel rounded-2xl p-4 text-sm text-rose-300">{studentsError}</div>
               )}
-              <StudentList students={students} onUpdateStudent={updateStudent} onAddStudent={addStudent} />
+              <StudentList
+                students={students}
+                onUpdateStudent={handleUpdateStudent}
+                onAddStudent={handleAddStudent}
+                onDeleteStudent={handleDeleteStudent}
+              />
             </section>
           )}
         </>

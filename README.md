@@ -82,6 +82,8 @@ Exemple de payload `POST /students`:
 
 La validation des DTO est active globalement (champs inconnus refuses, types verifies).
 
+Le front est connecte au backend pour le chargement, la creation, la mise a jour et la suppression des eleves.
+
 ## Démarrage local
 
 1. Installer les dépendances

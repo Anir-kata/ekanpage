@@ -3,8 +3,9 @@ import type { Student } from '../types/student'
 
 type StudentListProps = {
   students: Student[]
-  onUpdateStudent: (student: Student) => void
-  onAddStudent: (student: Student) => void
+  onUpdateStudent: (student: Student) => Promise<void>
+  onAddStudent: (student: Student) => Promise<void>
+  onDeleteStudent: (studentId: string) => Promise<void>
 }
 
 const FICHE_ACCESS_PATTERN = '0-1-2-5-8'
@@ -34,7 +35,7 @@ const toDateTimeInputValue = (value: string) => value.replace(' ', 'T')
 
 const toStoredDateTime = (value: string) => value.replace('T', ' ')
 
-export function StudentList({ students, onUpdateStudent, onAddStudent }: StudentListProps) {
+export function StudentList({ students, onUpdateStudent, onAddStudent, onDeleteStudent }: StudentListProps) {
   const [selectedStudentId, setSelectedStudentId] = useState<string | null>(null)
   const [isCreateMode, setIsCreateMode] = useState(false)
   const [draft, setDraft] = useState<StudentDraft | null>(null)
@@ -42,6 +43,7 @@ export function StudentList({ students, onUpdateStudent, onAddStudent }: Student
   const [isDrawingPattern, setIsDrawingPattern] = useState(false)
   const [isUnlocked, setIsUnlocked] = useState(false)
   const [accessError, setAccessError] = useState('')
+  const [isSaving, setIsSaving] = useState(false)
   const patternRef = useRef<number[]>([])
 
   const selectedStudent = useMemo(
@@ -154,7 +156,7 @@ export function StudentList({ students, onUpdateStudent, onAddStudent }: Student
     updateDraft('sessionsDone', Number.isNaN(parsed) ? 0 : Math.max(0, parsed))
   }
 
-  const saveStudent = () => {
+  const saveStudent = async () => {
     if (!draft || !isUnlocked) return
 
     const payload: Student = {
@@ -172,13 +174,34 @@ export function StudentList({ students, onUpdateStudent, onAddStudent }: Student
       return
     }
 
-    if (isCreateMode) {
-      onAddStudent(payload)
-    } else {
-      onUpdateStudent(payload)
-    }
+    try {
+      setIsSaving(true)
+      if (isCreateMode) {
+        await onAddStudent(payload)
+      } else {
+        await onUpdateStudent(payload)
+      }
 
-    closeModal()
+      closeModal()
+    } catch {
+      setAccessError('Operation impossible pour le moment. Verifie que le backend est lance.')
+    } finally {
+      setIsSaving(false)
+    }
+  }
+
+  const deleteStudent = async () => {
+    if (!selectedStudentId || isCreateMode) return
+
+    try {
+      setIsSaving(true)
+      await onDeleteStudent(selectedStudentId)
+      closeModal()
+    } catch {
+      setAccessError('Suppression impossible pour le moment.')
+    } finally {
+      setIsSaving(false)
+    }
   }
 
   if (!students.length) {
@@ -244,6 +267,7 @@ export function StudentList({ students, onUpdateStudent, onAddStudent }: Student
               <button
                 className="rounded-lg bg-slate-900/60 px-3 py-1 text-sm text-slate-200 transition hover:bg-slate-800/70 hover:text-cyan-100"
                 onClick={closeModal}
+                disabled={isSaving}
               >
                 Fermer
               </button>
@@ -355,14 +379,25 @@ export function StudentList({ students, onUpdateStudent, onAddStudent }: Student
               <button
                 className="rounded-lg bg-slate-800/60 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:bg-slate-700/70"
                 onClick={closeModal}
+                disabled={isSaving}
               >
                 Annuler
               </button>
+              {!isCreateMode && (
+                <button
+                  className="rounded-lg bg-rose-500/20 px-4 py-2 text-sm font-semibold text-rose-200 transition hover:bg-rose-500/30"
+                  onClick={deleteStudent}
+                  disabled={isSaving}
+                >
+                  Supprimer l'eleve
+                </button>
+              )}
               <button
                 className="rounded-lg bg-cyan-400/20 px-4 py-2 text-sm font-semibold text-cyan-100 transition hover:bg-cyan-300/30"
                 onClick={saveStudent}
+                disabled={isSaving}
               >
-                {isCreateMode ? 'Créer l\'élève' : 'Enregistrer les modifications'}
+                {isSaving ? 'Enregistrement...' : isCreateMode ? 'Créer l\'élève' : 'Enregistrer les modifications'}
               </button>
             </div>
               </>
