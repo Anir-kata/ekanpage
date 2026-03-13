@@ -87,6 +87,8 @@ Le front est connecte au backend pour le chargement, la creation, la mise a jour
 
 `backend/docker-compose.yml` reutilise les variables `DB_USER`, `DB_PASSWORD` et `DB_NAME` pour rester aligne avec `backend/.env`.
 
+Les tests e2e backend couvrent maintenant `health`, validation DTO et CRUD `students`.
+
 ## Démarrage local
 
 1. Installer les dépendances
