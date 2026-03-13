@@ -289,41 +289,49 @@ function App() {
           </section>
 
           {authScreen === 'login' && (
-            <section className="panel mt-6 rounded-2xl p-5">
-              <h3 className="hud-title text-base font-bold text-cyan-200">Se connecter</h3>
-              <form onSubmit={handleLogin} className="mt-4 grid gap-3 sm:grid-cols-2">
-                <input
-                  className="futuristic-input rounded-lg px-3 py-2 text-sm"
-                  value={loginUsername}
-                  onChange={(event) => setLoginUsername(event.target.value)}
-                  placeholder="Nom d'utilisateur"
-                />
-                <input
-                  type="password"
-                  className="futuristic-input rounded-lg px-3 py-2 text-sm"
-                  value={loginPassword}
-                  onChange={(event) => setLoginPassword(event.target.value)}
-                  placeholder="Mot de passe"
-                />
-                <div className="sm:col-span-2 flex justify-end gap-2">
-                  <button
-                    type="button"
-                    className="rounded-lg bg-slate-800/60 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:bg-slate-700/70"
-                    onClick={() => setAuthScreen('none')}
-                  >
-                    Annuler
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={isLoginLoading}
-                    className="rounded-lg bg-cyan-400/20 px-4 py-2 text-sm font-semibold text-cyan-100 transition hover:bg-cyan-300/30 disabled:opacity-60"
-                  >
-                    {isLoginLoading ? 'Connexion...' : 'Activer le mode modification'}
-                  </button>
-                </div>
-                {loginError && <p className="sm:col-span-2 text-sm text-rose-300">{loginError}</p>}
-              </form>
-            </section>
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm">
+              <div
+                className="absolute inset-0"
+                onClick={() => setAuthScreen('none')}
+                aria-hidden="true"
+              />
+              <section className="panel relative z-10 w-full max-w-md rounded-2xl p-5">
+                <h3 className="hud-title text-base font-bold text-cyan-200">Admin login</h3>
+                <form onSubmit={handleLogin} className="mt-4 grid gap-3">
+                  <input
+                    className="futuristic-input rounded-lg px-3 py-2 text-sm"
+                    value={loginUsername}
+                    onChange={(event) => setLoginUsername(event.target.value)}
+                    placeholder="Pseudo"
+                    autoFocus
+                  />
+                  <input
+                    type="password"
+                    className="futuristic-input rounded-lg px-3 py-2 text-sm"
+                    value={loginPassword}
+                    onChange={(event) => setLoginPassword(event.target.value)}
+                    placeholder="Mot de passe"
+                  />
+                  <div className="mt-1 flex justify-end gap-2">
+                    <button
+                      type="button"
+                      className="rounded-lg bg-slate-800/60 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:bg-slate-700/70"
+                      onClick={() => setAuthScreen('none')}
+                    >
+                      Annuler
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={isLoginLoading}
+                      className="rounded-lg bg-cyan-400/20 px-4 py-2 text-sm font-semibold text-cyan-100 transition hover:bg-cyan-300/30 disabled:opacity-60"
+                    >
+                      {isLoginLoading ? 'Connexion...' : 'Se connecter'}
+                    </button>
+                  </div>
+                  {loginError && <p className="text-sm text-rose-300">{loginError}</p>}
+                </form>
+              </section>
+            </div>
           )}
 
           {activeView === 'dashboard' && (
