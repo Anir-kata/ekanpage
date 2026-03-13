@@ -4,6 +4,7 @@
 - Portfolio (profil, experiences, projets, contact)
 - Dashboard pedagogique (liste eleves, CRUD eleves)
 - API backend NestJS + PostgreSQL
+- Contrat d'erreur API standardise (statusCode, message, timestamp, path, method)
 
 ## Lancement rapide
 
