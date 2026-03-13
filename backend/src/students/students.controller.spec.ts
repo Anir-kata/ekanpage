@@ -33,10 +33,16 @@ describe('StudentsController', () => {
   });
 
   it('findAll delegates to service', async () => {
-    const list = [{ id: '1' }] as StudentEntity[];
-    (service.findAll as jest.Mock).mockResolvedValue(list);
+    const pageResult = {
+      items: [{ id: '1' }],
+      total: 1,
+      page: 1,
+      limit: 10,
+      totalPages: 1,
+    };
+    (service.findAll as jest.Mock).mockResolvedValue(pageResult);
 
-    await expect(controller.findAll()).resolves.toEqual(list);
+    await expect(controller.findAll({})).resolves.toEqual(pageResult);
   });
 
   it('findOne delegates to service', async () => {

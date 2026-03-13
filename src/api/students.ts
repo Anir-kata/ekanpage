@@ -11,6 +11,22 @@ type StudentApi = {
   notes: string
 }
 
+export type StudentsPage = {
+  items: Student[]
+  total: number
+  page: number
+  limit: number
+  totalPages: number
+}
+
+type StudentsPageApi = {
+  items: StudentApi[]
+  total: number
+  page: number
+  limit: number
+  totalPages: number
+}
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3000'
 
 const toStudent = (student: StudentApi): Student => ({
@@ -41,14 +57,27 @@ const toUpdatePayload = (student: Partial<Omit<Student, 'id'>>) => ({
   notes: student.notes,
 })
 
-export async function fetchStudents(): Promise<Student[]> {
-  const response = await fetch(`${API_BASE_URL}/students`)
+export async function fetchStudents(params?: { search?: string; page?: number; limit?: number }): Promise<StudentsPage> {
+  const query = new URLSearchParams()
+
+  if (params?.search?.trim()) query.set('search', params.search.trim())
+  if (params?.page) query.set('page', String(params.page))
+  if (params?.limit) query.set('limit', String(params.limit))
+
+  const suffix = query.toString() ? `?${query.toString()}` : ''
+  const response = await fetch(`${API_BASE_URL}/students${suffix}`)
   if (!response.ok) {
     throw new Error('Impossible de charger les eleves depuis le backend.')
   }
 
-  const data = (await response.json()) as StudentApi[]
-  return data.map(toStudent)
+  const data = (await response.json()) as StudentsPageApi
+  return {
+    items: data.items.map(toStudent),
+    total: data.total,
+    page: data.page,
+    limit: data.limit,
+    totalPages: data.totalPages,
+  }
 }
 
 export async function createStudent(student: Omit<Student, 'id'>): Promise<Student> {

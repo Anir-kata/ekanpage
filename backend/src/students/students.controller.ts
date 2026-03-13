@@ -6,11 +6,13 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { CreateStudentDto } from './dto/create-student.dto';
+import { ListStudentsQueryDto } from './dto/list-students-query.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { StudentEntity } from './student.entity';
-import { StudentsService } from './students.service';
+import { StudentsPage, StudentsService } from './students.service';
 
 @Controller('students')
 export class StudentsController {
@@ -22,8 +24,8 @@ export class StudentsController {
   }
 
   @Get()
-  findAll(): Promise<StudentEntity[]> {
-    return this.studentsService.findAll();
+  findAll(@Query() query: ListStudentsQueryDto): Promise<StudentsPage> {
+    return this.studentsService.findAll(query);
   }
 
   @Get(':id')

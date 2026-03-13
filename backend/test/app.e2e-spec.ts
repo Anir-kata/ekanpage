@@ -15,6 +15,14 @@ type StudentResponse = {
   sessionsDone: number;
 };
 
+type StudentsPageResponse = {
+  items: StudentResponse[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+};
+
 describe('AppController (e2e)', () => {
   let app: INestApplication<App>;
   let createdStudentId: string | null = null;
@@ -78,10 +86,10 @@ describe('AppController (e2e)', () => {
       .get('/students')
       .expect(200);
 
-    const listBody = listResponse.body as StudentResponse[];
-    expect(Array.isArray(listBody)).toBe(true);
+    const listBody = listResponse.body as StudentsPageResponse;
+    expect(Array.isArray(listBody.items)).toBe(true);
     expect(
-      listBody.some(
+      listBody.items.some(
         (student: StudentResponse) => student.id === createdStudentId,
       ),
     ).toBe(true);

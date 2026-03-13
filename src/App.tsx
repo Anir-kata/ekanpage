@@ -3,6 +3,7 @@ import {
   createStudent as createStudentApi,
   deleteStudent as deleteStudentApi,
   fetchStudents,
+  type StudentsPage,
   updateStudent as updateStudentApi,
 } from './api/students'
 import { CVProfile } from './components/CVProfile'
@@ -16,20 +17,47 @@ function App() {
   const [studentsLoading, setStudentsLoading] = useState(true)
   const [studentsError, setStudentsError] = useState('')
   const [operationFeedback, setOperationFeedback] = useState('')
+  const [searchInput, setSearchInput] = useState('')
+  const [searchTerm, setSearchTerm] = useState('')
+  const [studentsPage, setStudentsPage] = useState<StudentsPage>({
+    items: [],
+    total: 0,
+    page: 1,
+    limit: 10,
+    totalPages: 1,
+  })
   const frameRef = useRef<number | null>(null)
   const pointerRef = useRef<{ x: number; y: number } | null>(null)
+
+  const loadStudents = async (params?: { search?: string; page?: number }) => {
+    setStudentsLoading(true)
+    setStudentsError('')
+
+    try {
+      const loaded = await fetchStudents({
+        search: params?.search ?? searchTerm,
+        page: params?.page ?? studentsPage.page,
+        limit: studentsPage.limit,
+      })
+
+      setStudents(loaded.items)
+      setStudentsPage(loaded)
+    } catch (error) {
+      setStudentsError(error instanceof Error ? error.message : 'Erreur inconnue de chargement.')
+    } finally {
+      setStudentsLoading(false)
+    }
+  }
 
   useEffect(() => {
     let cancelled = false
 
     const loadStudents = async () => {
-      setStudentsLoading(true)
-      setStudentsError('')
-
       try {
-        const loadedStudents = await fetchStudents()
+        const loadedStudents = await fetchStudents({ page: 1, limit: 10 })
         if (!cancelled) {
-          setStudents(loadedStudents)
+          setStudents(loadedStudents.items)
+          setStudentsPage(loadedStudents)
         }
       } catch (error) {
         if (!cancelled) {
@@ -103,6 +131,7 @@ function App() {
     })
 
     setStudents((prev) => prev.map((student) => (student.id === saved.id ? saved : student)))
+    void loadStudents()
   }
 
   const handleAddStudent = async (student: Student) => {
@@ -116,11 +145,23 @@ function App() {
     })
 
     setStudents((prev) => [saved, ...prev])
+    void loadStudents({ page: 1 })
   }
 
   const handleDeleteStudent = async (studentId: string) => {
     await deleteStudentApi(studentId)
     setStudents((prev) => prev.filter((student) => student.id !== studentId))
+    void loadStudents()
+  }
+
+  const applySearch = () => {
+    setSearchTerm(searchInput)
+    void loadStudents({ search: searchInput, page: 1 })
+  }
+
+  const goToPage = (page: number) => {
+    if (page < 1 || page > studentsPage.totalPages) return
+    void loadStudents({ page })
   }
 
   return (
@@ -199,6 +240,23 @@ function App() {
               {operationFeedback && (
                 <div className="panel mb-4 rounded-2xl p-4 text-sm text-emerald-300">{operationFeedback}</div>
               )}
+              <div className="panel mb-4 grid gap-3 rounded-2xl p-4 sm:grid-cols-[1fr_auto_auto]">
+                <input
+                  className="futuristic-input rounded-lg px-3 py-2 text-sm"
+                  value={searchInput}
+                  onChange={(event) => setSearchInput(event.target.value)}
+                  placeholder="Rechercher un eleve, niveau ou objectif"
+                />
+                <button
+                  className="rounded-lg bg-cyan-400/20 px-4 py-2 text-sm font-semibold text-cyan-100 transition hover:bg-cyan-300/30"
+                  onClick={applySearch}
+                >
+                  Rechercher
+                </button>
+                <div className="rounded-lg bg-slate-900/50 px-3 py-2 text-xs text-slate-300">
+                  {studentsPage.total} eleve(s)
+                </div>
+              </div>
               <StudentList
                 students={students}
                 onUpdateStudent={handleUpdateStudent}
@@ -206,6 +264,25 @@ function App() {
                 onDeleteStudent={handleDeleteStudent}
                 onOperationSuccess={setOperationFeedback}
               />
+              <div className="panel mt-4 flex items-center justify-between rounded-2xl p-4 text-sm text-slate-300">
+                <button
+                  className="rounded-lg bg-slate-900/60 px-3 py-2 transition hover:bg-slate-800/70 disabled:opacity-40"
+                  onClick={() => goToPage(studentsPage.page - 1)}
+                  disabled={studentsPage.page <= 1}
+                >
+                  Page precedente
+                </button>
+                <span>
+                  Page {studentsPage.page} / {studentsPage.totalPages}
+                </span>
+                <button
+                  className="rounded-lg bg-slate-900/60 px-3 py-2 transition hover:bg-slate-800/70 disabled:opacity-40"
+                  onClick={() => goToPage(studentsPage.page + 1)}
+                  disabled={studentsPage.page >= studentsPage.totalPages}
+                >
+                  Page suivante
+                </button>
+              </div>
             </section>
           )}
         </>

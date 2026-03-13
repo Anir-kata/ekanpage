@@ -3,6 +3,7 @@
 ## Features
 - Portfolio (profil, experiences, projets, contact)
 - Dashboard pedagogique (liste eleves, CRUD eleves)
+- Recherche et pagination des eleves
 - API backend NestJS + PostgreSQL
 - Contrat d'erreur API standardise (statusCode, message, timestamp, path, method)
 - Feedback utilisateur sur les operations CRUD (succes/erreur)
