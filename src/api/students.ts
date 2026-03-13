@@ -28,6 +28,28 @@ type StudentsPageApi = {
 }
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3000'
+const TOKEN_STORAGE_KEY = 'ekan_auth_token'
+
+type LoginResponse = {
+  accessToken: string
+}
+
+export function getAuthToken(): string | null {
+  return localStorage.getItem(TOKEN_STORAGE_KEY)
+}
+
+export function clearAuthToken(): void {
+  localStorage.removeItem(TOKEN_STORAGE_KEY)
+}
+
+function saveAuthToken(token: string): void {
+  localStorage.setItem(TOKEN_STORAGE_KEY, token)
+}
+
+function buildAuthHeaders(): HeadersInit {
+  const token = getAuthToken()
+  return token ? { Authorization: `Bearer ${token}` } : {}
+}
 
 const toStudent = (student: StudentApi): Student => ({
   id: student.id,
@@ -65,8 +87,14 @@ export async function fetchStudents(params?: { search?: string; page?: number; l
   if (params?.limit) query.set('limit', String(params.limit))
 
   const suffix = query.toString() ? `?${query.toString()}` : ''
-  const response = await fetch(`${API_BASE_URL}/students${suffix}`)
+  const response = await fetch(`${API_BASE_URL}/students${suffix}`, {
+    headers: buildAuthHeaders(),
+  })
   if (!response.ok) {
+    if (response.status === 401) {
+      throw new Error('Authentification requise. Merci de vous connecter.')
+    }
+
     throw new Error('Impossible de charger les eleves depuis le backend.')
   }
 
@@ -85,11 +113,16 @@ export async function createStudent(student: Omit<Student, 'id'>): Promise<Stude
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      ...buildAuthHeaders(),
     },
     body: JSON.stringify(toCreatePayload(student)),
   })
 
   if (!response.ok) {
+    if (response.status === 401) {
+      throw new Error('Authentification requise. Merci de vous connecter.')
+    }
+
     throw new Error('Impossible de creer l\'eleve.')
   }
 
@@ -102,11 +135,16 @@ export async function updateStudent(id: string, student: Partial<Omit<Student, '
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
+      ...buildAuthHeaders(),
     },
     body: JSON.stringify(toUpdatePayload(student)),
   })
 
   if (!response.ok) {
+    if (response.status === 401) {
+      throw new Error('Authentification requise. Merci de vous connecter.')
+    }
+
     throw new Error('Impossible de mettre a jour l\'eleve.')
   }
 
@@ -117,9 +155,31 @@ export async function updateStudent(id: string, student: Partial<Omit<Student, '
 export async function deleteStudent(id: string): Promise<void> {
   const response = await fetch(`${API_BASE_URL}/students/${id}`, {
     method: 'DELETE',
+    headers: buildAuthHeaders(),
   })
 
   if (!response.ok) {
+    if (response.status === 401) {
+      throw new Error('Authentification requise. Merci de vous connecter.')
+    }
+
     throw new Error('Impossible de supprimer l\'eleve.')
   }
+}
+
+export async function login(username: string, password: string): Promise<void> {
+  const response = await fetch(`${API_BASE_URL}/auth/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ username, password }),
+  })
+
+  if (!response.ok) {
+    throw new Error('Identifiants invalides.')
+  }
+
+  const data = (await response.json()) as LoginResponse
+  saveAuthToken(data.accessToken)
 }

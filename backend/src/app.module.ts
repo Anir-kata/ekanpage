@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
 import { StudentsModule } from './students/students.module';
 
 export const buildTypeOrmOptions = (configService: ConfigService) => ({
@@ -25,6 +26,7 @@ export const buildTypeOrmOptions = (configService: ConfigService) => ({
       inject: [ConfigService],
       useFactory: buildTypeOrmOptions,
     }),
+    AuthModule,
     StudentsModule,
   ],
   controllers: [AppController],

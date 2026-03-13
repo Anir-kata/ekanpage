@@ -4,6 +4,7 @@
 - Portfolio (profil, experiences, projets, contact)
 - Dashboard pedagogique (liste eleves, CRUD eleves)
 - Recherche et pagination des eleves
+- Authentification JWT pour proteger les routes eleves
 - API backend NestJS + PostgreSQL
 - Contrat d'erreur API standardise (statusCode, message, timestamp, path, method)
 - Feedback utilisateur sur les operations CRUD (succes/erreur)
@@ -29,6 +30,10 @@ npm run dev:full
 
 Frontend: `http://localhost:5173`
 Backend: `http://localhost:3000`
+
+Identifiants par defaut pour le dashboard eleves:
+- username: `admin`
+- password: `admin123`
 
 ## Commandes utiles
 

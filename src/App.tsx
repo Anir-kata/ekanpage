@@ -1,8 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import {
+  clearAuthToken,
   createStudent as createStudentApi,
   deleteStudent as deleteStudentApi,
   fetchStudents,
+  getAuthToken,
+  login as loginApi,
   type StudentsPage,
   updateStudent as updateStudentApi,
 } from './api/students'
@@ -17,6 +20,11 @@ function App() {
   const [studentsLoading, setStudentsLoading] = useState(true)
   const [studentsError, setStudentsError] = useState('')
   const [operationFeedback, setOperationFeedback] = useState('')
+  const [isAuthenticated, setIsAuthenticated] = useState(Boolean(getAuthToken()))
+  const [loginUsername, setLoginUsername] = useState('admin')
+  const [loginPassword, setLoginPassword] = useState('admin123')
+  const [loginError, setLoginError] = useState('')
+  const [isLoginLoading, setIsLoginLoading] = useState(false)
   const [searchInput, setSearchInput] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
   const [studentsPage, setStudentsPage] = useState<StudentsPage>({
@@ -30,6 +38,13 @@ function App() {
   const pointerRef = useRef<{ x: number; y: number } | null>(null)
 
   const loadStudents = async (params?: { search?: string; page?: number }) => {
+    if (!isAuthenticated) {
+      setStudents([])
+      setStudentsPage((prev) => ({ ...prev, items: [], total: 0, page: 1, totalPages: 1 }))
+      setStudentsLoading(false)
+      return
+    }
+
     setStudentsLoading(true)
     setStudentsError('')
 
@@ -50,6 +65,11 @@ function App() {
   }
 
   useEffect(() => {
+    if (!isAuthenticated) {
+      setStudentsLoading(false)
+      return
+    }
+
     let cancelled = false
 
     const loadStudents = async () => {
@@ -75,7 +95,7 @@ function App() {
     return () => {
       cancelled = true
     }
-  }, [])
+  }, [isAuthenticated])
 
   useEffect(() => {
     if (!operationFeedback) return
@@ -164,6 +184,34 @@ function App() {
     void loadStudents({ page })
   }
 
+  const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    setLoginError('')
+
+    try {
+      setIsLoginLoading(true)
+      await loginApi(loginUsername.trim(), loginPassword)
+      setIsAuthenticated(true)
+      setOperationFeedback('Connexion reussie.')
+      void loadStudents({ page: 1, search: '' })
+    } catch (error) {
+      setLoginError(error instanceof Error ? error.message : 'Connexion impossible.')
+    } finally {
+      setIsLoginLoading(false)
+    }
+  }
+
+  const handleLogout = () => {
+    clearAuthToken()
+    setIsAuthenticated(false)
+    setStudents([])
+    setStudentsError('')
+    setSearchInput('')
+    setSearchTerm('')
+    setStudentsPage({ items: [], total: 0, page: 1, limit: 10, totalPages: 1 })
+    setOperationFeedback('Session deconnectee.')
+  }
+
   return (
     <main className="relative mx-auto min-h-screen w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
       <div className="pointer-events-none absolute left-[-80px] top-[-90px] h-56 w-56 rounded-full bg-cyan-400/20 blur-3xl" />
@@ -187,12 +235,22 @@ function App() {
 
           <section className="panel mt-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl p-4">
             <Tabs activeTab={activeView} onChange={setActiveView} />
-            <button
-              className="rounded-xl bg-slate-900/60 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:bg-slate-800/70 hover:text-cyan-100"
-              onClick={() => setActiveView('portfolio')}
-            >
-              Retour au portfolio
-            </button>
+            <div className="flex items-center gap-2">
+              {isAuthenticated && (
+                <button
+                  className="rounded-xl bg-rose-900/50 px-4 py-2 text-sm font-semibold text-rose-100 transition hover:bg-rose-800/70"
+                  onClick={handleLogout}
+                >
+                  Deconnexion
+                </button>
+              )}
+              <button
+                className="rounded-xl bg-slate-900/60 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:bg-slate-800/70 hover:text-cyan-100"
+                onClick={() => setActiveView('portfolio')}
+              >
+                Retour au portfolio
+              </button>
+            </div>
           </section>
 
           {activeView === 'dashboard' && (
@@ -231,6 +289,35 @@ function App() {
 
           {activeView === 'students' && (
             <section className="mt-6">
+              {!isAuthenticated && (
+                <form onSubmit={handleLogin} className="panel mb-4 grid gap-3 rounded-2xl p-5 sm:grid-cols-2">
+                  <h3 className="sm:col-span-2 text-sm font-semibold text-cyan-100">Connexion requise</h3>
+                  <input
+                    className="futuristic-input rounded-lg px-3 py-2 text-sm"
+                    value={loginUsername}
+                    onChange={(event) => setLoginUsername(event.target.value)}
+                    placeholder="Nom d'utilisateur"
+                  />
+                  <input
+                    type="password"
+                    className="futuristic-input rounded-lg px-3 py-2 text-sm"
+                    value={loginPassword}
+                    onChange={(event) => setLoginPassword(event.target.value)}
+                    placeholder="Mot de passe"
+                  />
+                  <button
+                    type="submit"
+                    disabled={isLoginLoading}
+                    className="sm:col-span-2 rounded-lg bg-cyan-400/20 px-4 py-2 text-sm font-semibold text-cyan-100 transition hover:bg-cyan-300/30 disabled:opacity-60"
+                  >
+                    {isLoginLoading ? 'Connexion...' : 'Se connecter'}
+                  </button>
+                  {loginError && <p className="sm:col-span-2 text-sm text-rose-300">{loginError}</p>}
+                </form>
+              )}
+
+              {isAuthenticated && (
+                <>
               {studentsLoading && (
                 <div className="panel rounded-2xl p-4 text-sm text-slate-300">Chargement des eleves...</div>
               )}
@@ -283,6 +370,8 @@ function App() {
                   Page suivante
                 </button>
               </div>
+                </>
+              )}
             </section>
           )}
         </>
