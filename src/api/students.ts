@@ -1,4 +1,5 @@
 import type { Student } from '../types/student'
+import { toApiDateTime, toUiDateTime } from '../utils/dateTime'
 
 type StudentApi = {
   id: string
@@ -12,17 +13,6 @@ type StudentApi = {
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3000'
 
-const pad = (value: number): string => String(value).padStart(2, '0')
-
-const toUiDateTime = (value: string | null): string => {
-  if (!value) return ''
-
-  const date = new Date(value)
-  if (Number.isNaN(date.getTime())) return value
-
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`
-}
-
 const toStudent = (student: StudentApi): Student => ({
   id: student.id,
   fullName: student.fullName,
@@ -32,14 +22,6 @@ const toStudent = (student: StudentApi): Student => ({
   nextSessionAt: toUiDateTime(student.nextSessionAt),
   notes: student.notes,
 })
-
-const toApiDateTime = (value: string): string | undefined => {
-  const normalized = value.replace(' ', 'T')
-  const date = new Date(normalized)
-  if (Number.isNaN(date.getTime())) return undefined
-
-  return date.toISOString()
-}
 
 const toCreatePayload = (student: Omit<Student, 'id'>) => ({
   fullName: student.fullName,

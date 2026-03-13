@@ -89,6 +89,8 @@ Le front est connecte au backend pour le chargement, la creation, la mise a jour
 
 Les tests e2e backend couvrent maintenant `health`, validation DTO et CRUD `students`.
 
+Le front normalise maintenant les dates via un utilitaire partage (`src/utils/dateTime.ts`) pour garantir la coherence entre format UI (`YYYY-MM-DD HH:mm`) et format API (ISO).
+
 ## Démarrage local
 
 1. Installer les dépendances

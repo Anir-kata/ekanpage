@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type ChangeEvent } from 'react'
 import type { Student } from '../types/student'
+import { fromInputDateTimeValue, toInputDateTimeValue } from '../utils/dateTime'
 
 type StudentListProps = {
   students: Student[]
@@ -30,10 +31,6 @@ const createEmptyDraft = (): StudentDraft => ({
   nextSessionAt: '',
   notes: '',
 })
-
-const toDateTimeInputValue = (value: string) => value.replace(' ', 'T')
-
-const toStoredDateTime = (value: string) => value.replace('T', ' ')
 
 export function StudentList({ students, onUpdateStudent, onAddStudent, onDeleteStudent }: StudentListProps) {
   const [selectedStudentId, setSelectedStudentId] = useState<string | null>(null)
@@ -165,7 +162,7 @@ export function StudentList({ students, onUpdateStudent, onAddStudent, onDeleteS
       level: draft.level.trim(),
       objective: draft.objective.trim(),
       sessionsDone: Math.max(0, draft.sessionsDone),
-      nextSessionAt: toStoredDateTime(draft.nextSessionAt.trim()),
+      nextSessionAt: fromInputDateTimeValue(draft.nextSessionAt.trim()),
       notes: draft.notes.trim(),
     }
 
@@ -360,8 +357,8 @@ export function StudentList({ students, onUpdateStudent, onAddStudent, onDeleteS
                 <input
                   type="datetime-local"
                   className="futuristic-input rounded-lg px-3 py-2 text-sm"
-                  value={toDateTimeInputValue(draft?.nextSessionAt ?? selectedStudent?.nextSessionAt ?? '')}
-                  onChange={(event) => updateDraft('nextSessionAt', toStoredDateTime(event.target.value))}
+                  value={toInputDateTimeValue(draft?.nextSessionAt ?? selectedStudent?.nextSessionAt ?? '')}
+                  onChange={(event) => updateDraft('nextSessionAt', fromInputDateTimeValue(event.target.value))}
                 />
               </label>
 
