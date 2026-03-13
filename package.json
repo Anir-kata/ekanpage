@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "install:all": "npm install && npm --prefix backend install",
+    "vite": "vite",
     "dev": "vite",
     "dev:full": "concurrently -n front,back -c cyan,magenta \"npm run dev\" \"npm --prefix backend run start:dev\"",
     "build:full": "npm run build && npm --prefix backend run build",

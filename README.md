@@ -38,3 +38,13 @@ npm run verify:all
 ```bash
 npm run build:full
 ```
+
+### Lancer uniquement le front
+```bash
+npm run dev
+```
+
+Alias equivalent:
+```bash
+npm run vite
+```
