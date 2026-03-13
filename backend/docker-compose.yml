@@ -4,9 +4,9 @@ services:
     container_name: ekanpage-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: anir
-      POSTGRES_DB: postgres
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-anir}
+      POSTGRES_DB: ${DB_NAME:-postgres}
     ports:
       - '5432:5432'
     volumes:

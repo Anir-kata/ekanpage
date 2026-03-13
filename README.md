@@ -53,6 +53,7 @@ npm run start:dev
 API par defaut: `http://localhost:3000`
 
 Le backend lit sa configuration depuis `backend/.env`.
+`DB_PASSWORD` est obligatoire et n'est plus defini par defaut dans le code backend.
 
 Le frontend lit l'API sur `http://localhost:3000` par defaut.
 Tu peux surcharger avec `VITE_API_BASE_URL` dans un fichier `.env` a la racine du projet.
@@ -71,7 +72,7 @@ Exemple de payload `POST /students`:
 
 ```json
 {
-	"fullName": "Sarah Benali",
+	"fullName": "Albert Guerant",
 	"level": "Terminale",
 	"objective": "Preparation bac mathematiques",
 	"sessionsDone": 6,
@@ -83,6 +84,8 @@ Exemple de payload `POST /students`:
 La validation des DTO est active globalement (champs inconnus refuses, types verifies).
 
 Le front est connecte au backend pour le chargement, la creation, la mise a jour et la suppression des eleves.
+
+`backend/docker-compose.yml` reutilise les variables `DB_USER`, `DB_PASSWORD` et `DB_NAME` pour rester aligne avec `backend/.env`.
 
 ## Démarrage local
 
