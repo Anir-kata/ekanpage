@@ -93,6 +93,14 @@ npm install
 npm run dev
 ```
 
+2bis. Lancer frontend + backend ensemble (un seul script)
+
+```bash
+npm run dev:full
+```
+
+Cette commande lance Vite (frontend) et NestJS (backend) en parallele.
+
 3. Générer le build de production
 
 ```bash
