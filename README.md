@@ -9,10 +9,7 @@
 
 ### 1. Installer les dependances
 ```bash
-npm install
-cd backend
-npm install
-cd ..
+npm run install:all
 ```
 
 ### 2. Lancer la base PostgreSQL
