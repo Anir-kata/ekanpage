@@ -271,14 +271,6 @@ function App() {
           <section className="panel mt-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl p-4">
             <Tabs activeTab={activeView} onChange={setActiveView} />
             <div className="flex items-center gap-2">
-              {!isEditMode && (
-                <button
-                  className="rounded-xl bg-cyan-400/20 px-4 py-2 text-sm font-semibold text-cyan-100 transition hover:bg-cyan-300/30"
-                  onClick={() => setAuthScreen('login')}
-                >
-                  Se connecter
-                </button>
-              )}
               {isEditMode && (
                 <button
                   className="rounded-xl bg-rose-900/50 px-4 py-2 text-sm font-semibold text-rose-100 transition hover:bg-rose-800/70"
@@ -358,7 +350,6 @@ function App() {
                 <article className="review-spotlight relative overflow-hidden rounded-xl p-4 sm:p-5">
                   {activeReview && (
                     <div className="relative z-10">
-                      <p className="text-xs uppercase tracking-[0.22em] text-cyan-200/80">Signal principal</p>
                       <p className="review-quote mt-3 text-base leading-relaxed text-slate-100 sm:text-lg">
                         "{activeReview.note}"
                       </p>
@@ -373,7 +364,6 @@ function App() {
                           Prochaine: {activeReview.nextSessionAt}
                         </span>
                       </div>
-                      <p className="mt-4 text-xs tracking-[0.2em] text-cyan-300/70">***** FEEDBACK VERIFIED *****</p>
                     </div>
                   )}
                   {!activeReview && <p className="text-sm text-slate-300">Aucun avis pour le moment.</p>}
@@ -392,12 +382,6 @@ function App() {
                   </div>
                 )}
               </div>
-
-              {!!reviewFeed.length && (
-                <div className="mt-4 text-xs text-slate-400">
-                  Rotation automatique toutes les 4.2 secondes. Les indicateurs permettent de choisir un avis.
-                </div>
-              )}
             </section>
           )}
 
