@@ -1,8 +1,47 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import request from 'supertest';
+import { Client } from 'pg';
 import { App } from 'supertest/types';
+import { DataSource } from 'typeorm';
 import { AppModule } from './../src/app.module';
+
+const TEST_DB_NAME = process.env.TEST_DB_NAME ?? 'ekanpage_test';
+
+process.env.NODE_ENV = process.env.NODE_ENV ?? 'test';
+process.env.DB_HOST = process.env.DB_HOST ?? 'localhost';
+process.env.DB_PORT = process.env.DB_PORT ?? '5432';
+process.env.DB_USER = process.env.DB_USER ?? 'postgres';
+process.env.DB_PASSWORD = process.env.DB_PASSWORD ?? 'anir';
+process.env.DB_NAME = TEST_DB_NAME;
+process.env.DB_SYNC = process.env.DB_SYNC ?? 'true';
+process.env.AUTH_USER = process.env.AUTH_USER ?? 'anir';
+process.env.AUTH_PASSWORD = process.env.AUTH_PASSWORD ?? 'anir123';
+
+const ensureTestDatabase = async () => {
+  const adminClient = new Client({
+    host: process.env.DB_HOST,
+    port: Number(process.env.DB_PORT),
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: 'postgres',
+  });
+
+  await adminClient.connect();
+
+  try {
+    const result = await adminClient.query(
+      'SELECT 1 FROM pg_database WHERE datname = $1',
+      [TEST_DB_NAME],
+    );
+
+    if (result.rowCount === 0) {
+      await adminClient.query(`CREATE DATABASE \"${TEST_DB_NAME}\"`);
+    }
+  } finally {
+    await adminClient.end();
+  }
+};
 
 type HealthResponse = {
   status: string;
@@ -28,6 +67,10 @@ describe('AppController (e2e)', () => {
   let createdStudentId: string | null = null;
   let authToken = '';
 
+  beforeAll(async () => {
+    await ensureTestDatabase();
+  });
+
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
@@ -42,6 +85,9 @@ describe('AppController (e2e)', () => {
       }),
     );
     await app.init();
+
+    const dataSource = app.get(DataSource);
+    await dataSource.query('DELETE FROM "students"');
   });
 
   afterEach(async () => {
