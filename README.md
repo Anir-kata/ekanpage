@@ -1,9 +1,8 @@
-# Projet Portfolio + Dashboard
+# Portfolio + Dashboard
 
 ## Structure
 - `frontend/` : application React + Vite
 - `backend/` : API NestJS + PostgreSQL
-- `package.json` (racine) : scripts d'orchestration executables depuis la racine Git
 
 ## Features
 - Portfolio (profil, experiences, projets, contact)
