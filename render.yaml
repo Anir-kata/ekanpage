@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: ekanpage-backend
+    env: node
+    rootDir: backend
+    plan: free
+    buildCommand: npm ci && npm run build
+    startCommand: npm run start:prod
+    autoDeploy: true
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: DB_SYNC
+        value: false
+      - key: DB_SSL
+        value: true
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: AUTH_USER
+        sync: false
+      - key: AUTH_PASSWORD
+        sync: false
+      - key: CORS_ORIGIN
+        sync: false

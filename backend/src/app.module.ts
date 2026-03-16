@@ -6,16 +6,28 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { StudentsModule } from './students/students.module';
 
-export const buildTypeOrmOptions = (configService: ConfigService) => ({
-  type: 'postgres' as const,
-  host: configService.get<string>('DB_HOST', 'localhost'),
-  port: Number(configService.get<string>('DB_PORT', '5432')),
-  username: configService.get<string>('DB_USER', 'postgres'),
-  password: configService.getOrThrow<string>('DB_PASSWORD'),
-  database: configService.get<string>('DB_NAME', 'postgres'),
-  autoLoadEntities: true,
-  synchronize: configService.get<string>('DB_SYNC', 'true') === 'true',
-});
+export const buildTypeOrmOptions = (configService: ConfigService) => {
+  const databaseUrl = configService.get<string>('DATABASE_URL');
+
+  return {
+    type: 'postgres' as const,
+    ...(databaseUrl
+      ? { url: databaseUrl }
+      : {
+          host: configService.get<string>('DB_HOST', 'localhost'),
+          port: Number(configService.get<string>('DB_PORT', '5432')),
+          username: configService.get<string>('DB_USER', 'postgres'),
+          password: configService.getOrThrow<string>('DB_PASSWORD'),
+          database: configService.get<string>('DB_NAME', 'postgres'),
+        }),
+    ssl:
+      configService.get<string>('DB_SSL', 'false') === 'true'
+        ? { rejectUnauthorized: false }
+        : false,
+    autoLoadEntities: true,
+    synchronize: configService.get<string>('DB_SYNC', 'true') === 'true',
+  };
+};
 
 @Module({
   imports: [
