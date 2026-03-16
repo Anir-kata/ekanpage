@@ -33,8 +33,6 @@ function App() {
   const [studentsError, setStudentsError] = useState('')
   const [operationFeedback, setOperationFeedback] = useState('')
   const [activeReviewIndex, setActiveReviewIndex] = useState(0)
-  const [searchInput] = useState('')
-  const [searchTerm, setSearchTerm] = useState('')
   const [studentsPage, setStudentsPage] = useState<StudentsPage>({
     items: [],
     total: 0,
@@ -45,13 +43,12 @@ function App() {
   const frameRef = useRef<number | null>(null)
   const pointerRef = useRef<{ x: number; y: number } | null>(null)
 
-  const loadStudents = async (params?: { search?: string; page?: number }) => {
+  const loadStudents = async (params?: { page?: number }) => {
     setStudentsLoading(true)
     setStudentsError('')
 
     try {
       const loaded = await fetchStudents({
-        search: params?.search ?? searchTerm,
         page: params?.page ?? studentsPage.page,
         limit: studentsPage.limit,
       })
@@ -138,7 +135,7 @@ function App() {
 
   const handleCreateStudent = async (values: StudentFormValues) => {
     await createStudentApi(values)
-    await loadStudents({ page: 1, search: searchTerm })
+    await loadStudents({ page: 1 })
     setStudentsView('list')
     setOperationFeedback('Eleve cree avec succes.')
   }
@@ -147,7 +144,7 @@ function App() {
     if (!editingStudent) return
 
     await updateStudentApi(editingStudent.id, values)
-    await loadStudents({ page: studentsPage.page, search: searchTerm })
+    await loadStudents({ page: studentsPage.page })
     setStudentsView('list')
     setEditingStudent(null)
     setOperationFeedback('Eleve mis a jour avec succes.')
@@ -155,12 +152,7 @@ function App() {
 
   const handleDeleteStudent = async (studentId: string) => {
     await deleteStudentApi(studentId)
-    await loadStudents({ page: studentsPage.page, search: searchTerm })
-  }
-
-  const applySearch = () => {
-    setSearchTerm(searchInput)
-    void loadStudents({ search: searchInput, page: 1 })
+    await loadStudents({ page: studentsPage.page })
   }
 
   const goToPage = (page: number) => {

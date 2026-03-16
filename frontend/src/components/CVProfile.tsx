@@ -165,8 +165,8 @@ const softSkills = [
 
 const projects = [
   {
-    title: 'ekanpage',
-    stack: 'TypeScript, React, Tailwind',
+    title: 'Portfolio personnel - ekanpage',
+    stack: 'TypeScript, React, Nest.js',
     result: 'Portfolio personnel interactif avec parcours CV et espace pédagogie.',
     link: 'https://github.com/Anir-kata/ekanpage',
   },
@@ -183,8 +183,8 @@ const projects = [
     link: 'https://github.com/Anir-kata/jobs_dashboard_FastAPI',
   },
   {
-    title: 'analyse_donnees_energetique',
-    stack: 'Python, pipeline data',
+    title: 'Analyse_donnees_energetique',
+    stack: 'Python',
     result: 'Pipeline de traitement de données énergétiques pour analyse opérationnelle.',
     link: 'https://github.com/Anir-kata/analyse_donnees_energetique',
   },
