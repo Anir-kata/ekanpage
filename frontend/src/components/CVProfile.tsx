@@ -324,6 +324,262 @@ const faqItems = [
   },
 ]
 
+const experiencesEn = [
+  {
+    role: 'SIJO - Levallois-Perret',
+    subtitle: 'End-of-study internship + fixed-term contract',
+    period: '05/2024 - 03/2025',
+    stack: [
+      { name: 'Python', icon: SiPython },
+      { name: 'Streamlit', icon: FaTools },
+      { name: 'OCR DocTR', icon: FaTools },
+      { name: 'GPT-4o', icon: FaRobot },
+      { name: 'React', icon: SiReact },
+      { name: 'Node.js', icon: SiNodedotjs },
+      { name: 'Tailwind', icon: SiTailwindcss },
+      { name: 'Azure', icon: FaTools },
+    ],
+    context1Title: 'Context 1: Final-year project',
+    context1: [
+      'Designed and built a Python/Streamlit application to upload heterogeneous CVs (PDFs, scans) and automatically generate a skills file matching company standards.',
+      'Automated pipeline: OCR plus entity extraction and structuring through an LLM (GPT-4o).',
+      'Post-processing with regex and dynamic generation of MS Word documents with placeholders (XML structure manipulation / python-docx).',
+      'Application deployment on Microsoft Azure.',
+      'Project delivered with Agile methodology (short iterations, regular collaboration with business teams, retrospectives, and continuous improvement).',
+      'Result: 90% reduction of internal processing time.',
+      'Technical environment: Python, OCR (DocTR), Streamlit, GPT-4o, Microsoft Azure',
+    ],
+    context2Title: 'Context 2: Fixed-term contract',
+    context2: [
+      'Web application to automate follow-up email campaigns.',
+      'Design and development of an internal web application.',
+      'Frontend development with React and Tailwind CSS.',
+      'Backend development with Node.js and Express.js.',
+      'Microsoft account authentication integration and deployment on Microsoft Azure.',
+      'Technical environment: Node.js, React, Tailwind CSS, REST API, Microsoft Azure',
+    ],
+  },
+  {
+    role: 'Save Energies (IDEX) - Boulogne-Billancourt',
+    subtitle: '6-month internship',
+    period: '04/2021 - 09/2021',
+    stack: [
+      { name: 'R', icon: FaTools },
+      { name: 'Selenium', icon: FaTools },
+      { name: 'VBA', icon: FaTools },
+      { name: 'PowerShell', icon: FaTools },
+      { name: 'REST API', icon: FaTools },
+    ],
+    context1Title: 'Main responsibilities',
+    context1: [
+      'Business process automation: energy data collection, data cleaning and processing, runtime error management, and automated reporting generation.',
+      'Automated data collection through REST APIs and web scraping.',
+      'Built a data visualization tool for gas purchase and sales data.',
+      'Developed energy consumption forecasting models and decision-support tools.',
+      'Results: measurable time and efficiency gains for daily reporting.',
+      'Technical environment: R (Selenium), VBA, PowerShell',
+    ],
+  },
+  {
+    role: 'HP France SAS - Grenoble',
+    subtitle: 'Business Intelligence - 3-month internship',
+    period: '05/2019 - 08/2019',
+    stack: [
+      { name: 'QlikView', icon: FaTools },
+      { name: 'Power BI', icon: FaTools },
+      { name: 'SQL', icon: SiPostgresql },
+      { name: 'Batch scripts', icon: FaTools },
+    ],
+    context1Title: 'Main responsibilities',
+    context1: [
+      'Built decision-making dashboards.',
+      'Automated data update scripts.',
+      'Designed interactive dashboards in QlikView and Power BI for business reporting.',
+      'Data cleaning, structuring, and modeling (relationships, mapping tables).',
+      'Automated data collection and refresh with batch scripts.',
+      'Collaborated with business teams (logistics, forecasting).',
+      'Technical environment: QlikView, Power BI, SQL, Batch scripting',
+    ],
+  },
+]
+
+const profileStoryEn = [
+  {
+    title: 'My profile',
+    content:
+      'I graduated from ENSIMAG. I am building my early fullstack experience with a strong focus on performance, scalability, and clean integration.',
+  },
+  {
+    title: 'How I work',
+    content:
+      'I move step by step, ask for feedback early, and prioritize clear code over unnecessary complexity.',
+  },
+  {
+    title: 'What I am looking for',
+    content:
+      'I want to keep progressing through concrete projects in a demanding team environment, and quickly level up in both frontend and backend development.',
+  },
+]
+
+const expertiseAreasEn = [
+  {
+    key: 'backend',
+    label: 'Backend',
+    title: 'Strong backend foundations',
+    points: [
+      'Designed REST APIs on real-world projects (internships and personal projects).',
+      'Used Java, Python, TypeScript, Node.js, and R depending on context.',
+      'Structured backend code to keep it readable and maintainable.',
+      'Handled input validation, error management, and API responses.',
+      'First cloud integrations (Azure) and simple deployments.',
+      'Automated data and reporting workflows for business needs.',
+    ],
+  },
+  {
+    key: 'frontend',
+    label: 'Frontend',
+    title: 'Modern product-oriented frontend',
+    points: [
+      'Developed with React and TypeScript using reusable components.',
+      'Built readable, responsive, and user-friendly interfaces.',
+      'Used Tailwind to accelerate UI development.',
+      'Added lightweight animations and interactions to improve UX.',
+      'Integrated APIs with loading and error states.',
+      'Focused on visual clarity and overall consistency.',
+    ],
+  },
+  {
+    key: 'algo',
+    label: 'Algorithms and Applied Mathematics',
+    title: 'Applied analytical rigor',
+    points: [
+      'Solved problems using a clear and structured approach.',
+      'Applied mathematical analysis to data, forecasting, and decision support.',
+      'Processed and cleaned heterogeneous datasets on business cases.',
+      'Considered complexity and processing cost when relevant.',
+      'Used a rigorous method inherited from my scientific background (MPSI/MP + ENSIMAG).',
+      'Able to explain technical reasoning in simple terms.',
+    ],
+  },
+] as const
+
+const softSkillsEn = [
+  { name: 'Agility', icon: FaRobot },
+  { name: 'TDD', icon: FaFlask },
+  { name: 'Clean Code', icon: FaCode },
+  { name: 'Analytical mindset', icon: FaTools },
+  { name: 'Engineering rigor', icon: FaTools },
+  { name: 'Autonomy', icon: FaTools },
+  { name: 'Adaptability', icon: FaTools },
+  { name: 'Teamwork', icon: FaTools },
+  { name: 'Active listening', icon: FaTools },
+  { name: 'Knowledge sharing', icon: FaTools },
+  { name: 'Prioritization', icon: FaTools },
+  { name: 'Technical communication', icon: FaTools },
+  { name: 'Problem solving', icon: FaTools },
+]
+
+const projectsEn = [
+  {
+    title: 'Personal portfolio - ekanpage',
+    stack: 'TypeScript, React, Nest.js',
+    result: 'Interactive personal portfolio with CV journey and teaching workspace.',
+    link: 'https://github.com/Anir-kata/ekanpage',
+  },
+  {
+    title: 'Process_CVs_SpringBoot',
+    stack: 'Java, Spring Boot',
+    result: 'CV management with backend API and business processing logic.',
+    link: 'https://github.com/Anir-kata/Process_CVs_SpringBoot',
+  },
+  {
+    title: 'jobs_dashboard_FastAPI',
+    stack: 'Python FastAPI, React',
+    result: 'Job dashboard with FastAPI backend and React frontend.',
+    link: 'https://github.com/Anir-kata/jobs_dashboard_FastAPI',
+  },
+  {
+    title: 'analyse_donnees_energetique',
+    stack: 'Python',
+    result: 'Energy data processing pipeline for operational analysis.',
+    link: 'https://github.com/Anir-kata/analyse_donnees_energetique',
+  },
+]
+
+const universityProjectsEn = [
+  {
+    title: 'Deca compiler',
+    subtitle: 'Academic project - Software Engineering (ENSIMAG)',
+    description:
+      'Team development of a compiler for the Deca language (an educational Java-like language), including all compilation phases and modern software engineering practices.',
+    tasks: [
+      'Designed and implemented compiler phases.',
+      'Developed lexical and syntax analysis with ANTLR.',
+      'Implemented semantic analysis (types and symbols).',
+      'Developed target code generation for execution.',
+      'Set up automated tests with a TDD approach.',
+      'Used code coverage to improve quality.',
+      'Collaborated with Git, pair programming, and continuous integration.',
+    ],
+    environment: [
+      'Language: Java',
+      'Tools: ANTLR, Maven, Git',
+      'Quality: Cobertura, automated tests',
+      'IDE: Eclipse',
+      'Methods: TDD, continuous integration, pair programming',
+    ],
+  },
+  {
+    title: 'Smart Jogging',
+    subtitle: 'FABLAB project - Android mobile application',
+    description:
+      'Android application for running performance analysis based on biomechanical data (accelerometer, gyroscope, pressure sensors) with real-time and post-workout tracking.',
+    tasks: [
+      'Designed and developed an Android training tracking application.',
+      'Implemented screens: authentication, home, training, history, and profile.',
+      'Integrated Google Maps for geolocation and route display.',
+      'Developed local storage for profiles and history.',
+      'Designed algorithms for cadence, speed estimation, and foot-strike analysis.',
+      'Studied and implemented Bluetooth Low Energy communication (BLE/GATT).',
+      'Built a state machine for sequential sensor data reading.',
+      'Implemented real-time feedback (visual and audio alerts).',
+      'Participated in technical meetings with embedded systems experts.',
+    ],
+    environment: [
+      'Language: Java',
+      'Mobile: Android SDK',
+      'IoT: Bluetooth Low Energy (BLE), GATT',
+      'Sensors: accelerometer, gyroscope, pressure sensors',
+      'Mapping: Google Maps API',
+      'Storage: SQLite (Android)',
+      'Processing: signal analysis algorithms',
+    ],
+  },
+]
+
+const faqItemsEn = [
+  {
+    question: 'What role am I looking for?',
+    answer: 'A fullstack developer role with concrete projects and real growth opportunities.',
+  },
+  {
+    question: 'Why this portfolio?',
+    answer: 'To present my background, showcase my projects, and provide a clear view of my skills.',
+  },
+  {
+    question: 'How do I work?',
+    answer: 'I work pragmatically: understand the need, ship a first useful version quickly, then improve through feedback.',
+  },
+  {
+    question: 'Which technologies am I strongest with?',
+    answer: 'Java, Python, TypeScript, Node.js, and R, with React and Angular on the frontend side.',
+  },
+  {
+    question: 'Available to connect?',
+    answer: 'Yes, I am open to discuss. Feel free to reach out for more details.',
+  },
+]
+
 type ExperienceItem = {
   role: string
   subtitle: string
@@ -414,18 +670,45 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
     language === 'fr'
       ? {
           portfolio: 'Portfolio',
+          profileTitle: profile.title,
+          pitchLines: profile.pitchLines,
           downloadPdf: 'Télécharger PDF',
           contact: 'Contact',
           openDashboard: "Accéder au tableau de bord d'enseignement",
           available: 'Disponible pour CDI',
           about: 'À propos',
+          locationLabel: 'Localisation',
+          locationValue: profile.location,
+          availabilityLabel: 'Disponibilité',
+          availabilityValue: profile.availability,
+          languagesLabel: 'Langues',
+          languagesValue: profile.languages,
+          statusLabel: 'Statut',
+          statusValue: profile.status,
           expertise: 'Expertise',
           skills: 'Compétences',
+          masteredLanguages: 'Langages maîtrisés',
+          frontendLabel: 'Frontend',
+          backendLabel: 'Backend',
+          toolsLabel: 'Outils',
+          softSkillsLabel: 'Soft skills',
           experiences: 'Expériences',
           education: 'Formation et certifications',
+          engineeringDegree: 'Diplôme ingénieur - 2025',
+          engineeringSchool: "ENSIMAG - École nationale supérieure d'informatique et de mathématiques appliquées de Grenoble",
+          specialization: "Spécialisation : Ingénierie des Systèmes d'Information",
+          otherEducation: 'Autres formations',
+          cpge: 'Classes préparatoires aux grandes écoles MPSI / MP (Grand Admis au concours CCP)',
+          baccalaureate: 'Baccalauréat Scientifique - Spécialité Mathématiques (Mention Très bien)',
           personalProjects: 'Projets personnels',
           universityProjects: 'Projets universitaires',
           teaching: 'Pédagogie: passion et soft skill',
+          teachingPassionTitle: 'Passion',
+          teachingPassionText: 'J’aime transmettre, expliquer simplement et aider quelqu’un à progresser sur un sujet difficile.',
+          teachingSoftTitle: 'Soft skills associées',
+          teachingSoftText: 'Écoute, patience, reformulation et adaptation du discours selon la personne en face.',
+          teachingImpactTitle: 'Impact',
+          teachingImpactText: 'Au quotidien, ça m’aide à écrire un code plus clair et à mieux collaborer avec une équipe produit/tech.',
           faq: 'Questions fréquentes',
           contactTitle: 'Contact',
           viewOnGithub: 'Voir sur GitHub',
@@ -436,18 +719,49 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
         }
       : {
           portfolio: 'Portfolio',
+          profileTitle: 'ENSIMAG Graduate, Fullstack Developer',
+          pitchLines: [
+            'ENSIMAG graduate engineer, with a scientific background followed by MPSI/MP preparatory classes.',
+            'Hands-on experience in API design, web application development, business process automation, and cloud deployment.',
+            'Strong command of Java and Python, with a quality-driven mindset (Agile practices, TDD, CI/CD, automated testing).',
+          ],
           downloadPdf: 'Download PDF',
           contact: 'Contact',
           openDashboard: 'Open teaching dashboard',
           available: 'Open to full-time opportunities',
           about: 'About',
+          locationLabel: 'Location',
+          locationValue: 'Paris (75014) / Lyon (69007)',
+          availabilityLabel: 'Availability',
+          availabilityValue: 'Immediate',
+          languagesLabel: 'Languages',
+          languagesValue: 'French, English',
+          statusLabel: 'Status',
+          statusValue: 'Available for full-time role',
           expertise: 'Expertise',
           skills: 'Skills',
+          masteredLanguages: 'Core languages',
+          frontendLabel: 'Frontend',
+          backendLabel: 'Backend',
+          toolsLabel: 'Tools',
+          softSkillsLabel: 'Soft skills',
           experiences: 'Experience',
           education: 'Education and certifications',
+          engineeringDegree: 'Engineering degree - 2025',
+          engineeringSchool: 'ENSIMAG - National School of Computer Science and Applied Mathematics of Grenoble',
+          specialization: 'Specialization: Information Systems Engineering',
+          otherEducation: 'Other education',
+          cpge: 'MPSI/MP preparatory classes for engineering schools (high ranking in CCP exam)',
+          baccalaureate: 'Scientific baccalaureate - Mathematics major (highest honors)',
           personalProjects: 'Personal projects',
           universityProjects: 'Academic projects',
           teaching: 'Teaching: passion and soft skills',
+          teachingPassionTitle: 'Passion',
+          teachingPassionText: 'I enjoy teaching, explaining clearly, and helping someone progress on a difficult topic.',
+          teachingSoftTitle: 'Associated soft skills',
+          teachingSoftText: 'Listening, patience, reframing, and adapting communication to each person.',
+          teachingImpactTitle: 'Impact',
+          teachingImpactText: 'In daily work, this helps me write clearer code and collaborate better with product and tech teams.',
           faq: 'FAQ',
           contactTitle: 'Contact',
           viewOnGithub: 'View on GitHub',
@@ -457,15 +771,23 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
           technicalEnvironment: 'Technical environment',
         }
 
+  const profileStoryItems = language === 'fr' ? profileStory : profileStoryEn
+  const expertiseAreaItems = language === 'fr' ? expertiseAreas : expertiseAreasEn
+  const experiencesItems = language === 'fr' ? experiences : experiencesEn
+  const softSkillsItems = language === 'fr' ? softSkills : softSkillsEn
+  const projectsItems = language === 'fr' ? projects : projectsEn
+  const universityProjectsItems = language === 'fr' ? universityProjects : universityProjectsEn
+  const faqItemsData = language === 'fr' ? faqItems : faqItemsEn
+
   return (
     <section id="portfolio" className="mt-6 grid gap-6">
       <Reveal>
         <article className="panel scan-line rounded-3xl p-6 md:p-8">
         <p className="text-xs uppercase tracking-[0.2em] text-cyan-200/90">{copy.portfolio}</p>
         <h2 className="hud-title mt-3 text-2xl font-black text-slate-100 sm:text-3xl">
-          {profile.fullName} - {profile.title}
+          {profile.fullName} - {copy.profileTitle}
         </h2>
-        {profile.pitchLines.map((line) => (
+        {copy.pitchLines.map((line) => (
           <p key={line} className="mt-3 text-slate-300">
             {line}
           </p>
@@ -505,7 +827,7 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
         <article className="panel rounded-2xl p-6">
           <h3 className="hud-title text-lg font-bold text-cyan-200">{copy.about}</h3>
           <div className="mt-4 grid gap-4 md:grid-cols-3">
-            {profileStory.map((item) => (
+            {profileStoryItems.map((item) => (
               <TiltCard key={item.title} className="panel-soft rounded-xl p-4">
                 <p className="text-xs uppercase tracking-[0.16em] text-slate-400">{item.title}</p>
                 <p className="mt-2 text-sm leading-relaxed text-slate-300">{item.content}</p>
@@ -521,30 +843,30 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
           <TiltCard className="panel-soft rounded-xl p-4">
             <p className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-slate-400">
               <FaMapMarkerAlt />
-              Localisation
+              {copy.locationLabel}
             </p>
-            <p className="mt-2 font-semibold text-slate-100">{profile.location}</p>
+            <p className="mt-2 font-semibold text-slate-100">{copy.locationValue}</p>
           </TiltCard>
           <TiltCard className="panel-soft rounded-xl p-4">
             <p className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-slate-400">
               <FaCalendarCheck />
-              Disponibilité
+              {copy.availabilityLabel}
             </p>
-            <p className="mt-2 font-semibold text-slate-100">{profile.availability}</p>
+            <p className="mt-2 font-semibold text-slate-100">{copy.availabilityValue}</p>
           </TiltCard>
           <TiltCard className="panel-soft rounded-xl p-4">
             <p className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-slate-400">
               <FaLanguage />
-              Langues
+              {copy.languagesLabel}
             </p>
-            <p className="mt-2 font-semibold text-slate-100">{profile.languages}</p>
+            <p className="mt-2 font-semibold text-slate-100">{copy.languagesValue}</p>
           </TiltCard>
           <TiltCard className="panel-soft rounded-xl p-4">
             <p className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-slate-400">
               <FaTools />
-              Statut
+              {copy.statusLabel}
             </p>
-            <p className="mt-2 font-semibold text-slate-100">{profile.status}</p>
+            <p className="mt-2 font-semibold text-slate-100">{copy.statusValue}</p>
           </TiltCard>
         </div>
         </article>
@@ -554,7 +876,7 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
         <article className="panel rounded-2xl p-6">
           <h3 className="hud-title text-lg font-bold text-cyan-200">{copy.expertise}</h3>
           <div className="mt-4 grid gap-4 lg:grid-cols-3">
-            {expertiseAreas.map((area) => (
+            {expertiseAreaItems.map((area) => (
               <TiltCard key={area.key} className="panel-soft rounded-xl p-4">
                 <p className="text-xs uppercase tracking-[0.16em] text-slate-400">{area.label}</p>
                 <p className="mt-2 text-sm font-semibold text-cyan-100">{area.title}</p>
@@ -575,7 +897,7 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
         <article className="panel rounded-2xl p-6">
         <h3 className="hud-title text-lg font-bold text-cyan-200">{copy.skills}</h3>
         <div className="panel-soft mt-4 rounded-xl p-4">
-          <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Langages maîtrisés</p>
+          <p className="text-xs uppercase tracking-[0.16em] text-slate-400">{copy.masteredLanguages}</p>
           <div className="skill-flow mt-3 flex flex-wrap gap-2">
             {languageSkills.map((skill, index) => (
               <SkillOrb key={skill.name} name={skill.name} icon={skill.icon} delay={index * 120} />
@@ -584,7 +906,7 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
         </div>
         <div className="mt-5 grid gap-6 lg:grid-cols-2">
           <div className="grid gap-4">
-            <p className="text-sm uppercase tracking-[0.18em] text-slate-400">Frontend</p>
+            <p className="text-sm uppercase tracking-[0.18em] text-slate-400">{copy.frontendLabel}</p>
             <div className="skill-flow flex flex-wrap gap-2">
               {frontendSkills.map((skill, index) => (
                 <SkillOrb key={skill.name} name={skill.name} icon={skill.icon} delay={index * 120} />
@@ -593,7 +915,7 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
           </div>
 
           <div className="grid gap-4">
-            <p className="text-sm uppercase tracking-[0.18em] text-slate-400">Backend</p>
+            <p className="text-sm uppercase tracking-[0.18em] text-slate-400">{copy.backendLabel}</p>
             <div className="skill-flow flex flex-wrap gap-2">
               {backendSkills.map((skill, index) => (
                 <SkillOrb key={skill.name} name={skill.name} icon={skill.icon} delay={index * 120} />
@@ -604,7 +926,7 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
 
         <div className="mt-6 grid gap-6 lg:grid-cols-2">
           <div>
-            <p className="text-sm uppercase tracking-[0.18em] text-slate-400">Outils</p>
+            <p className="text-sm uppercase tracking-[0.18em] text-slate-400">{copy.toolsLabel}</p>
             <div className="skill-flow mt-3 flex flex-wrap gap-2">
               {toolingSkills.map((skill, index) => {
                 const Icon = skill.icon
@@ -614,9 +936,9 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
           </div>
 
           <div>
-            <p className="text-sm uppercase tracking-[0.18em] text-slate-400">Soft skills</p>
+            <p className="text-sm uppercase tracking-[0.18em] text-slate-400">{copy.softSkillsLabel}</p>
             <div className="skill-flow mt-3 flex flex-wrap gap-2">
-              {softSkills.map((skill, index) => {
+              {softSkillsItems.map((skill, index) => {
                 const Icon = skill.icon
                 return <SkillOrb key={skill.name} name={skill.name} icon={Icon} delay={index * 130} />
               })}
@@ -630,7 +952,7 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
         <article className="panel rounded-2xl p-6">
         <h3 className="hud-title text-lg font-bold text-cyan-200">{copy.experiences}</h3>
         <div className="relative mt-5 grid gap-5 before:absolute before:left-2.5 before:top-1 before:h-[calc(100%-10px)] before:w-px before:bg-cyan-300/30 sm:before:left-3">
-          {experiences.map((experience) => (
+          {experiencesItems.map((experience) => (
             <div key={experience.role} className="relative pl-9">
               <span className="absolute left-0 top-2 h-5 w-5 rounded-full bg-cyan-300/20 shadow-[0_0_14px_rgba(34,211,238,0.45)]" />
               <TiltCard className="panel-soft rounded-xl">
@@ -666,26 +988,26 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
         <h3 className="hud-title text-lg font-bold text-cyan-200">{copy.education}</h3>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <TiltCard className="panel-soft rounded-xl p-4">
-            <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Diplôme ingénieur - 2025</p>
+            <p className="text-xs uppercase tracking-[0.16em] text-slate-400">{copy.engineeringDegree}</p>
             <div className="mt-3 grid gap-2 sm:grid-cols-[96px_1fr]">
               <div className="rounded-xl bg-slate-900/30 p-2">
                 <img src="/logo_ensimag.png" alt="Logo ENSIMAG" className="h-20 w-20 object-contain" />
               </div>
               <div className="rounded-xl bg-slate-900/30 p-3">
                 <p className="font-semibold text-slate-100">
-                  ENSIMAG - École nationale supérieure d'informatique et de mathématiques appliquées de Grenoble
+                  {copy.engineeringSchool}
                 </p>
-                <p className="mt-2 text-sm text-slate-300">Spécialisation : Ingénierie des Systèmes d'Information</p>
+                <p className="mt-2 text-sm text-slate-300">{copy.specialization}</p>
               </div>
             </div>
           </TiltCard>
           <TiltCard className="panel-soft rounded-xl p-4">
-            <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Autres formations</p>
+            <p className="text-xs uppercase tracking-[0.16em] text-slate-400">{copy.otherEducation}</p>
             <p className="mt-2 text-sm font-semibold text-cyan-100">
-              Classes préparatoires aux grandes écoles MPSI / MP (Grand Admis au concours CCP)
+              {copy.cpge}
             </p>
             <p className="mt-2 text-sm font-semibold text-cyan-100">
-              Baccalauréat Scientifique - Spécialité Mathématiques (Mention Très bien)
+              {copy.baccalaureate}
             </p>
           </TiltCard>
         </div>
@@ -696,7 +1018,7 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
         <article className="panel rounded-2xl p-6">
         <h3 className="hud-title text-lg font-bold text-cyan-200">{copy.personalProjects}</h3>
         <div className="mt-4 grid gap-4 lg:grid-cols-2">
-          {projects.map((project) => (
+          {projectsItems.map((project) => (
             <TiltCard key={project.title} className="panel-soft rounded-xl p-4">
               <h4 className="text-base font-semibold text-slate-100">{project.title}</h4>
               <p className="mt-2 text-sm text-cyan-100">Stack : {project.stack}</p>
@@ -724,7 +1046,7 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
         <article className="panel rounded-2xl p-6">
           <h3 className="hud-title text-lg font-bold text-cyan-200">{copy.universityProjects}</h3>
           <div className="mt-4 grid gap-4 lg:grid-cols-2">
-            {universityProjects.map((project) => (
+            {universityProjectsItems.map((project) => (
               <TiltCard key={project.title} className="panel-soft rounded-xl p-4">
                 <h4 className="text-base font-semibold text-slate-100">{project.title}</h4>
                 <p className="mt-1 text-sm font-semibold text-cyan-100">{project.subtitle}</p>
@@ -762,16 +1084,16 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
         <h3 className="hud-title text-lg font-bold text-cyan-200">{copy.teaching}</h3>
         <div className="mt-4 grid gap-4 md:grid-cols-3">
           <TiltCard className="panel-soft rounded-xl p-4">
-            <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Passion</p>
-            <p className="mt-2 text-sm text-slate-300">J’aime transmettre, expliquer simplement et aider quelqu’un à progresser sur un sujet difficile.</p>
+            <p className="text-xs uppercase tracking-[0.16em] text-slate-400">{copy.teachingPassionTitle}</p>
+            <p className="mt-2 text-sm text-slate-300">{copy.teachingPassionText}</p>
           </TiltCard>
           <TiltCard className="panel-soft rounded-xl p-4">
-            <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Soft skills associées</p>
-            <p className="mt-2 text-sm text-slate-300">Écoute, patience, reformulation et adaptation du discours selon la personne en face.</p>
+            <p className="text-xs uppercase tracking-[0.16em] text-slate-400">{copy.teachingSoftTitle}</p>
+            <p className="mt-2 text-sm text-slate-300">{copy.teachingSoftText}</p>
           </TiltCard>
           <TiltCard className="panel-soft rounded-xl p-4">
-            <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Impact</p>
-            <p className="mt-2 text-sm text-slate-300">Au quotidien, ça m’aide à écrire un code plus clair et à mieux collaborer avec une équipe produit/tech.</p>
+            <p className="text-xs uppercase tracking-[0.16em] text-slate-400">{copy.teachingImpactTitle}</p>
+            <p className="mt-2 text-sm text-slate-300">{copy.teachingImpactText}</p>
           </TiltCard>
         </div>
         </article>
@@ -815,7 +1137,7 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
         <article className="panel rounded-2xl p-6">
           <h3 className="hud-title text-lg font-bold text-cyan-200">{copy.faq}</h3>
           <div className="mt-4 grid gap-3">
-            {faqItems.map((item, index) => {
+            {faqItemsData.map((item, index) => {
               const opened = openedFaq === index
               return (
                 <div key={item.question} className="panel-soft rounded-xl">

@@ -29,9 +29,6 @@ URLs:
 - Frontend: http://localhost:5173
 - Backend: http://localhost:3000
 
-## Nouveaute
-- Interface bilingue FR/EN avec bouton de bascule en haut de la page principale.
-
 
 Verifier le projet (tests + build):
 ```bash
