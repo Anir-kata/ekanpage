@@ -3,5 +3,8 @@
   "framework": "vite",
   "installCommand": "npm ci && npm --prefix frontend ci --include=dev",
   "buildCommand": "npm --prefix frontend run build",
-  "outputDirectory": "frontend/dist"
+  "outputDirectory": "frontend/dist",
+  "env": {
+    "VITE_API_BASE_URL": "https://ekanpage-backend.onrender.com"
+  }
 }
