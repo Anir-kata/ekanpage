@@ -17,9 +17,11 @@ import type { Student } from './types/student'
 
 type StudentsScreen = 'list' | 'create' | 'edit'
 type AuthScreen = 'none' | 'login'
+type Language = 'fr' | 'en'
 
 function App() {
   const [activeView, setActiveView] = useState<'portfolio' | TabKey>('portfolio')
+  const [language, setLanguage] = useState<Language>('fr')
   const [studentsView, setStudentsView] = useState<StudentsScreen>('list')
   const [authScreen, setAuthScreen] = useState<AuthScreen>('none')
   const [editingStudent, setEditingStudent] = useState<Student | null>(null)
@@ -56,7 +58,7 @@ function App() {
       setStudents(loaded.items)
       setStudentsPage(loaded)
     } catch (error) {
-      setStudentsError(error instanceof Error ? error.message : 'Erreur inconnue de chargement.')
+      setStudentsError(error instanceof Error ? error.message : copy.unknownLoadError)
     } finally {
       setStudentsLoading(false)
     }
@@ -133,11 +135,81 @@ function App() {
     [students],
   )
 
+  const copy = useMemo(
+    () =>
+      language === 'fr'
+        ? {
+            unknownLoadError: 'Erreur inconnue de chargement.',
+            studentCreated: 'Eleve cree avec succes.',
+            studentUpdated: 'Eleve mis a jour avec succes.',
+            editModeEnabled: 'Mode modification activé.',
+            loginFailed: 'Connexion impossible.',
+            readModeEnabled: 'Mode lecture activé.',
+            teachingSpace: "Espace d'enseignement",
+            dashboardTitle: 'Tableau de bord pédagogique',
+            dashboardSubtitle: 'Suivi des élèves, pilotage des séances et gestion des fiches de progression.',
+            logout: 'Se deconnecter',
+            backToPortfolio: 'Retour au portfolio',
+            adminLogin: 'Admin login',
+            usernamePlaceholder: 'Pseudo',
+            passwordPlaceholder: 'Mot de passe',
+            cancel: 'Annuler',
+            login: 'Se connecter',
+            loginLoading: 'Connexion...',
+            totalStudents: "Nombre d'élèves",
+            doneSessions: 'Séances réalisées',
+            observedProgress: 'Progression observée',
+            positiveProgress: 'Suivi positif global',
+            notesTitle: 'Avis sur les élèves, points à améliorer, etc..',
+            noReview: 'Aucun avis pour le moment.',
+            showReviewAria: (index: number) => `Afficher l'avis ${index + 1}`,
+            sessionsCount: 'nombre de séances',
+            loadingStudents: 'Chargement des eleves...',
+            previousPage: 'Page precedente',
+            nextPage: 'Page suivante',
+            page: 'Page',
+            toggleTo: 'ENG',
+          }
+        : {
+            unknownLoadError: 'Unknown loading error.',
+            studentCreated: 'Student created successfully.',
+            studentUpdated: 'Student updated successfully.',
+            editModeEnabled: 'Edit mode enabled.',
+            loginFailed: 'Unable to sign in.',
+            readModeEnabled: 'Read-only mode enabled.',
+            teachingSpace: 'Teaching workspace',
+            dashboardTitle: 'Teaching dashboard',
+            dashboardSubtitle: 'Track students, monitor sessions, and manage progress notes.',
+            logout: 'Sign out',
+            backToPortfolio: 'Back to portfolio',
+            adminLogin: 'Admin login',
+            usernamePlaceholder: 'Username',
+            passwordPlaceholder: 'Password',
+            cancel: 'Cancel',
+            login: 'Sign in',
+            loginLoading: 'Signing in...',
+            totalStudents: 'Total students',
+            doneSessions: 'Sessions completed',
+            observedProgress: 'Observed progress',
+            positiveProgress: 'Overall positive progress',
+            notesTitle: 'Student feedback and improvement points',
+            noReview: 'No feedback yet.',
+            showReviewAria: (index: number) => `Show feedback ${index + 1}`,
+            sessionsCount: 'sessions',
+            loadingStudents: 'Loading students...',
+            previousPage: 'Previous page',
+            nextPage: 'Next page',
+            page: 'Page',
+            toggleTo: 'FR',
+          },
+    [language],
+  )
+
   const handleCreateStudent = async (values: StudentFormValues) => {
     await createStudentApi(values)
     await loadStudents({ page: 1 })
     setStudentsView('list')
-    setOperationFeedback('Eleve cree avec succes.')
+    setOperationFeedback(copy.studentCreated)
   }
 
   const handleUpdateStudent = async (values: StudentFormValues) => {
@@ -147,7 +219,7 @@ function App() {
     await loadStudents({ page: studentsPage.page })
     setStudentsView('list')
     setEditingStudent(null)
-    setOperationFeedback('Eleve mis a jour avec succes.')
+    setOperationFeedback(copy.studentUpdated)
   }
 
   const handleDeleteStudent = async (studentId: string) => {
@@ -223,9 +295,9 @@ function App() {
       await loginApi(loginUsername.trim(), loginPassword)
       setIsEditMode(true)
       setAuthScreen('none')
-      setOperationFeedback('Mode modification activé.')
+      setOperationFeedback(copy.editModeEnabled)
     } catch (error) {
-      setLoginError(error instanceof Error ? error.message : 'Connexion impossible.')
+      setLoginError(error instanceof Error ? error.message : copy.loginFailed)
     } finally {
       setIsLoginLoading(false)
     }
@@ -236,7 +308,7 @@ function App() {
     setIsEditMode(false)
     setStudentsView('list')
     setEditingStudent(null)
-    setOperationFeedback('Mode lecture activé.')
+    setOperationFeedback(copy.readModeEnabled)
   }
 
   return (
@@ -244,38 +316,48 @@ function App() {
       <div className="pointer-events-none absolute left-[-80px] top-[-90px] h-56 w-56 rounded-full bg-cyan-400/20 blur-3xl" />
       <div className="pointer-events-none absolute bottom-[-60px] right-[-40px] h-52 w-52 rounded-full bg-indigo-400/20 blur-3xl" />
 
-      {activeView === 'portfolio' && <CVProfile onOpenPedagogy={() => setActiveView('dashboard')} />}
+      <div className="mb-4 flex justify-end">
+        <button
+          type="button"
+          className="rounded-xl border border-cyan-400/25 bg-slate-900/60 px-4 py-2 text-sm font-semibold text-cyan-100 transition hover:bg-slate-800/70"
+          onClick={() => setLanguage((previous) => (previous === 'fr' ? 'en' : 'fr'))}
+        >
+          {copy.toggleTo}
+        </button>
+      </div>
+
+      {activeView === 'portfolio' && <CVProfile onOpenPedagogy={() => setActiveView('dashboard')} language={language} />}
 
       {activeView !== 'portfolio' && (
         <>
           {activeView === 'dashboard' && (
             <header className="panel scan-line relative rounded-3xl p-6 md:p-8">
-              <p className="text-xs font-medium uppercase tracking-[0.2em] text-cyan-200/90">Espace d'enseignement</p>
+              <p className="text-xs font-medium uppercase tracking-[0.2em] text-cyan-200/90">{copy.teachingSpace}</p>
               <h1 className="hud-title mt-3 text-2xl font-black text-slate-100 sm:text-3xl lg:text-4xl">
-                Tableau de bord pédagogique
+                {copy.dashboardTitle}
               </h1>
               <p className="mt-3 w-full max-w-3xl text-sm text-slate-300 sm:text-base">
-                Suivi des élèves, pilotage des séances et gestion des fiches de progression.
+                {copy.dashboardSubtitle}
               </p>
             </header>
           )}
 
           <section className="panel mt-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl p-4">
-            <Tabs activeTab={activeView} onChange={setActiveView} />
+            <Tabs activeTab={activeView} onChange={setActiveView} language={language} />
             <div className="flex items-center gap-2">
               {isEditMode && (
                 <button
                   className="rounded-xl bg-rose-900/50 px-4 py-2 text-sm font-semibold text-rose-100 transition hover:bg-rose-800/70"
                   onClick={handleLogout}
                 >
-                  Se deconnecter
+                  {copy.logout}
                 </button>
               )}
               <button
                 className="rounded-xl bg-slate-900/60 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:bg-slate-800/70 hover:text-cyan-100"
                 onClick={() => setActiveView('portfolio')}
               >
-                Retour au portfolio
+                {copy.backToPortfolio}
               </button>
             </div>
           </section>
@@ -288,13 +370,13 @@ function App() {
                 aria-hidden="true"
               />
               <section className="panel relative z-10 w-full max-w-md rounded-2xl p-5">
-                <h3 className="hud-title text-base font-bold text-cyan-200">Admin login</h3>
+                <h3 className="hud-title text-base font-bold text-cyan-200">{copy.adminLogin}</h3>
                 <form onSubmit={handleLogin} className="mt-4 grid gap-3">
                   <input
                     className="futuristic-input rounded-lg px-3 py-2 text-sm"
                     value={loginUsername}
                     onChange={(event) => setLoginUsername(event.target.value)}
-                    placeholder="Pseudo"
+                    placeholder={copy.usernamePlaceholder}
                     autoFocus
                   />
                   <input
@@ -302,7 +384,7 @@ function App() {
                     className="futuristic-input rounded-lg px-3 py-2 text-sm"
                     value={loginPassword}
                     onChange={(event) => setLoginPassword(event.target.value)}
-                    placeholder="Mot de passe"
+                    placeholder={copy.passwordPlaceholder}
                   />
                   <div className="mt-1 flex justify-end gap-2">
                     <button
@@ -310,14 +392,14 @@ function App() {
                       className="rounded-lg bg-slate-800/60 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:bg-slate-700/70"
                       onClick={() => setAuthScreen('none')}
                     >
-                      Annuler
+                      {copy.cancel}
                     </button>
                     <button
                       type="submit"
                       disabled={isLoginLoading}
                       className="rounded-lg bg-cyan-400/20 px-4 py-2 text-sm font-semibold text-cyan-100 transition hover:bg-cyan-300/30 disabled:opacity-60"
                     >
-                      {isLoginLoading ? 'Connexion...' : 'Se connecter'}
+                      {isLoginLoading ? copy.loginLoading : copy.login}
                     </button>
                   </div>
                   {loginError && <p className="text-sm text-rose-300">{loginError}</p>}
@@ -329,23 +411,23 @@ function App() {
           {activeView === 'dashboard' && (
             <section className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               <article className="panel-soft rounded-2xl p-5 transition hover:-translate-y-0.5 hover:shadow-cyan-400/20">
-                <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Nombre d'élèves</p>
+                <p className="text-xs uppercase tracking-[0.18em] text-slate-400">{copy.totalStudents}</p>
                 <p className="neon-cyan mt-3 text-4xl font-extrabold">{students.length}</p>
               </article>
               <article className="panel-soft rounded-2xl p-5 transition hover:-translate-y-0.5 hover:shadow-blue-400/20">
-                <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Séances réalisées</p>
+                <p className="text-xs uppercase tracking-[0.18em] text-slate-400">{copy.doneSessions}</p>
                 <p className="mt-3 text-4xl font-extrabold text-blue-300">{totalSessions}</p>
               </article>
               <article className="panel-soft rounded-2xl p-5 transition hover:-translate-y-0.5 hover:shadow-indigo-400/20">
-                <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Progression observée</p>
-                <p className="mt-3 text-base font-semibold text-indigo-200">Suivi positif global</p>
+                <p className="text-xs uppercase tracking-[0.18em] text-slate-400">{copy.observedProgress}</p>
+                <p className="mt-3 text-base font-semibold text-indigo-200">{copy.positiveProgress}</p>
               </article>
             </section>
           )}
 
           {activeView === 'dashboard' && (
             <section className="mt-6 panel rounded-2xl p-5">
-              <h3 className="hud-title text-base font-bold text-cyan-200">Avis sur les élèves, points à améliorer, etc..</h3>
+              <h3 className="hud-title text-base font-bold text-cyan-200">{copy.notesTitle}</h3>
               <div className="mt-4">
                 <article className="review-spotlight relative overflow-hidden rounded-xl p-4 sm:p-5">
                   {activeReview && (
@@ -358,12 +440,12 @@ function App() {
                           {activeReview.level}
                         </span>
                         <span className="rounded-full border border-blue-400/30 bg-blue-500/10 px-2 py-1">
-                          nombre de séances: {activeReview.sessionsDone}
+                          {copy.sessionsCount}: {activeReview.sessionsDone}
                         </span>
                       </div>
                     </div>
                   )}
-                  {!activeReview && <p className="text-sm text-slate-300">Aucun avis pour le moment.</p>}
+                  {!activeReview && <p className="text-sm text-slate-300">{copy.noReview}</p>}
                 </article>
                 {!!reviewFeed.length && (
                   <div className="mt-4 flex flex-wrap items-center gap-2">
@@ -373,7 +455,7 @@ function App() {
                         type="button"
                         className={`review-dot ${index === activeReviewIndex % reviewFeed.length ? 'review-dot--active' : ''}`}
                         onClick={() => setActiveReviewIndex(index)}
-                        aria-label={`Afficher l'avis ${index + 1}`}
+                        aria-label={copy.showReviewAria(index)}
                       />
                     ))}
                   </div>
@@ -385,7 +467,7 @@ function App() {
           {activeView === 'students' && (
             <section className="mt-6">
               {studentsLoading && (
-                <div className="panel rounded-2xl p-4 text-sm text-slate-300">Chargement des eleves...</div>
+                <div className="panel rounded-2xl p-4 text-sm text-slate-300">{copy.loadingStudents}</div>
               )}
               {studentsError && (
                 <div className="panel rounded-2xl p-4 text-sm text-rose-300">{studentsError}</div>
@@ -405,6 +487,7 @@ function App() {
                     onDeleteStudent={handleDeleteStudent}
                     onOperationSuccess={setOperationFeedback}
                     canEdit={isEditMode}
+                    language={language}
                   />
 
                   <div className="panel mt-4 flex items-center justify-between rounded-2xl p-4 text-sm text-slate-300">
@@ -413,24 +496,24 @@ function App() {
                       onClick={() => goToPage(studentsPage.page - 1)}
                       disabled={studentsPage.page <= 1}
                     >
-                      Page precedente
+                      {copy.previousPage}
                     </button>
                     <span>
-                      Page {studentsPage.page} / {studentsPage.totalPages}
+                      {copy.page} {studentsPage.page} / {studentsPage.totalPages}
                     </span>
                     <button
                       className="rounded-lg bg-slate-900/60 px-3 py-2 transition hover:bg-slate-800/70 disabled:opacity-40"
                       onClick={() => goToPage(studentsPage.page + 1)}
                       disabled={studentsPage.page >= studentsPage.totalPages}
                     >
-                      Page suivante
+                      {copy.nextPage}
                     </button>
                   </div>
                 </>
               )}
 
               {studentsView === 'create' && (
-                <StudentFormPage mode="create" onCancel={closeFormPage} onSubmit={handleCreateStudent} />
+                <StudentFormPage mode="create" onCancel={closeFormPage} onSubmit={handleCreateStudent} language={language} />
               )}
 
               {studentsView === 'edit' && (
@@ -439,6 +522,7 @@ function App() {
                   initialStudent={editingStudent}
                   onCancel={closeFormPage}
                   onSubmit={handleUpdateStudent}
+                  language={language}
                 />
               )}
             </section>

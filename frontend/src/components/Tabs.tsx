@@ -3,6 +3,7 @@ type TabKey = 'dashboard' | 'students'
 type TabsProps = {
   activeTab: TabKey
   onChange: (tab: TabKey) => void
+  language: 'fr' | 'en'
 }
 
 const tabStyles = (isActive: boolean) =>
@@ -12,14 +13,19 @@ const tabStyles = (isActive: boolean) =>
       : 'bg-slate-900/35 text-slate-300 hover:bg-slate-800/45 hover:text-cyan-200'
   }`
 
-export function Tabs({ activeTab, onChange }: TabsProps) {
+export function Tabs({ activeTab, onChange, language }: TabsProps) {
+  const labels =
+    language === 'fr'
+      ? { dashboard: 'Tableau de bord', students: 'Élèves' }
+      : { dashboard: 'Dashboard', students: 'Students' }
+
   return (
     <nav className="flex flex-wrap gap-2">
       <button className={tabStyles(activeTab === 'dashboard')} onClick={() => onChange('dashboard')}>
-        Tableau de bord
+        {labels.dashboard}
       </button>
       <button className={tabStyles(activeTab === 'students')} onClick={() => onChange('students')}>
-        Élèves
+        {labels.students}
       </button>
     </nav>
   )

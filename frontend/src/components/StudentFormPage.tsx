@@ -9,6 +9,7 @@ type StudentFormPageProps = {
   initialStudent?: Student | null
   onCancel: () => void
   onSubmit: (values: StudentFormValues) => Promise<void>
+  language: 'fr' | 'en'
 }
 
 const emptyValues: StudentFormValues = {
@@ -32,7 +33,48 @@ const weekdayOptions = [
   { label: 'Samedi', value: 6 },
 ]
 
-export function StudentFormPage({ mode, initialStudent, onCancel, onSubmit }: StudentFormPageProps) {
+export function StudentFormPage({ mode, initialStudent, onCancel, onSubmit, language }: StudentFormPageProps) {
+  const copy =
+    language === 'fr'
+      ? {
+          requiredError: 'Merci de remplir tous les champs.',
+          saveError: 'Enregistrement impossible pour le moment.',
+          createTitle: 'Ajouter un élève',
+          editTitle: 'Modifier un élève',
+          backToList: 'Retour à la liste',
+          fullName: 'Nom complet',
+          level: 'Niveau',
+          objective: 'Objectif',
+          sessionsDone: 'Séances réalisées',
+          classDay: 'Jour de cours',
+          classTime: 'Heure de cours',
+          nextSession: 'Prochaine séance (calcul automatique)',
+          notes: 'Avis sur les élèves, points à améliorer, etc.',
+          cancel: 'Annuler',
+          saving: 'Enregistrement...',
+          create: "Créer l'élève",
+          save: 'Enregistrer',
+        }
+      : {
+          requiredError: 'Please fill in all fields.',
+          saveError: 'Unable to save right now.',
+          createTitle: 'Add student',
+          editTitle: 'Edit student',
+          backToList: 'Back to list',
+          fullName: 'Full name',
+          level: 'Level',
+          objective: 'Goal',
+          sessionsDone: 'Completed sessions',
+          classDay: 'Class day',
+          classTime: 'Class time',
+          nextSession: 'Next session (auto-calculated)',
+          notes: 'Student notes, improvement points, etc.',
+          cancel: 'Cancel',
+          saving: 'Saving...',
+          create: 'Create student',
+          save: 'Save',
+        }
+
   const source = useMemo(() => initialStudent ?? null, [initialStudent])
 
   const [values, setValues] = useState<StudentFormValues>(() => {
@@ -71,7 +113,7 @@ export function StudentFormPage({ mode, initialStudent, onCancel, onSubmit }: St
     }
 
     if (!payload.fullName || !payload.level || !payload.objective || !payload.notes) {
-      setFormError('Merci de remplir tous les champs.')
+      setFormError(copy.requiredError)
       return
     }
 
@@ -80,7 +122,7 @@ export function StudentFormPage({ mode, initialStudent, onCancel, onSubmit }: St
       setFormError('')
       await onSubmit(payload)
     } catch {
-      setFormError('Enregistrement impossible pour le moment.')
+      setFormError(copy.saveError)
     } finally {
       setIsSaving(false)
     }
@@ -90,20 +132,20 @@ export function StudentFormPage({ mode, initialStudent, onCancel, onSubmit }: St
     <section className="panel rounded-2xl p-6">
       <div className="flex items-center justify-between gap-3">
         <h2 className="hud-title text-lg font-bold text-cyan-200">
-          {mode === 'create' ? 'Ajouter un élève' : 'Modifier un élève'}
+          {mode === 'create' ? copy.createTitle : copy.editTitle}
         </h2>
         <button
           className="rounded-lg bg-slate-800/60 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:bg-slate-700/70"
           onClick={onCancel}
           disabled={isSaving}
         >
-          Retour à la liste
+          {copy.backToList}
         </button>
       </div>
 
       <div className="mt-5 grid gap-3 sm:grid-cols-2">
         <label className="grid gap-1 text-sm text-slate-300">
-          Nom complet
+          {copy.fullName}
           <input
             className="futuristic-input rounded-lg px-3 py-2 text-sm"
             value={values.fullName}
@@ -112,7 +154,7 @@ export function StudentFormPage({ mode, initialStudent, onCancel, onSubmit }: St
         </label>
 
         <label className="grid gap-1 text-sm text-slate-300">
-          Niveau
+          {copy.level}
           <input
             className="futuristic-input rounded-lg px-3 py-2 text-sm"
             value={values.level}
@@ -121,7 +163,7 @@ export function StudentFormPage({ mode, initialStudent, onCancel, onSubmit }: St
         </label>
 
         <label className="grid gap-1 text-sm text-slate-300">
-          Objectif
+          {copy.objective}
           <input
             className="futuristic-input rounded-lg px-3 py-2 text-sm"
             value={values.objective}
@@ -130,7 +172,7 @@ export function StudentFormPage({ mode, initialStudent, onCancel, onSubmit }: St
         </label>
 
         <label className="grid gap-1 text-sm text-slate-300">
-          Séances réalisées
+          {copy.sessionsDone}
           <input
             type="number"
             min={0}
@@ -141,7 +183,7 @@ export function StudentFormPage({ mode, initialStudent, onCancel, onSubmit }: St
         </label>
 
         <label className="grid gap-1 text-sm text-slate-300">
-          Jour de cours
+          {copy.classDay}
           <select
             className="futuristic-input rounded-lg px-3 py-2 text-sm"
             value={values.sessionWeekday}
@@ -156,7 +198,7 @@ export function StudentFormPage({ mode, initialStudent, onCancel, onSubmit }: St
         </label>
 
         <label className="grid gap-1 text-sm text-slate-300">
-          Heure de cours
+          {copy.classTime}
           <input
             type="time"
             className="futuristic-input rounded-lg px-3 py-2 text-sm"
@@ -166,7 +208,7 @@ export function StudentFormPage({ mode, initialStudent, onCancel, onSubmit }: St
         </label>
 
         <label className="sm:col-span-2 grid gap-1 text-sm text-slate-300">
-          Prochaine séance (calcul automatique)
+          {copy.nextSession}
           <input
             disabled
             className="futuristic-input rounded-lg px-3 py-2 text-sm opacity-75"
@@ -176,7 +218,7 @@ export function StudentFormPage({ mode, initialStudent, onCancel, onSubmit }: St
         </label>
 
         <label className="sm:col-span-2 grid gap-1 text-sm text-slate-300">
-          Avis sur les élèves, points à améliorer, etc.
+          {copy.notes}
           <textarea
             className="futuristic-input min-h-28 rounded-lg px-3 py-2 text-sm"
             value={values.notes}
@@ -193,14 +235,14 @@ export function StudentFormPage({ mode, initialStudent, onCancel, onSubmit }: St
           onClick={onCancel}
           disabled={isSaving}
         >
-          Annuler
+          {copy.cancel}
         </button>
         <button
           className="rounded-lg bg-cyan-400/20 px-4 py-2 text-sm font-semibold text-cyan-100 transition hover:bg-cyan-300/30"
           onClick={handleSubmit}
           disabled={isSaving}
         >
-          {isSaving ? 'Enregistrement...' : mode === 'create' ? 'Créer l\'élève' : 'Enregistrer'}
+          {isSaving ? copy.saving : mode === 'create' ? copy.create : copy.save}
         </button>
       </div>
     </section>

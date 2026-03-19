@@ -404,17 +404,64 @@ function SkillOrb({ name, icon: Icon, delay }: { name: string; icon: ComponentTy
 
 type CVProfileProps = {
   onOpenPedagogy: () => void
+  language: 'fr' | 'en'
 }
 
-export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
+export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
   const [selectedExperience, setSelectedExperience] = useState<ExperienceItem | null>(null)
   const [openedFaq, setOpenedFaq] = useState<number | null>(0)
+  const copy =
+    language === 'fr'
+      ? {
+          portfolio: 'Portfolio',
+          downloadPdf: 'Télécharger PDF',
+          contact: 'Contact',
+          openDashboard: "Accéder au tableau de bord d'enseignement",
+          available: 'Disponible pour CDI',
+          about: 'À propos',
+          expertise: 'Expertise',
+          skills: 'Compétences',
+          experiences: 'Expériences',
+          education: 'Formation et certifications',
+          personalProjects: 'Projets personnels',
+          universityProjects: 'Projets universitaires',
+          teaching: 'Pédagogie: passion et soft skill',
+          faq: 'Questions fréquentes',
+          contactTitle: 'Contact',
+          viewOnGithub: 'Voir sur GitHub',
+          clickForDetails: 'Cliquer pour voir les détails',
+          close: 'Fermer',
+          tasks: 'Tâches',
+          technicalEnvironment: 'Environnement technique',
+        }
+      : {
+          portfolio: 'Portfolio',
+          downloadPdf: 'Download PDF',
+          contact: 'Contact',
+          openDashboard: 'Open teaching dashboard',
+          available: 'Open to full-time opportunities',
+          about: 'About',
+          expertise: 'Expertise',
+          skills: 'Skills',
+          experiences: 'Experience',
+          education: 'Education and certifications',
+          personalProjects: 'Personal projects',
+          universityProjects: 'Academic projects',
+          teaching: 'Teaching: passion and soft skills',
+          faq: 'FAQ',
+          contactTitle: 'Contact',
+          viewOnGithub: 'View on GitHub',
+          clickForDetails: 'Click to view details',
+          close: 'Close',
+          tasks: 'Tasks',
+          technicalEnvironment: 'Technical environment',
+        }
 
   return (
     <section id="portfolio" className="mt-6 grid gap-6">
       <Reveal>
         <article className="panel scan-line rounded-3xl p-6 md:p-8">
-        <p className="text-xs uppercase tracking-[0.2em] text-cyan-200/90">Portfolio</p>
+        <p className="text-xs uppercase tracking-[0.2em] text-cyan-200/90">{copy.portfolio}</p>
         <h2 className="hud-title mt-3 text-2xl font-black text-slate-100 sm:text-3xl">
           {profile.fullName} - {profile.title}
         </h2>
@@ -431,32 +478,32 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
             className="inline-flex items-center gap-2 rounded-xl bg-indigo-400/15 px-4 py-2 text-sm font-semibold text-indigo-100 transition hover:shadow-[0_0_22px_rgba(129,140,248,0.35)]"
           >
             <FaFilePdf />
-            Télécharger PDF
+            {copy.downloadPdf}
           </a>
           <a
             href="#contact"
             className="inline-flex items-center gap-2 rounded-xl bg-slate-800/50 px-4 py-2 text-sm font-semibold text-slate-100 transition hover:bg-slate-700/55 hover:text-cyan-100"
           >
             <FaEnvelope />
-            Contact
+            {copy.contact}
           </a>
           <button
             className="inline-flex items-center gap-2 rounded-xl bg-cyan-400/15 px-4 py-2 text-sm font-semibold text-cyan-100 transition-all duration-150 ease-out hover:-translate-y-0.5 hover:bg-cyan-300/25 hover:shadow-[0_0_22px_rgba(34,211,238,0.35)] active:translate-y-0 active:scale-[0.98]"
             onClick={onOpenPedagogy}
           >
-            Accéder au tableau de bord d'enseignement
+            {copy.openDashboard}
           </button>
         </div>
         <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-emerald-400/12 px-3 py-1 text-xs font-semibold text-emerald-200">
           <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-300" />
-          Disponible pour CDI
+          {copy.available}
         </div>
         </article>
       </Reveal>
 
       <Reveal delay={80}>
         <article className="panel rounded-2xl p-6">
-          <h3 className="hud-title text-lg font-bold text-cyan-200">À propos</h3>
+          <h3 className="hud-title text-lg font-bold text-cyan-200">{copy.about}</h3>
           <div className="mt-4 grid gap-4 md:grid-cols-3">
             {profileStory.map((item) => (
               <TiltCard key={item.title} className="panel-soft rounded-xl p-4">
@@ -505,7 +552,7 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
 
       <Reveal delay={100}>
         <article className="panel rounded-2xl p-6">
-          <h3 className="hud-title text-lg font-bold text-cyan-200">Expertise</h3>
+          <h3 className="hud-title text-lg font-bold text-cyan-200">{copy.expertise}</h3>
           <div className="mt-4 grid gap-4 lg:grid-cols-3">
             {expertiseAreas.map((area) => (
               <TiltCard key={area.key} className="panel-soft rounded-xl p-4">
@@ -526,7 +573,7 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
 
       <Reveal delay={120}>
         <article className="panel rounded-2xl p-6">
-        <h3 className="hud-title text-lg font-bold text-cyan-200">Compétences</h3>
+        <h3 className="hud-title text-lg font-bold text-cyan-200">{copy.skills}</h3>
         <div className="panel-soft mt-4 rounded-xl p-4">
           <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Langages maîtrisés</p>
           <div className="skill-flow mt-3 flex flex-wrap gap-2">
@@ -581,7 +628,7 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
 
       <Reveal delay={160}>
         <article className="panel rounded-2xl p-6">
-        <h3 className="hud-title text-lg font-bold text-cyan-200">Expériences</h3>
+        <h3 className="hud-title text-lg font-bold text-cyan-200">{copy.experiences}</h3>
         <div className="relative mt-5 grid gap-5 before:absolute before:left-2.5 before:top-1 before:h-[calc(100%-10px)] before:w-px before:bg-cyan-300/30 sm:before:left-3">
           {experiences.map((experience) => (
             <div key={experience.role} className="relative pl-9">
@@ -605,7 +652,7 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
                       )
                     })}
                   </div>
-                  <p className="mt-3 text-right text-sm text-slate-300">Cliquer pour voir les détails</p>
+                  <p className="mt-3 text-right text-sm text-slate-300">{copy.clickForDetails}</p>
                 </button>
               </TiltCard>
             </div>
@@ -616,7 +663,7 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
 
       <Reveal delay={220}>
         <article className="panel rounded-2xl p-6">
-        <h3 className="hud-title text-lg font-bold text-cyan-200">Formation et certifications</h3>
+        <h3 className="hud-title text-lg font-bold text-cyan-200">{copy.education}</h3>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <TiltCard className="panel-soft rounded-xl p-4">
             <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Diplôme ingénieur - 2025</p>
@@ -647,7 +694,7 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
 
       <Reveal delay={260}>
         <article className="panel rounded-2xl p-6">
-        <h3 className="hud-title text-lg font-bold text-cyan-200">Projets personnels</h3>
+        <h3 className="hud-title text-lg font-bold text-cyan-200">{copy.personalProjects}</h3>
         <div className="mt-4 grid gap-4 lg:grid-cols-2">
           {projects.map((project) => (
             <TiltCard key={project.title} className="panel-soft rounded-xl p-4">
@@ -663,7 +710,7 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
                     className="inline-flex items-center gap-2 text-sm font-semibold text-cyan-200 hover:text-cyan-100"
                   >
                     <FaGithub />
-                    Voir sur GitHub
+                    {copy.viewOnGithub}
                   </a>
                 </div>
               )}
@@ -675,7 +722,7 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
 
       <Reveal delay={280}>
         <article className="panel rounded-2xl p-6">
-          <h3 className="hud-title text-lg font-bold text-cyan-200">Projets universitaires</h3>
+          <h3 className="hud-title text-lg font-bold text-cyan-200">{copy.universityProjects}</h3>
           <div className="mt-4 grid gap-4 lg:grid-cols-2">
             {universityProjects.map((project) => (
               <TiltCard key={project.title} className="panel-soft rounded-xl p-4">
@@ -684,7 +731,7 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
                 <p className="mt-3 text-sm text-slate-300">{project.description}</p>
 
                 <div className="mt-4">
-                  <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Tâches</p>
+                  <p className="text-xs uppercase tracking-[0.16em] text-slate-400">{copy.tasks}</p>
                   <div className="mt-2 grid gap-1.5">
                     {project.tasks.map((task) => (
                       <p key={task} className="text-sm text-slate-300">
@@ -695,7 +742,7 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
                 </div>
 
                 <div className="mt-4">
-                  <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Environnement technique</p>
+                  <p className="text-xs uppercase tracking-[0.16em] text-slate-400">{copy.technicalEnvironment}</p>
                   <div className="mt-2 flex flex-wrap gap-2">
                     {project.environment.map((item) => (
                       <span key={item} className="inline-flex items-center rounded-full bg-slate-900/45 px-2.5 py-1 text-xs text-cyan-100">
@@ -712,7 +759,7 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
 
       <Reveal delay={300}>
         <article className="panel rounded-2xl p-6">
-        <h3 className="hud-title text-lg font-bold text-cyan-200">Pédagogie: passion et soft skill</h3>
+        <h3 className="hud-title text-lg font-bold text-cyan-200">{copy.teaching}</h3>
         <div className="mt-4 grid gap-4 md:grid-cols-3">
           <TiltCard className="panel-soft rounded-xl p-4">
             <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Passion</p>
@@ -732,7 +779,7 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
 
       <Reveal delay={340}>
         <article id="contact" className="panel rounded-2xl p-6 text-center">
-        <h3 className="hud-title text-xl font-bold text-cyan-200">Contact</h3>
+        <h3 className="hud-title text-xl font-bold text-cyan-200">{copy.contactTitle}</h3>
         <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
           <a href={`mailto:${profile.email}`} className="inline-flex items-center gap-2 rounded-lg bg-slate-800/45 px-3 py-2 text-slate-300 hover:text-cyan-100">
             <FaEnvelope className="text-cyan-200" />
@@ -766,7 +813,7 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
 
       <Reveal delay={360}>
         <article className="panel rounded-2xl p-6">
-          <h3 className="hud-title text-lg font-bold text-cyan-200">Questions fréquentes</h3>
+          <h3 className="hud-title text-lg font-bold text-cyan-200">{copy.faq}</h3>
           <div className="mt-4 grid gap-3">
             {faqItems.map((item, index) => {
               const opened = openedFaq === index
@@ -802,7 +849,7 @@ export function CVProfile({ onOpenPedagogy }: CVProfileProps) {
                 className="rounded-lg bg-slate-900/60 px-3 py-1 text-sm text-slate-200 hover:bg-slate-800/70 hover:text-cyan-100"
                 onClick={() => setSelectedExperience(null)}
               >
-                Fermer
+                {copy.close}
               </button>
             </div>
 
