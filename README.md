@@ -46,5 +46,6 @@ npm run build:full
 
 ## Nouveautes
 
+- v5.0.4: barre de navigation du portfolio en sticky bas de viewport (bottom-3).
 - v5.0.3: correction definitive de la barre sticky (la classe panel forcait position relative et annulait sticky; override en !sticky).
 - v5.0.2: correction de la barre sticky du portfolio (conteneur principal passe de grid a flux vertical pour un sticky qui suit bien le scroll).
