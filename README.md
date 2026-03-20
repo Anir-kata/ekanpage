@@ -48,7 +48,7 @@ docker compose -f backend/docker-compose.yml up -d
 
 # 3. Configurer les variables d'environnement
 cp backend/.env.example backend/.env
-# → renseigner AUTH_USER, AUTH_PASSWORD, JWT_SECRET
+# renseigner AUTH_USER, AUTH_PASSWORD, JWT_SECRET
 
 # 4. Lancer le projet
 npm run dev:full
