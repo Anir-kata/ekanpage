@@ -819,20 +819,23 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
     { href: '#projects', label: copy.personalProjects },
     { href: '#university-projects', label: copy.universityProjects },
     { href: '#teaching', label: copy.teaching },
-    { href: '#faq', label: copy.faq },
     { href: '#contact', label: copy.contactTitle },
+    { href: '#faq', label: copy.faq },
   ]
 
   return (
     <>
-      <nav className="fixed left-3 top-1/2 z-40 hidden -translate-y-1/2 flex-col gap-0.5 xl:flex">
+      <nav className="fixed left-3 top-24 z-40 hidden flex-col gap-0.5 xl:flex">
+        <p className="mb-1.5 px-2 text-[9px] font-bold uppercase tracking-[0.2em] text-cyan-500/60">
+          Navigation
+        </p>
         {quickLinks.map((link) => (
           <a
             key={link.href}
             href={link.href}
-            className="group flex items-center gap-2 rounded-lg px-2 py-1.5 text-xs font-medium text-slate-500 transition hover:bg-slate-800/70 hover:text-cyan-200"
+            className="group flex items-center gap-2.5 rounded-lg px-2 py-1.5 text-xs font-medium text-slate-500 transition-all duration-150 hover:bg-slate-800/80 hover:text-cyan-200 hover:shadow-[inset_0_0_0_1px_rgba(34,211,238,0.18)] hover:tracking-wide"
           >
-            <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-cyan-500/40 transition group-hover:bg-cyan-300" />
+            <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-slate-600 transition-all duration-150 group-hover:scale-125 group-hover:bg-cyan-400 group-hover:shadow-[0_0_6px_rgba(34,211,238,0.7)]" />
             {link.label}
           </a>
         ))}
