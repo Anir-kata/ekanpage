@@ -186,19 +186,19 @@ const projects = [
     link: 'https://github.com/Anir-kata/ekanpage',
   },
   {
-    title: 'Process_CVs_SpringBoot',
+    title: 'Projet pour faire le processing de CVs avec Java Spring Boot',
     stack: 'Java, Spring Boot',
     result: 'Gestion de CV avec API backend et logique métier de traitement.',
     link: 'https://github.com/Anir-kata/Process_CVs_SpringBoot',
   },
   {
-    title: 'jobs_dashboard_FastAPI',
+    title: 'Projet d\'un dashboard d\'offres d\'emploi avec FastAPI/React',
     stack: 'Python FastAPI, React',
     result: 'Dashboard emploi avec backend FastAPI et frontend React.',
     link: 'https://github.com/Anir-kata/jobs_dashboard_FastAPI',
   },
   {
-    title: 'Analyse_donnees_energetique',
+    title: 'Projet d\'analyse de données énergétiques',
     stack: 'Python',
     result: 'Pipeline de traitement de données énergétiques pour analyse opérationnelle.',
     link: 'https://github.com/Anir-kata/analyse_donnees_energetique',
@@ -825,15 +825,12 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
 
   return (
     <>
-      <nav className="fixed left-3 top-24 z-40 hidden flex-col gap-0.5 xl:flex">
-        <p className="mb-1.5 px-2 text-[9px] font-bold uppercase tracking-[0.2em] text-cyan-500/60">
-          Navigation
-        </p>
+      <nav className="fixed left-3 top-24 z-40 hidden flex-col gap-0.5 rounded-2xl border border-slate-800/70 bg-slate-950/35 px-1.5 py-2 backdrop-blur-sm xl:flex">
         {quickLinks.map((link) => (
           <a
             key={link.href}
             href={link.href}
-            className="group flex items-center gap-2.5 rounded-lg px-2 py-1.5 text-xs font-medium text-slate-500 transition-all duration-150 hover:bg-slate-800/80 hover:text-cyan-200 hover:shadow-[inset_0_0_0_1px_rgba(34,211,238,0.18)] hover:tracking-wide"
+            className="group flex items-center gap-2.5 rounded-lg px-2 py-1.5 text-xs font-medium text-slate-500 transition-all duration-150 hover:text-cyan-200 hover:shadow-[inset_0_0_0_1px_rgba(34,211,238,0.18)] hover:tracking-wide"
           >
             <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-slate-600 transition-all duration-150 group-hover:scale-125 group-hover:bg-cyan-400 group-hover:shadow-[0_0_6px_rgba(34,211,238,0.7)]" />
             {link.label}
