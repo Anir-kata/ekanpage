@@ -34,6 +34,7 @@ import {
   SiIntellijidea,
   SiJenkins,
   SiMysql,
+  SiNestjs,
   SiNodedotjs,
   SiPostgresql,
   SiPython,
@@ -48,6 +49,27 @@ import {
 } from 'react-icons/si'
 import { TbBrandVscode } from 'react-icons/tb'
 import { profile } from '../data/profile'
+
+type TechStackItem = {
+  name: string
+  icon: ComponentType<{ className?: string }>
+}
+
+type ProjectCardItem = {
+  title: string
+  stack: TechStackItem[]
+  result: string
+  link?: string
+}
+
+type UniversityProjectItem = {
+  title: string
+  subtitle: string
+  stack: TechStackItem[]
+  description: string
+  tasks: string[]
+  environment: string[]
+}
 
 const frontendSkills = [
   { name: 'React', icon: SiReact },
@@ -178,37 +200,54 @@ const softSkills = [
   { name: 'Résolution de problèmes', icon: FaPuzzlePiece },
 ]
 
-const projects = [
+const projects: ProjectCardItem[] = [
   {
     title: 'Portfolio personnel - ekanpage',
-    stack: 'TypeScript, React, Nest.js',
+    stack: [
+      { name: 'TypeScript', icon: SiTypescript },
+      { name: 'React', icon: SiReact },
+      { name: 'Nest.js', icon: SiNestjs },
+    ],
     result: 'Portfolio personnel interactif avec parcours CV et espace pédagogie.',
     link: 'https://github.com/Anir-kata/ekanpage',
   },
   {
     title: 'Projet pour faire le processing de CVs avec Java Spring Boot',
-    stack: 'Java, Spring Boot',
+    stack: [
+      { name: 'Java', icon: SiSpringboot },
+      { name: 'Spring Boot', icon: SiSpringboot },
+    ],
     result: 'Gestion de CV avec API backend et logique métier de traitement.',
     link: 'https://github.com/Anir-kata/Process_CVs_SpringBoot',
   },
   {
     title: 'Projet d\'un dashboard d\'offres d\'emploi avec FastAPI/React',
-    stack: 'Python FastAPI, React',
+    stack: [
+      { name: 'Python', icon: SiPython },
+      { name: 'FastAPI', icon: SiFastapi },
+      { name: 'React', icon: SiReact },
+    ],
     result: 'Dashboard emploi avec backend FastAPI et frontend React.',
     link: 'https://github.com/Anir-kata/jobs_dashboard_FastAPI',
   },
   {
     title: 'Projet d\'analyse de données énergétiques',
-    stack: 'Python',
+    stack: [{ name: 'Python', icon: SiPython }],
     result: 'Pipeline de traitement de données énergétiques pour analyse opérationnelle.',
     link: 'https://github.com/Anir-kata/analyse_donnees_energetique',
   },
 ]
 
-const universityProjects = [
+const universityProjects: UniversityProjectItem[] = [
   {
     title: 'Compilateur Déca',
     subtitle: 'Projet académique - Génie Logiciel (ENSIMAG)',
+    stack: [
+      { name: 'Java', icon: SiSpringboot },
+      { name: 'ANTLR', icon: FaCode },
+      { name: 'Maven', icon: FaCogs },
+      { name: 'Git', icon: SiGit },
+    ],
     description:
       "Développement en équipe d'un compilateur pour le langage Déca (langage pédagogique proche de Java), avec implémentation des différentes phases de compilation et application de pratiques modernes de développement logiciel.",
     tasks: [
@@ -231,6 +270,12 @@ const universityProjects = [
   {
     title: 'Smart Jogging',
     subtitle: 'Projet FABLAB - Application mobile Android',
+    stack: [
+      { name: 'Java', icon: SiSpringboot },
+      { name: 'Android', icon: FaPhoneAlt },
+      { name: 'BLE', icon: FaCodeBranch },
+      { name: 'Google Maps', icon: FaMapMarkerAlt },
+    ],
     description:
       "Application Android d'analyse de performance en course à pied, basée sur des données biomécaniques (accéléromètre, gyroscope, capteurs de pression) avec suivi en temps réel et post-entraînement.",
     tasks: [
@@ -494,37 +539,54 @@ const softSkillsEn = [
   { name: 'Problem solving', icon: FaPuzzlePiece },
 ]
 
-const projectsEn = [
+const projectsEn: ProjectCardItem[] = [
   {
     title: 'Personal portfolio - ekanpage',
-    stack: 'TypeScript, React, Nest.js',
+    stack: [
+      { name: 'TypeScript', icon: SiTypescript },
+      { name: 'React', icon: SiReact },
+      { name: 'Nest.js', icon: SiNestjs },
+    ],
     result: 'Interactive personal portfolio with CV journey and teaching workspace.',
     link: 'https://github.com/Anir-kata/ekanpage',
   },
   {
     title: 'Process_CVs_SpringBoot',
-    stack: 'Java, Spring Boot',
+    stack: [
+      { name: 'Java', icon: SiSpringboot },
+      { name: 'Spring Boot', icon: SiSpringboot },
+    ],
     result: 'CV management with backend API and business processing logic.',
     link: 'https://github.com/Anir-kata/Process_CVs_SpringBoot',
   },
   {
     title: 'jobs_dashboard_FastAPI',
-    stack: 'Python FastAPI, React',
+    stack: [
+      { name: 'Python', icon: SiPython },
+      { name: 'FastAPI', icon: SiFastapi },
+      { name: 'React', icon: SiReact },
+    ],
     result: 'Job dashboard with FastAPI backend and React frontend.',
     link: 'https://github.com/Anir-kata/jobs_dashboard_FastAPI',
   },
   {
     title: 'analyse_donnees_energetique',
-    stack: 'Python',
+    stack: [{ name: 'Python', icon: SiPython }],
     result: 'Energy data processing pipeline for operational analysis.',
     link: 'https://github.com/Anir-kata/analyse_donnees_energetique',
   },
 ]
 
-const universityProjectsEn = [
+const universityProjectsEn: UniversityProjectItem[] = [
   {
     title: 'Deca compiler',
     subtitle: 'Academic project - Software Engineering (ENSIMAG)',
+    stack: [
+      { name: 'Java', icon: SiSpringboot },
+      { name: 'ANTLR', icon: FaCode },
+      { name: 'Maven', icon: FaCogs },
+      { name: 'Git', icon: SiGit },
+    ],
     description:
       'Team development of a compiler for the Deca language (an educational Java-like language), including all compilation phases and modern software engineering practices.',
     tasks: [
@@ -547,6 +609,12 @@ const universityProjectsEn = [
   {
     title: 'Smart Jogging',
     subtitle: 'FABLAB project - Android mobile application',
+    stack: [
+      { name: 'Java', icon: SiSpringboot },
+      { name: 'Android', icon: FaPhoneAlt },
+      { name: 'BLE', icon: FaCodeBranch },
+      { name: 'Google Maps', icon: FaMapMarkerAlt },
+    ],
     description:
       'Android application for running performance analysis based on biomechanical data (accelerometer, gyroscope, pressure sensors) with real-time and post-workout tracking.',
     tasks: [
@@ -1103,7 +1171,11 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
           {projectsItems.map((project) => (
             <TiltCard key={project.title} className="panel-soft rounded-xl p-4">
               <h4 className="text-base font-semibold text-slate-100">{project.title}</h4>
-              <p className="mt-2 text-sm text-cyan-100">Stack : {project.stack}</p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {project.stack.map((item, index) => (
+                  <SkillOrb key={`${project.title}-${item.name}`} name={item.name} icon={item.icon} delay={index * 60} />
+                ))}
+              </div>
               <p className="mt-2 text-sm text-slate-300">{project.result}</p>
               {project.link && (
                 <div className="mt-3 flex justify-end">
@@ -1132,6 +1204,11 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
               <TiltCard key={project.title} className="panel-soft rounded-xl p-4">
                 <h4 className="text-base font-semibold text-slate-100">{project.title}</h4>
                 <p className="mt-1 text-sm font-semibold text-cyan-100">{project.subtitle}</p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {project.stack.map((item, index) => (
+                    <SkillOrb key={`${project.title}-${item.name}`} name={item.name} icon={item.icon} delay={index * 60} />
+                  ))}
+                </div>
                 <p className="mt-3 text-sm text-slate-300">{project.description}</p>
 
                 <div className="mt-4">
