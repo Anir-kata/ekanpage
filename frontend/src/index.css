@@ -242,9 +242,7 @@ body::after {
   overflow: hidden;
   border: 1px solid rgba(34, 211, 238, 0.16);
   backdrop-filter: blur(8px);
-  opacity: 0;
-  animation: skill-fade-in 260ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-  animation-delay: var(--skill-delay, 0ms);
+  opacity: 1;
   transition:
     transform 180ms cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 180ms cubic-bezier(0.22, 1, 0.36, 1),
@@ -280,8 +278,10 @@ body::after {
   background:
     radial-gradient(circle at 24% 18%, rgba(45, 212, 191, 0.2), transparent 55%),
     linear-gradient(145deg, rgba(45, 212, 191, 0.1), rgba(15, 23, 42, 0.78));
-  animation: skill-breathe 2.8s ease-in-out infinite;
-  animation-delay: var(--skill-delay, 0ms);
+  animation:
+    skill-fade-in 260ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards,
+    skill-breathe 2.8s ease-in-out infinite;
+  animation-delay: var(--skill-delay, 0ms), calc(var(--skill-delay, 0ms) + 260ms);
 }
 
 .skill-orb--technical .skill-orb__icon {
@@ -308,6 +308,8 @@ body::after {
 
 .skill-orb--soft {
   background: rgba(34, 211, 238, 0.1);
+  animation: skill-fade-in 260ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  animation-delay: var(--skill-delay, 0ms);
 }
 
 .skill-orb--soft .skill-orb__icon {
@@ -553,6 +555,10 @@ body::after {
   .submit-btn--error {
     transition: none !important;
     animation: none !important;
+  }
+
+  .skill-orb {
+    opacity: 1 !important;
   }
 
   .skill-orb::after {
