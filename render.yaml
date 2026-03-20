@@ -14,7 +14,7 @@ services:
       - key: PORT
         value: 3000
       - key: DB_SYNC
-        value: false
+        value: true
       - key: DB_SSL
         value: true
       - key: DATABASE_URL

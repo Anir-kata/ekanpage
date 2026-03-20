@@ -42,6 +42,9 @@ npm run build:full
 
 ## Nouveaute
 
+**v4.0.14** - Render DB sync fix
+- Enabled `DB_SYNC=true` in Render config so the `students` table is created automatically on deploy
+
 **v4.0.13** - Configuration Render backend API
 - Fixed API endpoint configuration for Vercel production deployment
 - Backend now correctly points to https://ekanpage-backend.onrender.com
