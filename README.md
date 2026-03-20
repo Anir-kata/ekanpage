@@ -2,6 +2,8 @@
 
 # ekanpage
 
+![CI](https://github.com/Anir-kata/ekanpage/actions/workflows/ci.yml/badge.svg)
+
 Portfolio interactif + espace d'enseignement personnel.
 
 Le site présente mon parcours, mes projets et mes compétences, avec un dashboard pédagogique.
