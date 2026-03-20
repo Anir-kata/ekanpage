@@ -60,9 +60,6 @@ type TechStackItem = {
 type ProjectCardItem = {
   title: string
   stack: TechStackItem[]
-  role: string
-  impact: string
-  preview: string
   result: string
   link?: string
 }
@@ -213,9 +210,6 @@ const projects: ProjectCardItem[] = [
       { name: 'React', icon: SiReact },
       { name: 'Nest.js', icon: SiNestjs },
     ],
-    role: 'Lead dev fullstack',
-    impact: 'Produit personnel en production avec CI',
-    preview: 'UI interactive + espace pedagogique + API securisee',
     result: 'Portfolio personnel interactif avec parcours CV et espace pédagogie.',
     link: 'https://github.com/Anir-kata/ekanpage',
   },
@@ -225,9 +219,6 @@ const projects: ProjectCardItem[] = [
       { name: 'Java', icon: FaJava },
       { name: 'Spring Boot', icon: SiSpringboot },
     ],
-    role: 'Backend engineer',
-    impact: 'Pipeline CV automatise et maintenable',
-    preview: 'API REST + logique metier de parsing CV',
     result: 'Gestion de CV avec API backend et logique métier de traitement.',
     link: 'https://github.com/Anir-kata/Process_CVs_SpringBoot',
   },
@@ -238,18 +229,12 @@ const projects: ProjectCardItem[] = [
       { name: 'FastAPI', icon: SiFastapi },
       { name: 'React', icon: SiReact },
     ],
-    role: 'Fullstack developer',
-    impact: 'Visualisation plus rapide des offres',
-    preview: 'Dashboard metier avec filtres et API FastAPI',
     result: 'Dashboard emploi avec backend FastAPI et frontend React.',
     link: 'https://github.com/Anir-kata/jobs_dashboard_FastAPI',
   },
   {
     title: 'Projet d\'analyse de données énergétiques',
     stack: [{ name: 'Python', icon: SiPython }],
-    role: 'Data automation developer',
-    impact: 'Gain de temps sur reportings operationnels',
-    preview: 'Traitement et normalisation de donnees energetiques',
     result: 'Pipeline de traitement de données énergétiques pour analyse opérationnelle.',
     link: 'https://github.com/Anir-kata/analyse_donnees_energetique',
   },
@@ -397,21 +382,6 @@ const faqItems = [
   {
     question: 'Disponible pour échanger ?',
     answer: 'Oui, je suis ouvert à discuter. N’hésitez pas à me contacter pour en savoir plus !',
-  },
-]
-
-const recommendations = [
-  {
-    quote:
-      'Approche tres fiable, livraisons regulieres et capacite a rendre des sujets complexes tres compréhensibles.',
-    source: 'Equipe SIJO',
-    context: 'Projet OCR + IA de generation de dossiers de competences',
-  },
-  {
-    quote:
-      'Tres bonne capacite d\'adaptation et tres bon niveau d\'autonomie sur des besoins metier concrets.',
-    source: 'Equipe Save Energies',
-    context: 'Automatisation data et reporting energetique',
   },
 ]
 
@@ -578,9 +548,6 @@ const projectsEn: ProjectCardItem[] = [
       { name: 'React', icon: SiReact },
       { name: 'Nest.js', icon: SiNestjs },
     ],
-    role: 'Fullstack lead developer',
-    impact: 'Production-ready personal product with CI',
-    preview: 'Interactive UI, pedagogy space, and secured API',
     result: 'Interactive personal portfolio with CV journey and teaching workspace.',
     link: 'https://github.com/Anir-kata/ekanpage',
   },
@@ -590,9 +557,6 @@ const projectsEn: ProjectCardItem[] = [
       { name: 'Java', icon: FaJava },
       { name: 'Spring Boot', icon: SiSpringboot },
     ],
-    role: 'Backend engineer',
-    impact: 'Maintainable CV processing pipeline',
-    preview: 'REST API and business logic for CV parsing',
     result: 'CV management with backend API and business processing logic.',
     link: 'https://github.com/Anir-kata/Process_CVs_SpringBoot',
   },
@@ -603,18 +567,12 @@ const projectsEn: ProjectCardItem[] = [
       { name: 'FastAPI', icon: SiFastapi },
       { name: 'React', icon: SiReact },
     ],
-    role: 'Fullstack developer',
-    impact: 'Faster visibility on job opportunities',
-    preview: 'Business dashboard with filters and FastAPI backend',
     result: 'Job dashboard with FastAPI backend and React frontend.',
     link: 'https://github.com/Anir-kata/jobs_dashboard_FastAPI',
   },
   {
     title: 'analyse_donnees_energetique',
     stack: [{ name: 'Python', icon: SiPython }],
-    role: 'Data automation developer',
-    impact: 'Time savings on operational reporting',
-    preview: 'Energy data normalization and analysis pipeline',
     result: 'Energy data processing pipeline for operational analysis.',
     link: 'https://github.com/Anir-kata/analyse_donnees_energetique',
   },
@@ -703,21 +661,6 @@ const faqItemsEn = [
   {
     question: 'Available to connect?',
     answer: 'Yes, I am open to discuss. Feel free to reach out for more details.',
-  },
-]
-
-const recommendationsEn = [
-  {
-    quote:
-      'Highly reliable execution, regular deliveries, and a strong ability to make complex topics easy to understand.',
-    source: 'SIJO team',
-    context: 'OCR and AI workflow for skills-file generation',
-  },
-  {
-    quote:
-      'Strong adaptability and autonomy on concrete business-oriented initiatives.',
-    source: 'Save Energies team',
-    context: 'Data automation and energy reporting workflows',
   },
 ]
 
@@ -824,7 +767,6 @@ type CVProfileProps = {
 export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
   const [selectedExperience, setSelectedExperience] = useState<ExperienceItem | null>(null)
   const [openedFaq, setOpenedFaq] = useState<number | null>(0)
-  const [isRecruiterMode, setIsRecruiterMode] = useState(false)
 
   useEffect(() => {
     if (!selectedExperience) {
@@ -848,14 +790,10 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
     language === 'fr'
       ? {
           portfolio: 'Portfolio',
-          valueProp: 'Fullstack orienté impact métier, avec une base solide en architecture et qualité logicielle.',
           profileTitle: profile.title,
           pitchLines: profile.pitchLines,
-          recruiterMode: 'Mode recruteur',
-          detailedMode: 'Mode detaille',
           downloadPdf: 'Télécharger PDF',
           contact: 'Contact',
-          cvQuickDownload: 'CV',
           openDashboard: "Accéder au tableau de bord d'enseignement",
           available: 'Disponible pour CDI',
           about: 'À propos',
@@ -883,17 +821,6 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
           cpge: 'Classes préparatoires aux grandes écoles MPSI / MP (Grand Admis au concours CCP)',
           baccalaureate: 'Baccalauréat Scientifique - Spécialité Mathématiques (Mention Très bien)',
           personalProjects: 'Projets personnels',
-          role: 'Role',
-          impact: 'Impact',
-          recommendationTitle: 'Recommandations',
-          recommendationSubtitle: 'Retours issus de contextes pro reels',
-          measurableImpact: 'Impact mesurable',
-          kpiExperience: 'Experiences',
-          kpiProjects: 'Projets',
-          kpiStacks: 'Stacks',
-          coreLevel: 'Core',
-          advancedLevel: 'Avance',
-          familiarLevel: 'Familiarisation',
           universityProjects: 'Projets universitaires',
           teaching: 'Soft Skill',
           teachingPassionTitle: 'Passion',
@@ -912,7 +839,6 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
         }
       : {
           portfolio: 'Portfolio',
-          valueProp: 'Impact-driven fullstack profile with strong architecture and software quality fundamentals.',
           profileTitle: 'ENSIMAG Graduate, Fullstack Developer',
           pitchLines: [
             'ENSIMAG graduate engineer, with a scientific background followed by MPSI/MP preparatory classes.',
@@ -920,9 +846,6 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
             'Strong command of Java and Python, with a quality-driven mindset (Agile practices, TDD, CI/CD, automated testing).',
           ],
           downloadPdf: 'Download PDF',
-          recruiterMode: 'Recruiter mode',
-          detailedMode: 'Detailed mode',
-          cvQuickDownload: 'CV',
           contact: 'Contact',
           openDashboard: 'Open teaching dashboard',
           available: 'Open to full-time opportunities',
@@ -951,17 +874,6 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
           cpge: 'MPSI/MP preparatory classes for engineering schools (high ranking in CCP exam)',
           baccalaureate: 'Scientific baccalaureate - Mathematics major (highest honors)',
           personalProjects: 'Personal projects',
-          role: 'Role',
-          impact: 'Impact',
-          recommendationTitle: 'Recommendations',
-          recommendationSubtitle: 'Feedback from real professional contexts',
-          measurableImpact: 'Measured impact',
-          kpiExperience: 'Experiences',
-          kpiProjects: 'Projects',
-          kpiStacks: 'Stacks',
-          coreLevel: 'Core',
-          advancedLevel: 'Advanced',
-          familiarLevel: 'Familiar',
           universityProjects: 'Academic projects',
           teaching: 'Soft skills',
           teachingPassionTitle: 'Passion',
@@ -986,17 +898,6 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
   const projectsItems = language === 'fr' ? projects : projectsEn
   const universityProjectsItems = language === 'fr' ? universityProjects : universityProjectsEn
   const faqItemsData = language === 'fr' ? faqItems : faqItemsEn
-  const recommendationsItems = language === 'fr' ? recommendations : recommendationsEn
-  const kpis = [
-    { label: copy.kpiExperience, value: '3+' },
-    { label: copy.kpiProjects, value: '8+' },
-    { label: copy.kpiStacks, value: '15+' },
-  ]
-  const proficiencyGroups = [
-    { label: copy.coreLevel, items: languageSkills.slice(0, 2) },
-    { label: copy.advancedLevel, items: languageSkills.slice(2, 4) },
-    { label: copy.familiarLevel, items: languageSkills.slice(4) },
-  ]
   const quickLinks = [
     { href: '#about', label: copy.about },
     { href: '#expertise', label: copy.expertise },
@@ -1012,14 +913,6 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
 
   return (
     <>
-      <a
-        href={profile.cvPdfPath}
-        download
-        className="cv-fab fixed bottom-5 right-5 z-40 inline-flex items-center gap-2 rounded-full bg-cyan-300/20 px-4 py-2 text-sm font-semibold text-cyan-100 shadow-[0_0_20px_rgba(34,211,238,0.35)]"
-      >
-        <FaFilePdf />
-        {copy.cvQuickDownload}
-      </a>
       <nav className="fixed left-3 top-24 z-30 hidden isolate xl:flex">
         <div
           aria-hidden="true"
@@ -1045,30 +938,13 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
         <h2 className="hud-title mt-3 text-2xl font-black text-slate-100 sm:text-3xl">
           {profile.fullName} - {copy.profileTitle}
         </h2>
-        <p className="hero-value-prop mt-3 text-base text-cyan-100">{copy.valueProp}</p>
-        {!isRecruiterMode &&
-          copy.pitchLines.map((line) => (
-            <p key={line} className="mt-3 text-slate-300">
-              {line}
-            </p>
-          ))}
-
-        <div className="mt-5 grid gap-3 sm:grid-cols-3">
-          {kpis.map((kpi, index) => (
-            <div key={kpi.label} className="kpi-card rounded-xl p-3" style={{ ['--stagger-delay' as string]: `${index * 50}ms` }}>
-              <p className="text-xs uppercase tracking-[0.14em] text-slate-400">{kpi.label}</p>
-              <p className="mt-1 text-xl font-black text-cyan-100">{kpi.value}</p>
-            </div>
-          ))}
-        </div>
+        {copy.pitchLines.map((line) => (
+          <p key={line} className="mt-3 text-slate-300">
+            {line}
+          </p>
+        ))}
 
         <div className="mt-6 flex flex-wrap justify-end gap-3">
-          <button
-            className="inline-flex items-center gap-2 rounded-xl bg-slate-800/50 px-4 py-2 text-sm font-semibold text-slate-100 transition hover:bg-slate-700/55 hover:text-cyan-100"
-            onClick={() => setIsRecruiterMode((prev) => !prev)}
-          >
-            {isRecruiterMode ? copy.detailedMode : copy.recruiterMode}
-          </button>
           <a
             href={profile.cvPdfPath}
             download
@@ -1173,16 +1049,9 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
         <h3 className="hud-title text-lg font-bold text-cyan-200">{copy.skills}</h3>
         <div className="panel-soft mt-4 rounded-xl p-4">
           <p className="text-xs uppercase tracking-[0.16em] text-slate-400">{copy.masteredLanguages}</p>
-          <div className="mt-3 grid gap-3">
-            {proficiencyGroups.map((group) => (
-              <div key={group.label} className="rounded-lg bg-slate-900/28 p-3">
-                <p className="text-[11px] uppercase tracking-[0.16em] text-slate-400">{group.label}</p>
-                <div className="skill-flow mt-2 flex flex-wrap gap-2">
-                  {group.items.map((skill, index) => (
-                    <SkillOrb key={`${group.label}-${skill.name}`} name={skill.name} icon={skill.icon} delay={index * 90} />
-                  ))}
-                </div>
-              </div>
+          <div className="skill-flow mt-3 flex flex-wrap gap-2">
+            {languageSkills.map((skill, index) => (
+              <SkillOrb key={skill.name} name={skill.name} icon={skill.icon} delay={index * 120} />
             ))}
           </div>
         </div>
@@ -1233,20 +1102,16 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
       <Reveal delay={160}>
         <article id="experiences" className="panel portfolio-anchor rounded-2xl p-6">
         <h3 className="hud-title text-lg font-bold text-cyan-200">{copy.experiences}</h3>
-        <div className="timeline-grid relative mt-5 grid gap-5 before:absolute before:left-2.5 before:top-1 before:h-[calc(100%-10px)] before:w-px before:bg-cyan-300/30 sm:before:left-3">
-          {experiencesItems.map((experience, index) => (
+        <div className="relative mt-5 grid gap-5 before:absolute before:left-2.5 before:top-1 before:h-[calc(100%-10px)] before:w-px before:bg-cyan-300/30 sm:before:left-3">
+          {experiencesItems.map((experience) => (
             <div key={experience.role} className="relative pl-9">
               <span className="absolute left-0 top-2 h-5 w-5 rounded-full bg-cyan-300/20 shadow-[0_0_14px_rgba(34,211,238,0.45)]" />
-              <TiltCard className="panel-soft timeline-card rounded-xl" >
+              <TiltCard className="panel-soft rounded-xl">
                 <button
                   className="w-full rounded-xl p-4 text-left transition hover:scale-[1.02]"
                   onClick={() => setSelectedExperience(experience)}
-                  style={{ ['--stagger-delay' as string]: `${index * 65}ms` }}
                 >
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <p className="text-xs uppercase tracking-[0.16em] text-slate-400">{experience.period}</p>
-                    <span className="rounded-full bg-emerald-400/15 px-2.5 py-1 text-[11px] font-semibold text-emerald-200">{copy.measurableImpact}</span>
-                  </div>
+                  <p className="text-xs uppercase tracking-[0.16em] text-slate-400">{experience.period}</p>
                   <h4 className="mt-1 text-lg font-semibold text-slate-100">{experience.role}</h4>
                   <p className="mt-1 text-sm font-semibold text-cyan-100">{experience.subtitle}</p>
                   <div className="mt-3 flex flex-wrap gap-2">
@@ -1305,25 +1170,14 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
         <h3 className="hud-title text-lg font-bold text-cyan-200">{copy.personalProjects}</h3>
         <div className="mt-4 grid gap-4 lg:grid-cols-2">
           {projectsItems.map((project) => (
-            <TiltCard key={project.title} className="panel-soft project-card rounded-xl p-4">
-              <div className="project-preview rounded-lg px-3 py-2 text-xs uppercase tracking-[0.14em] text-cyan-200">
-                {project.preview}
-              </div>
+            <TiltCard key={project.title} className="panel-soft rounded-xl p-4">
               <h4 className="text-base font-semibold text-slate-100">{project.title}</h4>
-              <div className="mt-2 flex flex-wrap gap-2">
-                <span className="rounded-full bg-indigo-400/15 px-2.5 py-1 text-xs font-semibold text-indigo-100">
-                  {copy.role}: {project.role}
-                </span>
-                <span className="rounded-full bg-emerald-400/15 px-2.5 py-1 text-xs font-semibold text-emerald-200">
-                  {copy.impact}: {project.impact}
-                </span>
-              </div>
               <div className="mt-3 flex flex-wrap gap-2">
                 {project.stack.map((item, index) => (
                   <SkillOrb key={`${project.title}-${item.name}`} name={item.name} icon={item.icon} delay={index * 60} />
                 ))}
               </div>
-              {!isRecruiterMode && <p className="mt-2 text-sm text-slate-300">{project.result}</p>}
+              <p className="mt-2 text-sm text-slate-300">{project.result}</p>
               {project.link && (
                 <div className="mt-3 flex justify-end">
                   <a
@@ -1343,22 +1197,6 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
         </article>
       </Reveal>
 
-      <Reveal delay={290}>
-        <article className="panel rounded-2xl p-6">
-          <h3 className="hud-title text-lg font-bold text-cyan-200">{copy.recommendationTitle}</h3>
-          <p className="mt-2 text-sm text-slate-400">{copy.recommendationSubtitle}</p>
-          <div className="mt-4 grid gap-4 md:grid-cols-2">
-            {recommendationsItems.map((item) => (
-              <TiltCard key={item.quote} className="review-spotlight rounded-xl p-4">
-                <p className="review-quote text-sm text-slate-200">"{item.quote}"</p>
-                <p className="mt-3 text-xs uppercase tracking-[0.15em] text-cyan-200">{item.source}</p>
-                <p className="mt-1 text-sm text-slate-300">{item.context}</p>
-              </TiltCard>
-            ))}
-          </div>
-        </article>
-      </Reveal>
-
       <Reveal delay={280}>
         <article id="university-projects" className="panel portfolio-anchor rounded-2xl p-6">
           <h3 className="hud-title text-lg font-bold text-cyan-200">{copy.universityProjects}</h3>
@@ -1372,12 +1210,12 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
                     <SkillOrb key={`${project.title}-${item.name}`} name={item.name} icon={item.icon} delay={index * 60} />
                   ))}
                 </div>
-                {!isRecruiterMode && <p className="mt-3 text-sm text-slate-300">{project.description}</p>}
+                <p className="mt-3 text-sm text-slate-300">{project.description}</p>
 
                 <div className="mt-4">
                   <p className="text-xs uppercase tracking-[0.16em] text-slate-400">{copy.tasks}</p>
                   <div className="mt-2 grid gap-1.5">
-                    {(isRecruiterMode ? project.tasks.slice(0, 3) : project.tasks).map((task) => (
+                    {project.tasks.map((task) => (
                       <p key={task} className="text-sm text-slate-300">
                         • {task}
                       </p>
@@ -1385,18 +1223,16 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
                   </div>
                 </div>
 
-                {!isRecruiterMode && (
-                  <div className="mt-4">
-                    <p className="text-xs uppercase tracking-[0.16em] text-slate-400">{copy.technicalEnvironment}</p>
-                    <div className="mt-2 flex flex-wrap gap-2">
-                      {project.environment.map((item) => (
-                        <span key={item} className="inline-flex items-center rounded-full bg-slate-900/45 px-2.5 py-1 text-xs text-cyan-100">
-                          {item}
-                        </span>
-                      ))}
-                    </div>
+                <div className="mt-4">
+                  <p className="text-xs uppercase tracking-[0.16em] text-slate-400">{copy.technicalEnvironment}</p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {project.environment.map((item) => (
+                      <span key={item} className="inline-flex items-center rounded-full bg-slate-900/45 px-2.5 py-1 text-xs text-cyan-100">
+                        {item}
+                      </span>
+                    ))}
                   </div>
-                )}
+                </div>
               </TiltCard>
             ))}
           </div>
@@ -1427,11 +1263,11 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
         <article id="contact" className="panel portfolio-anchor rounded-2xl p-6 text-center">
         <h3 className="hud-title text-xl font-bold text-cyan-200">{copy.contactTitle}</h3>
         <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
-          <a href={`mailto:${profile.email}`} className="contact-pill inline-flex items-center gap-2 rounded-lg bg-slate-800/45 px-3 py-2 text-slate-300 hover:text-cyan-100">
+          <a href={`mailto:${profile.email}`} className="inline-flex items-center gap-2 rounded-lg bg-slate-800/45 px-3 py-2 text-slate-300 hover:text-cyan-100">
             <FaEnvelope className="text-cyan-200" />
             {profile.email}
           </a>
-          <a href={`tel:${profile.phoneLink}`} className="contact-pill inline-flex items-center gap-2 rounded-lg bg-slate-800/45 px-3 py-2 text-slate-300 hover:text-cyan-100">
+          <a href={`tel:${profile.phoneLink}`} className="inline-flex items-center gap-2 rounded-lg bg-slate-800/45 px-3 py-2 text-slate-300 hover:text-cyan-100">
             <FaPhoneAlt className="text-cyan-200" />
             {profile.phoneDisplay}
           </a>
@@ -1439,7 +1275,7 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
             href={profile.linkedInUrl}
             target="_blank"
             rel="noreferrer"
-            className="contact-pill inline-flex items-center gap-2 rounded-lg bg-slate-800/45 px-3 py-2 text-slate-300 hover:text-cyan-100"
+            className="inline-flex items-center gap-2 rounded-lg bg-slate-800/45 px-3 py-2 text-slate-300 hover:text-cyan-100"
           >
             <FaLinkedin className="text-cyan-200" />
             LinkedIn
@@ -1448,7 +1284,7 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
             href={profile.githubUrl}
             target="_blank"
             rel="noreferrer"
-            className="contact-pill inline-flex items-center gap-2 rounded-lg bg-slate-800/45 px-3 py-2 text-slate-300 hover:text-cyan-100"
+            className="inline-flex items-center gap-2 rounded-lg bg-slate-800/45 px-3 py-2 text-slate-300 hover:text-cyan-100"
           >
             <FaGithub className="text-cyan-200" />
             GitHub
@@ -1458,7 +1294,7 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
       </Reveal>
 
       <Reveal delay={360}>
-        <article id="faq" className={`panel portfolio-anchor rounded-2xl p-6 ${isRecruiterMode ? 'hidden' : ''}`}>
+        <article id="faq" className="panel portfolio-anchor rounded-2xl p-6">
           <h3 className="hud-title text-lg font-bold text-cyan-200">{copy.faq}</h3>
           <div className="mt-4 grid gap-3">
             {faqItemsData.map((item, index) => {

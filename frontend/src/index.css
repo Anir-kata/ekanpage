@@ -330,61 +330,6 @@ body::after {
   box-shadow: 0 0 12px rgba(34, 211, 238, 0.45);
 }
 
-.hero-value-prop {
-  text-wrap: balance;
-  font-weight: 600;
-}
-
-.kpi-card {
-  border: 1px solid rgba(34, 211, 238, 0.16);
-  background: linear-gradient(145deg, rgba(15, 23, 42, 0.78), rgba(8, 47, 73, 0.35));
-  animation: list-stagger-in 240ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
-  animation-delay: var(--stagger-delay, 0ms);
-}
-
-.timeline-card {
-  border: 1px solid rgba(34, 211, 238, 0.16);
-  background: linear-gradient(160deg, rgba(30, 41, 59, 0.72), rgba(15, 23, 42, 0.5));
-}
-
-.timeline-grid > div {
-  animation: list-stagger-in 220ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
-  animation-delay: var(--stagger-delay, 0ms);
-}
-
-.project-card {
-  position: relative;
-  overflow: hidden;
-}
-
-.project-preview {
-  margin-bottom: 0.65rem;
-  border: 1px solid rgba(34, 211, 238, 0.2);
-  background: linear-gradient(130deg, rgba(34, 211, 238, 0.1), rgba(129, 140, 248, 0.12));
-}
-
-.contact-pill {
-  border: 1px solid rgba(34, 211, 238, 0.14);
-  transition: transform 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
-}
-
-.contact-pill:hover {
-  transform: translateY(-1px);
-  border-color: rgba(34, 211, 238, 0.34);
-  box-shadow: 0 0 14px rgba(34, 211, 238, 0.2);
-}
-
-.cv-fab {
-  border: 1px solid rgba(34, 211, 238, 0.35);
-  backdrop-filter: blur(10px);
-  transition: transform 140ms ease, background-color 140ms ease, box-shadow 140ms ease;
-}
-
-.cv-fab:hover {
-  transform: translateY(-1px) scale(1.02);
-  background: rgba(34, 211, 238, 0.24);
-}
-
 @keyframes drift {
   0% {
     transform: translateY(0px) scale(1);
@@ -539,11 +484,7 @@ body::after {
   .form-feedback,
   .submit-btn--saving,
   .submit-btn--success,
-  .submit-btn--error,
-  .kpi-card,
-  .timeline-grid > div,
-  .cv-fab,
-  .contact-pill {
+  .submit-btn--error {
     transition: none !important;
     animation: none !important;
   }
