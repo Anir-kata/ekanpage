@@ -12,7 +12,6 @@ import {
   FaEnvelope,
   FaFilePdf,
   FaFileCode,
-  FaGitAlt,
   FaGithub,
   FaJava,
   FaLightbulb,
@@ -33,6 +32,7 @@ import {
   SiDocker,
   SiExpress,
   SiFastapi,
+  SiGit,
   SiIntellijidea,
   SiJenkins,
   SiMysql,
@@ -96,7 +96,7 @@ const languageSkills = [
 ]
 
 const toolingSkills = [
-  { name: 'Git', icon: FaGitAlt },
+  { name: 'Git', icon: SiGit },
   { name: 'Docker', icon: SiDocker },
   { name: 'Jenkins', icon: SiJenkins },
   { name: 'Azure / AWS', icon: FaCloud },
@@ -248,7 +248,7 @@ const universityProjects: UniversityProjectItem[] = [
       { name: 'Java', icon: FaJava },
       { name: 'ANTLR', icon: FaCode },
       { name: 'Maven', icon: FaCogs },
-      { name: 'Git', icon: FaGitAlt },
+      { name: 'Git', icon: SiGit },
     ],
     description:
       "Développement en équipe d'un compilateur pour le langage Déca (langage pédagogique proche de Java), avec implémentation des différentes phases de compilation et application de pratiques modernes de développement logiciel.",
@@ -587,7 +587,7 @@ const universityProjectsEn: UniversityProjectItem[] = [
       { name: 'Java', icon: FaJava },
       { name: 'ANTLR', icon: FaCode },
       { name: 'Maven', icon: FaCogs },
-      { name: 'Git', icon: FaGitAlt },
+      { name: 'Git', icon: SiGit },
     ],
     description:
       'Team development of a compiler for the Deca language (an educational Java-like language), including all compilation phases and modern software engineering practices.',
