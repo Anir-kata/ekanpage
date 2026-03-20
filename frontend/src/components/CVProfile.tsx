@@ -797,6 +797,18 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
   const projectsItems = language === 'fr' ? projects : projectsEn
   const universityProjectsItems = language === 'fr' ? universityProjects : universityProjectsEn
   const faqItemsData = language === 'fr' ? faqItems : faqItemsEn
+  const quickLinks = [
+    { href: '#about', label: copy.about },
+    { href: '#expertise', label: copy.expertise },
+    { href: '#skills', label: copy.skills },
+    { href: '#experiences', label: copy.experiences },
+    { href: '#education', label: copy.education },
+    { href: '#projects', label: copy.personalProjects },
+    { href: '#university-projects', label: copy.universityProjects },
+    { href: '#teaching', label: copy.teaching },
+    { href: '#faq', label: copy.faq },
+    { href: '#contact', label: copy.contactTitle },
+  ]
 
   return (
     <section id="portfolio" className="mt-6 grid gap-6">
@@ -842,8 +854,24 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
         </article>
       </Reveal>
 
+      <Reveal delay={40}>
+        <article className="panel rounded-2xl p-4">
+          <div className="flex flex-wrap gap-2">
+            {quickLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="inline-flex items-center rounded-full border border-cyan-400/20 bg-slate-900/50 px-3 py-1.5 text-xs font-semibold text-cyan-100 transition hover:-translate-y-0.5 hover:border-cyan-300/45 hover:bg-slate-800/70"
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
+        </article>
+      </Reveal>
+
       <Reveal delay={80}>
-        <article className="panel rounded-2xl p-6">
+        <article id="about" className="panel portfolio-anchor rounded-2xl p-6">
           <h3 className="hud-title text-lg font-bold text-cyan-200">{copy.about}</h3>
           <div className="mt-4 grid gap-4 md:grid-cols-3">
             {profileStoryItems.map((item) => (
@@ -892,7 +920,7 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
       </Reveal>
 
       <Reveal delay={100}>
-        <article className="panel rounded-2xl p-6">
+        <article id="expertise" className="panel portfolio-anchor rounded-2xl p-6">
           <h3 className="hud-title text-lg font-bold text-cyan-200">{copy.expertise}</h3>
           <div className="mt-4 grid gap-4 lg:grid-cols-3">
             {expertiseAreaItems.map((area) => (
@@ -913,7 +941,7 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
       </Reveal>
 
       <Reveal delay={120}>
-        <article className="panel rounded-2xl p-6">
+        <article id="skills" className="panel portfolio-anchor rounded-2xl p-6">
         <h3 className="hud-title text-lg font-bold text-cyan-200">{copy.skills}</h3>
         <div className="panel-soft mt-4 rounded-xl p-4">
           <p className="text-xs uppercase tracking-[0.16em] text-slate-400">{copy.masteredLanguages}</p>
@@ -968,7 +996,7 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
       </Reveal>
 
       <Reveal delay={160}>
-        <article className="panel rounded-2xl p-6">
+        <article id="experiences" className="panel portfolio-anchor rounded-2xl p-6">
         <h3 className="hud-title text-lg font-bold text-cyan-200">{copy.experiences}</h3>
         <div className="relative mt-5 grid gap-5 before:absolute before:left-2.5 before:top-1 before:h-[calc(100%-10px)] before:w-px before:bg-cyan-300/30 sm:before:left-3">
           {experiencesItems.map((experience) => (
@@ -1003,7 +1031,7 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
       </Reveal>
 
       <Reveal delay={220}>
-        <article className="panel rounded-2xl p-6">
+        <article id="education" className="panel portfolio-anchor rounded-2xl p-6">
         <h3 className="hud-title text-lg font-bold text-cyan-200">{copy.education}</h3>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <TiltCard className="panel-soft rounded-xl p-4">
@@ -1034,7 +1062,7 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
       </Reveal>
 
       <Reveal delay={260}>
-        <article className="panel rounded-2xl p-6">
+        <article id="projects" className="panel portfolio-anchor rounded-2xl p-6">
         <h3 className="hud-title text-lg font-bold text-cyan-200">{copy.personalProjects}</h3>
         <div className="mt-4 grid gap-4 lg:grid-cols-2">
           {projectsItems.map((project) => (
@@ -1062,7 +1090,7 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
       </Reveal>
 
       <Reveal delay={280}>
-        <article className="panel rounded-2xl p-6">
+        <article id="university-projects" className="panel portfolio-anchor rounded-2xl p-6">
           <h3 className="hud-title text-lg font-bold text-cyan-200">{copy.universityProjects}</h3>
           <div className="mt-4 grid gap-4 lg:grid-cols-2">
             {universityProjectsItems.map((project) => (
@@ -1099,7 +1127,7 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
       </Reveal>
 
       <Reveal delay={300}>
-        <article className="panel rounded-2xl p-6">
+        <article id="teaching" className="panel portfolio-anchor rounded-2xl p-6">
         <h3 className="hud-title text-lg font-bold text-cyan-200">{copy.teaching}</h3>
         <div className="mt-4 grid gap-4 md:grid-cols-3">
           <TiltCard className="panel-soft rounded-xl p-4">
@@ -1119,7 +1147,7 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
       </Reveal>
 
       <Reveal delay={340}>
-        <article id="contact" className="panel rounded-2xl p-6 text-center">
+        <article id="contact" className="panel portfolio-anchor rounded-2xl p-6 text-center">
         <h3 className="hud-title text-xl font-bold text-cyan-200">{copy.contactTitle}</h3>
         <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
           <a href={`mailto:${profile.email}`} className="inline-flex items-center gap-2 rounded-lg bg-slate-800/45 px-3 py-2 text-slate-300 hover:text-cyan-100">
@@ -1153,7 +1181,7 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
       </Reveal>
 
       <Reveal delay={360}>
-        <article className="panel rounded-2xl p-6">
+        <article id="faq" className="panel portfolio-anchor rounded-2xl p-6">
           <h3 className="hud-title text-lg font-bold text-cyan-200">{copy.faq}</h3>
           <div className="mt-4 grid gap-3">
             {faqItemsData.map((item, index) => {

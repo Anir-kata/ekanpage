@@ -15,6 +15,14 @@
   font-family: "Space Grotesk", "Segoe UI", sans-serif;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+.portfolio-anchor {
+  scroll-margin-top: 1.25rem;
+}
+
 body {
   margin: 0;
   min-width: 320px;
