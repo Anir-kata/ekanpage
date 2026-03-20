@@ -42,6 +42,10 @@ npm run build:full
 
 ## Nouveaute
 
+**v4.0.15** - Auto increment sessions
+- Added automatic increment of `sessionsDone` when scheduled sessions are already in the past
+- `nextSessionAt` is advanced automatically to the next upcoming weekly slot
+
 **v4.0.14** - Render DB sync fix
 - Enabled `DB_SYNC=true` in Render config so the `students` table is created automatically on deploy
 

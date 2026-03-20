@@ -111,11 +111,63 @@ describe('StudentsService', () => {
     );
   });
 
+  it('findAll auto-increments sessionsDone for passed sessions', async () => {
+    const now = new Date();
+    const pastSession = new Date(now.getTime() - 8 * 24 * 60 * 60 * 1000);
+    const futureSession = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+
+    const pastStudent = {
+      id: 'past',
+      sessionsDone: 2,
+      nextSessionAt: pastSession,
+    } as StudentEntity;
+    const futureStudent = {
+      id: 'future',
+      sessionsDone: 4,
+      nextSessionAt: futureSession,
+    } as StudentEntity;
+
+    const qb = {
+      orderBy: jest.fn().mockReturnThis(),
+      skip: jest.fn().mockReturnThis(),
+      take: jest.fn().mockReturnThis(),
+      where: jest.fn().mockReturnThis(),
+      getManyAndCount: jest.fn().mockResolvedValue([[pastStudent, futureStudent], 2]),
+    };
+    repository.createQueryBuilder.mockReturnValue(qb);
+    repository.save.mockResolvedValue(pastStudent);
+
+    const result = await service.findAll({});
+
+    expect(result.items[0].sessionsDone).toBeGreaterThan(2);
+    expect(result.items[0].nextSessionAt?.getTime()).toBeGreaterThan(now.getTime());
+    expect(result.items[1].sessionsDone).toBe(4);
+    expect(repository.save).toHaveBeenCalledTimes(1);
+    expect(repository.save).toHaveBeenCalledWith(result.items[0]);
+  });
+
   it('findOne returns student when found', async () => {
     const one = { id: '1' } as StudentEntity;
     repository.findOne.mockResolvedValue(one);
 
     await expect(service.findOne('1')).resolves.toEqual(one);
+  });
+
+  it('findOne auto-increments sessionsDone for passed session', async () => {
+    const now = new Date();
+    const one = {
+      id: '1',
+      sessionsDone: 1,
+      nextSessionAt: new Date(now.getTime() - 8 * 24 * 60 * 60 * 1000),
+    } as StudentEntity;
+    repository.findOne.mockResolvedValue(one);
+    repository.save.mockResolvedValue(one);
+
+    const result = await service.findOne('1');
+
+    expect(result.sessionsDone).toBeGreaterThan(1);
+    expect(result.nextSessionAt?.getTime()).toBeGreaterThan(now.getTime());
+    expect(repository.save).toHaveBeenCalledWith(result);
   });
 
   it('findOne throws when missing', async () => {

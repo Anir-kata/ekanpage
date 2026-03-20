@@ -35,6 +35,34 @@ export class StudentsService {
     return this.studentsRepository.save(student);
   }
 
+  private syncPastSessions(student: StudentEntity, now: Date = new Date()): boolean {
+    if (!student.nextSessionAt) {
+      return false;
+    }
+
+    let hasChanges = false;
+    const current = new Date(now);
+    const maxIterations = 520;
+    let iteration = 0;
+
+    while (student.nextSessionAt && student.nextSessionAt <= current) {
+      student.sessionsDone = (student.sessionsDone ?? 0) + 1;
+
+      const nextSession = new Date(student.nextSessionAt);
+      nextSession.setDate(nextSession.getDate() + 7);
+      student.nextSessionAt = nextSession;
+
+      hasChanges = true;
+      iteration += 1;
+
+      if (iteration >= maxIterations) {
+        break;
+      }
+    }
+
+    return hasChanges;
+  }
+
   private computeNextSessionDate(
     weekday: number,
     time: string,
@@ -79,6 +107,15 @@ export class StudentsService {
 
     const [items, total] = await qb.getManyAndCount();
 
+    const updatedItems = items.filter((item) => this.syncPastSessions(item));
+    if (updatedItems.length > 0) {
+      await Promise.all(
+        updatedItems.map(async (item) => {
+          await this.studentsRepository.save(item);
+        }),
+      );
+    }
+
     return {
       items,
       total,
@@ -92,6 +129,10 @@ export class StudentsService {
     const student = await this.studentsRepository.findOne({ where: { id } });
     if (!student) {
       throw new NotFoundException(`Student ${id} not found`);
+    }
+
+    if (this.syncPastSessions(student)) {
+      await this.studentsRepository.save(student);
     }
 
     return student;
