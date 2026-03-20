@@ -323,7 +323,7 @@ function App() {
   }
 
   return (
-    <main className="relative mx-auto min-h-screen w-full max-w-[1440px] px-3 py-6 sm:px-5 sm:py-8 lg:px-8 xl:px-10 2xl:px-14">
+    <main className="relative mx-auto min-h-screen w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
       <div className="pointer-events-none absolute left-[-80px] top-[-90px] h-56 w-56 rounded-full bg-cyan-400/20 blur-3xl" />
       <div className="pointer-events-none absolute bottom-[-60px] right-[-40px] h-52 w-52 rounded-full bg-indigo-400/20 blur-3xl" />
 
