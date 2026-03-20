@@ -43,3 +43,7 @@ Build complet:
 ```bash
 npm run build:full
 ```
+
+## Nouveautes
+
+- v4.0.22: Correction de la barre sticky de navigation portfolio (reste visible pendant tout le scroll).
