@@ -1,18 +1,28 @@
 import { useEffect, useRef, useState, type ComponentType, type CSSProperties, type MouseEvent, type ReactNode } from 'react'
 import {
   FaCalendarCheck,
+  FaChartLine,
   FaChevronDown,
+  FaCloud,
+  FaCodeBranch,
   FaCode,
+  FaCogs,
   FaFlask,
   FaEnvelope,
   FaFilePdf,
+  FaFileCode,
   FaGithub,
+  FaLightbulb,
   FaLanguage,
   FaLinkedin,
   FaMapMarkerAlt,
   FaPhoneAlt,
+  FaPuzzlePiece,
   FaRobot,
-  FaTools,
+  FaSearch,
+  FaTasks,
+  FaTerminal,
+  FaUsers,
 } from 'react-icons/fa'
 import {
   SiAngular,
@@ -28,7 +38,10 @@ import {
   SiPostgresql,
   SiPython,
   SiReact,
+  SiR,
+  SiSelenium,
   SiSpringboot,
+  SiStreamlit,
   SiTailwindcss,
   SiTypescript,
   SiVite,
@@ -55,15 +68,15 @@ const languageSkills = [
   { name: 'Python', icon: SiPython },
   { name: 'TypeScript', icon: SiTypescript },
   { name: 'Node.js', icon: SiNodedotjs },
-  { name: 'R', icon: FaTools },
+  { name: 'R', icon: SiR },
 ]
 
 const toolingSkills = [
   { name: 'Git', icon: SiGit },
   { name: 'Docker', icon: SiDocker },
   { name: 'Jenkins', icon: SiJenkins },
-  { name: 'Azure / AWS', icon: FaTools },
-  { name: 'CI/CD', icon: FaTools },
+  { name: 'Azure / AWS', icon: FaCloud },
+  { name: 'CI/CD', icon: FaCodeBranch },
   { name: 'IntelliJ', icon: SiIntellijidea },
   { name: 'VS Code', icon: TbBrandVscode },
   { name: 'PostgreSQL', icon: SiPostgresql },
@@ -77,13 +90,13 @@ const experiences = [
     period: '05/2024 - 03/2025',
     stack: [
       { name: 'Python', icon: SiPython },
-      { name: 'Streamlit', icon: FaTools },
-      { name: 'OCR DocTR', icon: FaTools },
+      { name: 'Streamlit', icon: SiStreamlit },
+      { name: 'OCR DocTR', icon: FaSearch },
       { name: 'GPT-4o', icon: FaRobot },
       { name: 'React', icon: SiReact },
       { name: 'Node.js', icon: SiNodedotjs },
       { name: 'Tailwind', icon: SiTailwindcss },
-      { name: 'Azure', icon: FaTools },
+      { name: 'Azure', icon: FaCloud },
     ],
     context1Title: 'Contexte 1 : PFE',
     context1: [
@@ -110,11 +123,11 @@ const experiences = [
     subtitle: 'Stage 6 mois',
     period: '04/2021 - 09/2021',
     stack: [
-      { name: 'R', icon: FaTools },
-      { name: 'Selenium', icon: FaTools },
-      { name: 'VBA', icon: FaTools },
-      { name: 'PowerShell', icon: FaTools },
-      { name: 'API REST', icon: FaTools },
+      { name: 'R', icon: SiR },
+      { name: 'Selenium', icon: SiSelenium },
+      { name: 'VBA', icon: FaFileCode },
+      { name: 'PowerShell', icon: FaTerminal },
+      { name: 'API REST', icon: FaCodeBranch },
     ],
     context1Title: 'Missions',
     context1: [
@@ -131,10 +144,10 @@ const experiences = [
     subtitle: 'Business Intelligence - Stage 3 mois',
     period: '05/2019 - 08/2019',
     stack: [
-      { name: 'QlikView', icon: FaTools },
-      { name: 'Power BI', icon: FaTools },
+      { name: 'QlikView', icon: FaChartLine },
+      { name: 'Power BI', icon: FaChartLine },
       { name: 'SQL', icon: SiPostgresql },
-      { name: 'Scripts Batch', icon: FaTools },
+      { name: 'Scripts Batch', icon: FaTerminal },
     ],
     context1Title: 'Missions',
     context1: [
@@ -153,16 +166,16 @@ const softSkills = [
   { name: 'Agilité', icon: FaRobot },
   { name: 'TDD', icon: FaFlask },
   { name: 'Clean Code', icon: FaCode },
-  { name: 'Esprit analytique', icon: FaTools },
-  { name: "Rigueur d'ingénierie", icon: FaTools },
-  { name: 'Autonomie', icon: FaTools },
-  { name: "Capacité d'adaptation", icon: FaTools },
-  { name: 'Travail en équipe', icon: FaTools },
-  { name: 'Écoute active', icon: FaTools },
-  { name: 'Vulgarisation', icon: FaTools },
-  { name: 'Gestion des priorités', icon: FaTools },
-  { name: 'Communication technique', icon: FaTools },
-  { name: 'Résolution de problèmes', icon: FaTools },
+  { name: 'Esprit analytique', icon: FaSearch },
+  { name: "Rigueur d'ingénierie", icon: FaCogs },
+  { name: 'Autonomie', icon: FaLightbulb },
+  { name: "Capacité d'adaptation", icon: FaPuzzlePiece },
+  { name: 'Travail en équipe', icon: FaUsers },
+  { name: 'Écoute active', icon: FaLanguage },
+  { name: 'Vulgarisation', icon: FaLanguage },
+  { name: 'Gestion des priorités', icon: FaTasks },
+  { name: 'Communication technique', icon: FaCodeBranch },
+  { name: 'Résolution de problèmes', icon: FaPuzzlePiece },
 ]
 
 const projects = [
@@ -333,13 +346,13 @@ const experiencesEn = [
     period: '05/2024 - 03/2025',
     stack: [
       { name: 'Python', icon: SiPython },
-      { name: 'Streamlit', icon: FaTools },
-      { name: 'OCR DocTR', icon: FaTools },
+      { name: 'Streamlit', icon: SiStreamlit },
+      { name: 'OCR DocTR', icon: FaSearch },
       { name: 'GPT-4o', icon: FaRobot },
       { name: 'React', icon: SiReact },
       { name: 'Node.js', icon: SiNodedotjs },
       { name: 'Tailwind', icon: SiTailwindcss },
-      { name: 'Azure', icon: FaTools },
+      { name: 'Azure', icon: FaCloud },
     ],
     context1Title: 'Context 1: Final-year project',
     context1: [
@@ -366,11 +379,11 @@ const experiencesEn = [
     subtitle: '6-month internship',
     period: '04/2021 - 09/2021',
     stack: [
-      { name: 'R', icon: FaTools },
-      { name: 'Selenium', icon: FaTools },
-      { name: 'VBA', icon: FaTools },
-      { name: 'PowerShell', icon: FaTools },
-      { name: 'REST API', icon: FaTools },
+      { name: 'R', icon: SiR },
+      { name: 'Selenium', icon: SiSelenium },
+      { name: 'VBA', icon: FaFileCode },
+      { name: 'PowerShell', icon: FaTerminal },
+      { name: 'REST API', icon: FaCodeBranch },
     ],
     context1Title: 'Main responsibilities',
     context1: [
@@ -387,10 +400,10 @@ const experiencesEn = [
     subtitle: 'Business Intelligence - 3-month internship',
     period: '05/2019 - 08/2019',
     stack: [
-      { name: 'QlikView', icon: FaTools },
-      { name: 'Power BI', icon: FaTools },
+      { name: 'QlikView', icon: FaChartLine },
+      { name: 'Power BI', icon: FaChartLine },
       { name: 'SQL', icon: SiPostgresql },
-      { name: 'Batch scripts', icon: FaTools },
+      { name: 'Batch scripts', icon: FaTerminal },
     ],
     context1Title: 'Main responsibilities',
     context1: [
@@ -469,16 +482,16 @@ const softSkillsEn = [
   { name: 'Agility', icon: FaRobot },
   { name: 'TDD', icon: FaFlask },
   { name: 'Clean Code', icon: FaCode },
-  { name: 'Analytical mindset', icon: FaTools },
-  { name: 'Engineering rigor', icon: FaTools },
-  { name: 'Autonomy', icon: FaTools },
-  { name: 'Adaptability', icon: FaTools },
-  { name: 'Teamwork', icon: FaTools },
-  { name: 'Active listening', icon: FaTools },
-  { name: 'Knowledge sharing', icon: FaTools },
-  { name: 'Prioritization', icon: FaTools },
-  { name: 'Technical communication', icon: FaTools },
-  { name: 'Problem solving', icon: FaTools },
+  { name: 'Analytical mindset', icon: FaSearch },
+  { name: 'Engineering rigor', icon: FaCogs },
+  { name: 'Autonomy', icon: FaLightbulb },
+  { name: 'Adaptability', icon: FaPuzzlePiece },
+  { name: 'Teamwork', icon: FaUsers },
+  { name: 'Active listening', icon: FaLanguage },
+  { name: 'Knowledge sharing', icon: FaLanguage },
+  { name: 'Prioritization', icon: FaTasks },
+  { name: 'Technical communication', icon: FaCodeBranch },
+  { name: 'Problem solving', icon: FaPuzzlePiece },
 ]
 
 const projectsEn = [
@@ -908,7 +921,7 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
           </TiltCard>
           <TiltCard className="panel-soft rounded-xl p-4">
             <p className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-slate-400">
-              <FaTools />
+              <FaCodeBranch />
               {copy.statusLabel}
             </p>
             <p className="mt-2 font-semibold text-slate-100">{copy.statusValue}</p>

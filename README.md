@@ -46,4 +46,4 @@ npm run build:full
 
 ## Nouveautes
 
-- v4.0.22: Correction de la barre sticky de navigation portfolio (reste visible pendant tout le scroll).
+- v5.0.1: remplacement des icones generiques dans le portfolio (competences et stacks FR/EN) par des icones plus specifiques.
