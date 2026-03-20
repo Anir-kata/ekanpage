@@ -39,23 +39,3 @@ Build complet:
 ```bash
 npm run build:full
 ```
-
-## Nouveaute
-
-**v4.0.15** - Auto increment sessions
-- Added automatic increment of `sessionsDone` when scheduled sessions are already in the past
-- `nextSessionAt` is advanced automatically to the next upcoming weekly slot
-
-**v4.0.14** - Render DB sync fix
-- Enabled `DB_SYNC=true` in Render config so the `students` table is created automatically on deploy
-
-**v4.0.13** - Configuration Render backend API
-- Fixed API endpoint configuration for Vercel production deployment
-- Backend now correctly points to https://ekanpage-backend.onrender.com
-
-**v4.0.12** - Complete English translation
-- Full EN translation of entire portfolio content (experiences, projects, expertise, education)
-
-**v4.0.11** - Bilingual interface
-- Added FR/EN language toggle button
-- Complete translation of all UI labels and navigation
