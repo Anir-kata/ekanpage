@@ -42,7 +42,6 @@ const ensureTestDatabase = async () => {
       try {
         await adminClient.query(`CREATE DATABASE "${TEST_DB_NAME}"`);
       } catch (err: unknown) {
-        // 42P04 = duplicate_database — ignore if another worker created it first
         if ((err as { code?: string }).code !== '42P04') throw err;
       }
     }

@@ -16,8 +16,8 @@ describe('AppController', () => {
     appService = app.get<AppService>(AppService);
   });
 
-  it('should return "Hello World!"', () => {
-    expect(appController.getHello()).toBe('Hello World!');
+  it('should return "Backend du Projet EkanPage"', () => {
+    expect(appController.getHello()).toBe('Backend du Projet EkanPage');
   });
 
   it('should return health payload', () => {

@@ -7,8 +7,8 @@ describe('AppService', () => {
     service = new AppService();
   });
 
-  it('returns hello world', () => {
-    expect(service.getHello()).toBe('Hello World!');
+  it('returns Backend du Projet EkanPage', () => {
+    expect(service.getHello()).toBe('Backend du Projet EkanPage');
   });
 
   it('returns health payload with ISO timestamp', () => {
