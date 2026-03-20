@@ -87,7 +87,8 @@ export function StudentList({
           {students.map((student, index) => (
             <article
               key={student.id}
-              className="panel-soft rounded-xl p-4 transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_18px_rgba(34,211,238,0.18)]"
+              className="panel-soft stagger-enter rounded-xl p-4 transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_0_18px_rgba(34,211,238,0.18)]"
+              style={{ ['--stagger-delay' as string]: `${index * 45}ms` }}
             >
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <h3 className="text-lg font-semibold text-slate-100">{copy.studentLabel(index)}</h3>

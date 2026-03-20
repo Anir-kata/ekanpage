@@ -52,6 +52,7 @@ export function StudentFormPage({ mode, initialStudent, onCancel, onSubmit, lang
           notes: 'Avis sur les élèves, points à améliorer, etc.',
           cancel: 'Annuler',
           saving: 'Enregistrement...',
+          saved: 'Enregistre',
           create: "Créer l'élève",
           save: 'Enregistrer',
         }
@@ -71,6 +72,7 @@ export function StudentFormPage({ mode, initialStudent, onCancel, onSubmit, lang
           notes: 'Student notes, improvement points, etc.',
           cancel: 'Cancel',
           saving: 'Saving...',
+          saved: 'Saved',
           create: 'Create student',
           save: 'Save',
         }
@@ -95,6 +97,7 @@ export function StudentFormPage({ mode, initialStudent, onCancel, onSubmit, lang
   })
   const [isSaving, setIsSaving] = useState(false)
   const [formError, setFormError] = useState('')
+  const [submitState, setSubmitState] = useState<'idle' | 'saving' | 'success' | 'error'>('idle')
 
   const updateField = (field: keyof StudentFormValues, value: string | number) => {
     setValues((prev) => ({ ...prev, [field]: value }))
@@ -114,15 +117,19 @@ export function StudentFormPage({ mode, initialStudent, onCancel, onSubmit, lang
 
     if (!payload.fullName || !payload.level || !payload.objective || !payload.notes) {
       setFormError(copy.requiredError)
+      setSubmitState('error')
       return
     }
 
     try {
+      setSubmitState('saving')
       setIsSaving(true)
       setFormError('')
       await onSubmit(payload)
+      setSubmitState('success')
     } catch {
       setFormError(copy.saveError)
+      setSubmitState('error')
     } finally {
       setIsSaving(false)
     }
@@ -227,7 +234,15 @@ export function StudentFormPage({ mode, initialStudent, onCancel, onSubmit, lang
         </label>
       </div>
 
-      {formError && <p className="mt-3 text-sm text-rose-300">{formError}</p>}
+      {formError && <p className="form-feedback form-feedback--error mt-3 text-sm text-rose-300">{formError}</p>}
+
+      {submitState === 'saving' && !formError && (
+        <p className="form-feedback mt-3 text-sm text-cyan-200">{copy.saving}</p>
+      )}
+
+      {submitState === 'success' && !formError && (
+        <p className="form-feedback form-feedback--success mt-3 text-sm text-emerald-200">{copy.saved}</p>
+      )}
 
       <div className="mt-4 flex justify-end gap-2">
         <button
@@ -238,7 +253,15 @@ export function StudentFormPage({ mode, initialStudent, onCancel, onSubmit, lang
           {copy.cancel}
         </button>
         <button
-          className="rounded-lg bg-cyan-400/20 px-4 py-2 text-sm font-semibold text-cyan-100 transition hover:bg-cyan-300/30"
+          className={`rounded-lg bg-cyan-400/20 px-4 py-2 text-sm font-semibold text-cyan-100 transition duration-150 hover:bg-cyan-300/30 ${
+            submitState === 'saving'
+              ? 'submit-btn--saving'
+              : submitState === 'success'
+                ? 'submit-btn--success'
+                : submitState === 'error'
+                  ? 'submit-btn--error'
+                  : ''
+          }`}
           onClick={handleSubmit}
           disabled={isSaving}
         >
