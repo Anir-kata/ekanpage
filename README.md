@@ -46,4 +46,5 @@ npm run build:full
 
 ## Nouveautes
 
+- v5.0.10: fermeture du detail d'experience via la touche Echap ou un clic hors du conteneur modal.
 - v5.0.9: conteneur de la sidebar navigation passe en vraie couche de background derriere les liens, pour garder la navigation lisible sans la mettre visuellement au-dessus du portfolio.

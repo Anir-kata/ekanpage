@@ -698,6 +698,25 @@ type CVProfileProps = {
 export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
   const [selectedExperience, setSelectedExperience] = useState<ExperienceItem | null>(null)
   const [openedFaq, setOpenedFaq] = useState<number | null>(0)
+
+  useEffect(() => {
+    if (!selectedExperience) {
+      return
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setSelectedExperience(null)
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [selectedExperience])
+
   const copy =
     language === 'fr'
       ? {
@@ -1222,8 +1241,14 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
       </Reveal>
 
       {selectedExperience && (
-        <div className="fixed inset-0 z-50 grid place-items-center bg-slate-950/70 p-4">
-          <div className="panel max-h-[85vh] w-full max-w-3xl overflow-y-auto rounded-2xl p-6">
+        <div
+          className="fixed inset-0 z-50 grid place-items-center bg-slate-950/70 p-4"
+          onClick={() => setSelectedExperience(null)}
+        >
+          <div
+            className="panel max-h-[85vh] w-full max-w-3xl overflow-y-auto rounded-2xl p-6"
+            onClick={(event) => event.stopPropagation()}
+          >
             <div className="flex items-start justify-between gap-4">
               <div>
                 <p className="text-xs uppercase tracking-[0.16em] text-slate-400">{selectedExperience.period}</p>
