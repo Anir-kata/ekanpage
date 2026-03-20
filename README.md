@@ -25,9 +25,13 @@ Lancer frontend + backend:
 npm run dev:full
 ```
 
-URLs:
+URLs locales:
 - Frontend: http://localhost:5173
 - Backend: http://localhost:3000
+
+URLs production:
+- Frontend: https://ekanpagecontrol.vercel.app
+- Backend: https://ekanpage-backend.onrender.com
 
 
 Verifier le projet (tests + build):
