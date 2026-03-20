@@ -31,11 +31,13 @@ jobs:
       DB_USER: postgres
       DB_PASSWORD: anir
       DB_NAME: postgres
-      DB_SYNC: true
-      AUTH_USER: anir
-      AUTH_PASSWORD: anir123
-      JWT_SECRET: dev-secret-change-me
+      DB_SYNC: false
+      AUTH_USER: test-admin
+      AUTH_PASSWORD: test-admin-password
+      JWT_SECRET: test-jwt-secret
       JWT_EXPIRES_IN: 1d
+      AUTH_RATE_LIMIT_MAX: 5
+      AUTH_RATE_LIMIT_WINDOW_MS: 60000
 
     steps:
       - name: Checkout
@@ -58,3 +60,6 @@ jobs:
 
       - name: Run full verification
         run: npm run verify:all
+
+      - name: Run security tests
+        run: npm --prefix backend run test:security

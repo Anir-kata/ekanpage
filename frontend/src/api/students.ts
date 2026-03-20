@@ -31,6 +31,7 @@ type StudentsPageApi = {
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3000'
 const TOKEN_STORAGE_KEY = 'ekan_auth_token'
+export const AUTH_REQUIRED_ERROR = 'AUTH_REQUIRED'
 
 type LoginResponse = {
   accessToken: string
@@ -95,8 +96,14 @@ export async function fetchStudents(params?: { search?: string; page?: number; l
   if (params?.limit) query.set('limit', String(params.limit))
 
   const suffix = query.toString() ? `?${query.toString()}` : ''
-  const response = await fetch(`${API_BASE_URL}/students${suffix}`)
+  const response = await fetch(`${API_BASE_URL}/students${suffix}`, {
+    headers: buildAuthHeaders(),
+  })
   if (!response.ok) {
+    if (response.status === 401) {
+      throw new Error(AUTH_REQUIRED_ERROR)
+    }
+
     throw new Error('Impossible de charger les eleves depuis le backend.')
   }
 

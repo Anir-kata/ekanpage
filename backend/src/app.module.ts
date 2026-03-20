@@ -8,6 +8,7 @@ import { StudentsModule } from './students/students.module';
 
 export const buildTypeOrmOptions = (configService: ConfigService) => {
   const databaseUrl = configService.get<string>('DATABASE_URL');
+  const enableSsl = configService.get<string>('DB_SSL', 'false') === 'true';
 
   return {
     type: 'postgres' as const,
@@ -20,12 +21,15 @@ export const buildTypeOrmOptions = (configService: ConfigService) => {
           password: configService.getOrThrow<string>('DB_PASSWORD'),
           database: configService.get<string>('DB_NAME', 'postgres'),
         }),
-    ssl:
-      configService.get<string>('DB_SSL', 'false') === 'true'
-        ? { rejectUnauthorized: false }
-        : false,
+    ssl: enableSsl
+      ? {
+          rejectUnauthorized:
+            configService.get<string>('DB_SSL_REJECT_UNAUTHORIZED', 'true') ===
+            'true',
+        }
+      : false,
     autoLoadEntities: true,
-    synchronize: configService.get<string>('DB_SYNC', 'true') === 'true',
+    synchronize: configService.get<string>('DB_SYNC', 'false') === 'true',
   };
 };
 

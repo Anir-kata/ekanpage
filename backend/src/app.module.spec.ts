@@ -6,7 +6,7 @@ describe('AppModule', () => {
     expect(AppModule).toBeDefined();
   });
 
-  it('buildTypeOrmOptions uses fallback values and sync true', () => {
+  it('buildTypeOrmOptions uses safe defaults', () => {
     const configService = {
       get: jest.fn((key: string, defaultValue: string) => defaultValue),
       getOrThrow: jest.fn(() => 'secret'),
@@ -23,7 +23,7 @@ describe('AppModule', () => {
       database: 'postgres',
       ssl: false,
       autoLoadEntities: true,
-      synchronize: true,
+      synchronize: false,
     });
   });
 
@@ -40,7 +40,7 @@ describe('AppModule', () => {
     expect(options.synchronize).toBe(false);
   });
 
-  it('buildTypeOrmOptions uses DATABASE_URL and enables ssl when requested', () => {
+  it('buildTypeOrmOptions uses DATABASE_URL and keeps certificate validation enabled', () => {
     const configService = {
       get: jest.fn((key: string, defaultValue?: string) => {
         if (key === 'DATABASE_URL') return 'postgresql://user:pass@host/db';
@@ -55,9 +55,9 @@ describe('AppModule', () => {
     expect(options).toEqual({
       type: 'postgres',
       url: 'postgresql://user:pass@host/db',
-      ssl: { rejectUnauthorized: false },
+      ssl: { rejectUnauthorized: true },
       autoLoadEntities: true,
-      synchronize: true,
+      synchronize: false,
     });
     expect(configService.getOrThrow).not.toHaveBeenCalled();
   });

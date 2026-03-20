@@ -14,9 +14,12 @@ process.env.DB_PORT = process.env.DB_PORT ?? '5432';
 process.env.DB_USER = process.env.DB_USER ?? 'postgres';
 process.env.DB_PASSWORD = process.env.DB_PASSWORD ?? 'anir';
 process.env.DB_NAME = TEST_DB_NAME;
-process.env.DB_SYNC = process.env.DB_SYNC ?? 'true';
-process.env.AUTH_USER = process.env.AUTH_USER ?? 'anir';
-process.env.AUTH_PASSWORD = process.env.AUTH_PASSWORD ?? 'anir123';
+process.env.DB_SYNC = 'true';
+process.env.AUTH_USER = process.env.AUTH_USER ?? 'test-admin';
+process.env.AUTH_PASSWORD = process.env.AUTH_PASSWORD ?? 'test-admin-password';
+process.env.JWT_SECRET = process.env.JWT_SECRET ?? 'test-jwt-secret';
+process.env.AUTH_RATE_LIMIT_MAX = process.env.AUTH_RATE_LIMIT_MAX ?? '5';
+process.env.AUTH_RATE_LIMIT_WINDOW_MS = process.env.AUTH_RATE_LIMIT_WINDOW_MS ?? '60000';
 
 const ensureTestDatabase = async () => {
   const adminClient = new Client({
@@ -113,7 +116,7 @@ describe('AppController (e2e)', () => {
   it('/auth/login (POST)', async () => {
     const response = await request(app.getHttpServer())
       .post('/auth/login')
-      .send({ username: 'anir', password: 'anir123' })
+      .send({ username: process.env.AUTH_USER, password: process.env.AUTH_PASSWORD })
       .expect(201);
 
     expect(response.body.accessToken).toBeDefined();
@@ -138,7 +141,7 @@ describe('AppController (e2e)', () => {
   it('/students (POST/GET/PATCH/DELETE)', async () => {
     const loginResponse = await request(app.getHttpServer())
       .post('/auth/login')
-      .send({ username: 'anir', password: 'anir123' })
+      .send({ username: process.env.AUTH_USER, password: process.env.AUTH_PASSWORD })
       .expect(201);
     authToken = loginResponse.body.accessToken as string;
 
@@ -165,6 +168,7 @@ describe('AppController (e2e)', () => {
 
     const listResponse = await request(app.getHttpServer())
       .get('/students')
+      .set('Authorization', `Bearer ${authToken}`)
       .expect(200);
 
     const listBody = listResponse.body as StudentsPageResponse;
@@ -177,6 +181,7 @@ describe('AppController (e2e)', () => {
 
     const oneResponse = await request(app.getHttpServer())
       .get(`/students/${createdStudentId}`)
+      .set('Authorization', `Bearer ${authToken}`)
       .expect(200);
 
     const oneBody = oneResponse.body as StudentResponse;
@@ -201,7 +206,7 @@ describe('AppController (e2e)', () => {
   it('/students (POST) should validate payload', async () => {
     const loginResponse = await request(app.getHttpServer())
       .post('/auth/login')
-      .send({ username: 'anir', password: 'anir123' })
+      .send({ username: process.env.AUTH_USER, password: process.env.AUTH_PASSWORD })
       .expect(201);
     authToken = loginResponse.body.accessToken as string;
 

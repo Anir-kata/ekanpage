@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react'
 import {
+  AUTH_REQUIRED_ERROR,
   clearAuthToken,
   createStudent as createStudentApi,
   deleteStudent as deleteStudentApi,
@@ -58,6 +59,21 @@ function App() {
       setStudents(loaded.items)
       setStudentsPage(loaded)
     } catch (error) {
+      if (error instanceof Error && error.message === AUTH_REQUIRED_ERROR) {
+        clearAuthToken()
+        setIsEditMode(false)
+        setStudents([])
+        setStudentsPage({
+          items: [],
+          total: 0,
+          page: 1,
+          limit: 10,
+          totalPages: 1,
+        })
+        setStudentsError(copy.loginRequired)
+        return
+      }
+
       setStudentsError(error instanceof Error ? error.message : copy.unknownLoadError)
     } finally {
       setStudentsLoading(false)
@@ -68,6 +84,11 @@ function App() {
     let cancelled = false
 
     const loadInitialStudents = async () => {
+      if (!getAuthToken()) {
+        setStudentsLoading(false)
+        return
+      }
+
       try {
         const loadedStudents = await fetchStudents({ page: 1, limit: 10 })
         if (!cancelled) {
@@ -76,7 +97,13 @@ function App() {
         }
       } catch (error) {
         if (!cancelled) {
-          setStudentsError(error instanceof Error ? error.message : 'Erreur inconnue de chargement.')
+          if (error instanceof Error && error.message === AUTH_REQUIRED_ERROR) {
+            clearAuthToken()
+            setIsEditMode(false)
+            setStudentsError(copy.loginRequired)
+          } else {
+            setStudentsError(error instanceof Error ? error.message : 'Erreur inconnue de chargement.')
+          }
         }
       } finally {
         if (!cancelled) {
@@ -144,6 +171,7 @@ function App() {
             studentUpdated: 'Eleve mis a jour avec succes.',
             editModeEnabled: 'Mode modification activé.',
             loginFailed: 'Connexion impossible.',
+            loginRequired: 'Connectez-vous pour consulter les eleves.',
             readModeEnabled: 'Mode lecture activé.',
             teachingSpace: "Espace d'enseignement",
             dashboardTitle: 'Tableau de bord pédagogique',
@@ -176,6 +204,7 @@ function App() {
             studentUpdated: 'Student updated successfully.',
             editModeEnabled: 'Edit mode enabled.',
             loginFailed: 'Unable to sign in.',
+            loginRequired: 'Sign in to view students.',
             readModeEnabled: 'Read-only mode enabled.',
             teachingSpace: 'Teaching workspace',
             dashboardTitle: 'Teaching dashboard',
@@ -293,6 +322,7 @@ function App() {
     try {
       setIsLoginLoading(true)
       await loginApi(loginUsername.trim(), loginPassword)
+      await loadStudents({ page: 1 })
       setIsEditMode(true)
       setAuthScreen('none')
       setOperationFeedback(copy.editModeEnabled)
@@ -308,6 +338,15 @@ function App() {
     setIsEditMode(false)
     setStudentsView('list')
     setEditingStudent(null)
+    setStudents([])
+    setStudentsPage({
+      items: [],
+      total: 0,
+      page: 1,
+      limit: 10,
+      totalPages: 1,
+    })
+    setStudentsError('')
     setOperationFeedback(copy.readModeEnabled)
   }
 

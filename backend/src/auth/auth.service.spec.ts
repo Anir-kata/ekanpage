@@ -5,10 +5,10 @@ import { AuthService } from './auth.service';
 
 describe('AuthService', () => {
   const configService = {
-    get: jest.fn((key: string, fallback: string) => {
+    getOrThrow: jest.fn((key: string) => {
       if (key === 'AUTH_USER') return 'anir';
       if (key === 'AUTH_PASSWORD') return 'anir123';
-      return fallback;
+      throw new Error(`Unexpected key: ${key}`);
     }),
   } as unknown as ConfigService;
 

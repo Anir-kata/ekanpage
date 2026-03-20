@@ -27,11 +27,13 @@ export class StudentsController {
   }
 
   @Get()
+  @UseGuards(AuthGuard('jwt'))
   findAll(@Query() query: ListStudentsQueryDto): Promise<StudentsPage> {
     return this.studentsService.findAll(query);
   }
 
   @Get(':id')
+  @UseGuards(AuthGuard('jwt'))
   findOne(@Param('id') id: string): Promise<StudentEntity> {
     return this.studentsService.findOne(id);
   }
