@@ -1,5 +1,3 @@
-[.github/workflows/ci.yml](.github/workflows/ci.yml).
-
 # ekanpage
 
 ![CI](https://github.com/Anir-kata/ekanpage/actions/workflows/ci.yml/badge.svg)
@@ -16,13 +14,11 @@ Le site présente mon parcours, mes projets et mes compétences, avec un dashboa
 - React 19 + TypeScript
 - Vite 7
 - Tailwind CSS 4
-- react-icons
 
 **Backend**
 - NestJS 11 (Node.js)
 - TypeORM 0.3 + PostgreSQL
-- Authentification JWT (single admin via variables d'environnement)
-- Rate limiting sur le login (5 tentatives / 60 s par IP)
+- Authentification JWT
 
 **Tests**
 - Jest (unitaires + e2e + sécurité)
