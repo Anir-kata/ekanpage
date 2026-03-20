@@ -46,5 +46,6 @@ npm run build:full
 
 ## Nouveautes
 
+- v4.0.19: Suppression de la cle `env` depreciee dans `vercel.json` et injection de `VITE_API_BASE_URL` dans `buildCommand`.
 - v4.0.18: Remplacement des icones generiques IntelliJ et VS Code par leurs vraies icones dans les competences techniques.
 
