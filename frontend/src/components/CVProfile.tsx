@@ -855,13 +855,13 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
       </Reveal>
 
       <Reveal delay={40}>
-        <article className="panel rounded-2xl p-4">
-          <div className="flex flex-wrap gap-2">
+        <article className="panel sticky top-3 z-40 rounded-2xl p-3 sm:p-4">
+          <div className="no-scrollbar flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible sm:pb-0">
             {quickLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="inline-flex items-center rounded-full border border-cyan-400/20 bg-slate-900/50 px-3 py-1.5 text-xs font-semibold text-cyan-100 transition hover:-translate-y-0.5 hover:border-cyan-300/45 hover:bg-slate-800/70"
+                className="inline-flex shrink-0 items-center rounded-full border border-cyan-400/25 bg-slate-900/70 px-3 py-1.5 text-xs font-semibold text-cyan-100 transition hover:-translate-y-0.5 hover:border-cyan-300/45 hover:bg-slate-800/80"
               >
                 {link.label}
               </a>
