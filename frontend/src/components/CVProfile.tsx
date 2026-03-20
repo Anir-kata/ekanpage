@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ComponentType, type MouseEvent, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ComponentType, type CSSProperties, type MouseEvent, type ReactNode } from 'react'
 import {
   FaCalendarCheck,
   FaChevronDown,
@@ -649,11 +649,28 @@ function TiltCard({ children, className = '' }: { children: ReactNode; className
   )
 }
 
-function SkillOrb({ name, icon: Icon, delay }: { name: string; icon: ComponentType<{ className?: string }>; delay: number }) {
+function SkillOrb({
+  name,
+  icon: Icon,
+  delay,
+  variant = 'technical',
+}: {
+  name: string
+  icon: ComponentType<{ className?: string }>
+  delay: number
+  variant?: 'technical' | 'soft'
+}) {
+  const skillClasses =
+    variant === 'technical'
+      ? 'skill-orb skill-orb--technical inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold text-cyan-100'
+      : 'skill-orb skill-orb--soft inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold text-cyan-100'
+
   return (
-    <div className="skill-orb inline-flex items-center gap-2 rounded-full bg-cyan-400/10 px-3 py-1 text-xs font-semibold text-cyan-100" style={{ animationDelay: `${delay}ms` }}>
-      <Icon className="text-cyan-200" />
-      {name}
+    <div className={skillClasses} style={{ '--skill-delay': `${delay}ms` } as CSSProperties}>
+      <span className="skill-orb__icon" aria-hidden="true">
+        <Icon className="text-cyan-200" />
+      </span>
+      <span className="skill-orb__label">{name}</span>
     </div>
   )
 }
@@ -940,7 +957,7 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
             <div className="skill-flow mt-3 flex flex-wrap gap-2">
               {softSkillsItems.map((skill, index) => {
                 const Icon = skill.icon
-                return <SkillOrb key={skill.name} name={skill.name} icon={Icon} delay={index * 130} />
+                return <SkillOrb key={skill.name} name={skill.name} icon={Icon} delay={index * 130} variant="soft" />
               })}
             </div>
           </div>
