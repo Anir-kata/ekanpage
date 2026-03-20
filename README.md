@@ -29,7 +29,7 @@ Le site présente mon parcours, mes projets et mes compétences, avec un dashboa
 
 | Service  | Rôle              | URL                                          |
 |----------|-------------------|----------------------------------------------|
-| Vercel   | Frontend          | https://ekanpagecontrol.vercel.app           |
+| Vercel   | Frontend          | https://anirportfolio.vercel.app/           |
 | Render   | Backend (API)     | https://ekanpage-backend.onrender.com        |
 | Neon     | Base PostgreSQL   | connexion via `DATABASE_URL`   |
 
