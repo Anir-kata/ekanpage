@@ -1,8 +1,10 @@
+**Workflow** :  [.github/workflows/ci.yml](.github/workflows/ci.yml).
+
 # ekanpage
 
 Portfolio interactif + espace d'enseignement personnel.
 
-Le site présente mon parcours, mes projets et mes compétences, avec un dashboard pédagogique réservé aux administrateurs pour gérer le suivi des élèves. Les visiteurs non connectés peuvent consulter les élèves de façon anonymisée.
+Le site présente mon parcours, mes projets et mes compétences, avec un dashboard pédagogique.
 
 ---
 
@@ -31,9 +33,7 @@ Le site présente mon parcours, mes projets et mes compétences, avec un dashboa
 |----------|-------------------|----------------------------------------------|
 | Vercel   | Frontend          | https://ekanpagecontrol.vercel.app           |
 | Render   | Backend (API)     | https://ekanpage-backend.onrender.com        |
-| Neon     | Base PostgreSQL   | connexion via `DATABASE_URL` (env Render)    |
-
-Le déploiement est automatique à chaque push sur `main` (Vercel et Render surveillent le dépôt).
+| Neon     | Base PostgreSQL   | connexion via `DATABASE_URL`   |
 
 ---
 
