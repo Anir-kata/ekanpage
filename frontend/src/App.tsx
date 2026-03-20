@@ -319,6 +319,7 @@ function App() {
     })
     setStudentsError('')
     setOperationFeedback(copy.readModeEnabled)
+    void loadStudents({ page: 1 })
   }
 
   return (

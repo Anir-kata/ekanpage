@@ -166,7 +166,8 @@ describe('AppController (e2e)', () => {
     expect(Array.isArray(publicResponse.body.items)).toBe(true);
     expect(publicResponse.body.items.length).toBeGreaterThan(0);
     expect(publicResponse.body.items[0].displayName).toBeDefined();
-    expect(publicResponse.body.items[0].notes).toBeUndefined();
+    expect(publicResponse.body.items[0].notes).toBeDefined();
+    expect(publicResponse.body.items[0].fullName).toBeUndefined();
   });
 
   it('/students (POST/GET/PATCH/DELETE)', async () => {

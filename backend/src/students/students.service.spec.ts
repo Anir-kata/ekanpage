@@ -111,7 +111,7 @@ describe('StudentsService', () => {
     );
   });
 
-  it('findAllPublic returns anonymized data without private notes', async () => {
+  it('findAllPublic returns anonymized data with notes visible', async () => {
     const list = [
       {
         id: '12345678-abcd-ef00-0000-000000000000',
@@ -141,8 +141,9 @@ describe('StudentsService', () => {
       objective: 'Progression',
       sessionsDone: 3,
       nextSessionAt: null,
+      notes: 'Private note',
     });
-    expect((result.items[0] as Record<string, unknown>).notes).toBeUndefined();
+    expect((result.items[0] as Record<string, unknown>).fullName).toBeUndefined();
   });
 
   it('findAll auto-increments sessionsDone for passed sessions', async () => {

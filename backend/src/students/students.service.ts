@@ -21,6 +21,7 @@ export type PublicStudent = {
   objective: string;
   sessionsDone: number;
   nextSessionAt: Date | null;
+  notes: string;
 };
 
 export type PublicStudentsPage = {
@@ -160,6 +161,7 @@ export class StudentsService {
         objective: item.objective,
         sessionsDone: item.sessionsDone,
         nextSessionAt: item.nextSessionAt,
+        notes: item.notes ?? '',
       })),
       total,
       page,
