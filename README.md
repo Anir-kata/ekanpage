@@ -46,6 +46,7 @@ npm run build:full
 
 ## Nouveautes
 
+- v5.0.6: navigation portfolio en sidebar verticale fixe gauche (hors container, visible sur grands ecrans).
 - v5.0.5: barre de navigation portfolio fixee en bas de viewport pour suivre le scroll de facon constante.
 - v5.0.3: correction definitive de la barre sticky (la classe panel forcait position relative et annulait sticky; override en !sticky).
 - v5.0.2: correction de la barre sticky du portfolio (conteneur principal passe de grid a flux vertical pour un sticky qui suit bien le scroll).
