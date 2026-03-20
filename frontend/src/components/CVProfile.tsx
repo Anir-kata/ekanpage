@@ -867,7 +867,7 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
         </article>
       </Reveal>
 
-      <article className="panel sticky top-3 z-40 rounded-2xl p-3 sm:p-4">
+      <article className="panel !sticky top-3 z-40 rounded-2xl p-3 sm:p-4">
         <div className="no-scrollbar flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible sm:pb-0">
           {quickLinks.map((link) => (
             <a
