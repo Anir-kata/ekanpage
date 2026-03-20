@@ -824,7 +824,7 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
   ]
 
   return (
-    <section id="portfolio" className="mt-6 grid gap-6">
+    <section id="portfolio" className="mt-6 space-y-6">
       <Reveal>
         <article className="panel scan-line rounded-3xl p-6 md:p-8">
         <p className="text-xs uppercase tracking-[0.2em] text-cyan-200/90">{copy.portfolio}</p>

@@ -46,4 +46,4 @@ npm run build:full
 
 ## Nouveautes
 
-- v5.0.1: remplacement des icones generiques dans le portfolio (competences et stacks FR/EN) par des icones plus specifiques.
+- v5.0.2: correction de la barre sticky du portfolio (conteneur principal passe de grid a flux vertical pour un sticky qui suit bien le scroll).
