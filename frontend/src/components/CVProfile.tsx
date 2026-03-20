@@ -21,6 +21,7 @@ import {
   SiExpress,
   SiFastapi,
   SiGit,
+  SiIntellijidea,
   SiJenkins,
   SiMysql,
   SiNodedotjs,
@@ -32,6 +33,7 @@ import {
   SiTypescript,
   SiVite,
 } from 'react-icons/si'
+import { TbBrandVscode } from 'react-icons/tb'
 import { profile } from '../data/profile'
 
 const frontendSkills = [
@@ -62,8 +64,8 @@ const toolingSkills = [
   { name: 'Jenkins', icon: SiJenkins },
   { name: 'Azure / AWS', icon: FaTools },
   { name: 'CI/CD', icon: FaTools },
-  { name: 'IntelliJ', icon: FaTools },
-  { name: 'VS Code', icon: FaTools },
+  { name: 'IntelliJ', icon: SiIntellijidea },
+  { name: 'VS Code', icon: TbBrandVscode },
   { name: 'PostgreSQL', icon: SiPostgresql },
   { name: 'MySQL', icon: SiMysql },
 ]

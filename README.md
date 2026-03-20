@@ -46,4 +46,5 @@ npm run build:full
 
 ## Nouveautes
 
-- v4.0.17: Animation fluide ajoutee sur les competences techniques du portfolio avec effet hover (icones plus grandes au survol).
+- v4.0.18: Remplacement des icones generiques IntelliJ et VS Code par leurs vraies icones dans les competences techniques.
+
