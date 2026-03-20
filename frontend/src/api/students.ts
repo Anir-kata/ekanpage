@@ -3,14 +3,15 @@ import { toApiDateTime, toUiDateTime } from '../utils/dateTime'
 
 type StudentApi = {
   id: string
-  fullName: string
+  fullName?: string
+  displayName?: string
   level: string
   objective: string
   sessionsDone: number
-  sessionWeekday: number
-  sessionTime: string
+  sessionWeekday?: number
+  sessionTime?: string
   nextSessionAt: string | null
-  notes: string
+  notes?: string
 }
 
 export type StudentsPage = {
@@ -31,7 +32,6 @@ type StudentsPageApi = {
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3000'
 const TOKEN_STORAGE_KEY = 'ekan_auth_token'
-export const AUTH_REQUIRED_ERROR = 'AUTH_REQUIRED'
 
 type LoginResponse = {
   accessToken: string
@@ -56,14 +56,14 @@ function buildAuthHeaders(): HeadersInit {
 
 const toStudent = (student: StudentApi): Student => ({
   id: student.id,
-  fullName: student.fullName,
+  fullName: student.displayName ?? student.fullName ?? 'Eleve',
   level: student.level,
   objective: student.objective,
   sessionsDone: student.sessionsDone,
-  sessionWeekday: student.sessionWeekday,
-  sessionTime: student.sessionTime,
+  sessionWeekday: student.sessionWeekday ?? 0,
+  sessionTime: student.sessionTime ?? '10:00',
   nextSessionAt: toUiDateTime(student.nextSessionAt),
-  notes: student.notes,
+  notes: student.notes ?? '',
 })
 
 const toCreatePayload = (student: Omit<Student, 'id'>) => ({
@@ -90,18 +90,35 @@ const toUpdatePayload = (student: Partial<Omit<Student, 'id'>>) => ({
 
 export async function fetchStudents(params?: { search?: string; page?: number; limit?: number }): Promise<StudentsPage> {
   const query = new URLSearchParams()
+  const token = getAuthToken()
 
   if (params?.search?.trim()) query.set('search', params.search.trim())
   if (params?.page) query.set('page', String(params.page))
   if (params?.limit) query.set('limit', String(params.limit))
 
   const suffix = query.toString() ? `?${query.toString()}` : ''
-  const response = await fetch(`${API_BASE_URL}/students${suffix}`, {
-    headers: buildAuthHeaders(),
-  })
+  const endpoint = token ? 'students' : 'students/public'
+  const response = await fetch(`${API_BASE_URL}/${endpoint}${suffix}`, token
+    ? { headers: buildAuthHeaders() }
+    : undefined,
+  )
   if (!response.ok) {
-    if (response.status === 401) {
-      throw new Error(AUTH_REQUIRED_ERROR)
+    // If an expired token is present, gracefully fall back to public read mode.
+    if (response.status === 401 && token) {
+      clearAuthToken()
+      const publicResponse = await fetch(`${API_BASE_URL}/students/public${suffix}`)
+      if (!publicResponse.ok) {
+        throw new Error('Impossible de charger les eleves depuis le backend.')
+      }
+
+      const publicData = (await publicResponse.json()) as StudentsPageApi
+      return {
+        items: publicData.items.map(toStudent),
+        total: publicData.total,
+        page: publicData.page,
+        limit: publicData.limit,
+        totalPages: publicData.totalPages,
+      }
     }
 
     throw new Error('Impossible de charger les eleves depuis le backend.')

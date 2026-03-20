@@ -6,6 +6,7 @@ describe('StudentsController', () => {
   let controller: StudentsController;
   const service = {
     create: jest.fn(),
+    findAllPublic: jest.fn(),
     findAll: jest.fn(),
     findOne: jest.fn(),
     update: jest.fn(),
@@ -45,6 +46,19 @@ describe('StudentsController', () => {
     (service.findAll as jest.Mock).mockResolvedValue(pageResult);
 
     await expect(controller.findAll({})).resolves.toEqual(pageResult);
+  });
+
+  it('findAllPublic delegates to service', async () => {
+    const pageResult = {
+      items: [{ id: '1', displayName: 'Eleve abcd1234' }],
+      total: 1,
+      page: 1,
+      limit: 10,
+      totalPages: 1,
+    };
+    (service.findAllPublic as jest.Mock).mockResolvedValue(pageResult);
+
+    await expect(controller.findAllPublic({})).resolves.toEqual(pageResult);
   });
 
   it('findOne delegates to service', async () => {

@@ -138,6 +138,37 @@ describe('AppController (e2e)', () => {
       .expect(401);
   });
 
+  it('/students/public (GET) is accessible without authentication', async () => {
+    const loginResponse = await request(app.getHttpServer())
+      .post('/auth/login')
+      .send({ username: process.env.AUTH_USER, password: process.env.AUTH_PASSWORD })
+      .expect(201);
+    authToken = loginResponse.body.accessToken as string;
+
+    await request(app.getHttpServer())
+      .post('/students')
+      .set('Authorization', `Bearer ${authToken}`)
+      .send({
+        fullName: 'Eleve Public',
+        level: 'Terminale',
+        objective: 'Montrer progression',
+        sessionsDone: 1,
+        sessionWeekday: 0,
+        sessionTime: '10:00',
+        notes: 'Confidentiel',
+      })
+      .expect(201);
+
+    const publicResponse = await request(app.getHttpServer())
+      .get('/students/public')
+      .expect(200);
+
+    expect(Array.isArray(publicResponse.body.items)).toBe(true);
+    expect(publicResponse.body.items.length).toBeGreaterThan(0);
+    expect(publicResponse.body.items[0].displayName).toBeDefined();
+    expect(publicResponse.body.items[0].notes).toBeUndefined();
+  });
+
   it('/students (POST/GET/PATCH/DELETE)', async () => {
     const loginResponse = await request(app.getHttpServer())
       .post('/auth/login')

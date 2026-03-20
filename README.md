@@ -43,9 +43,3 @@ Build complet:
 ```bash
 npm run build:full
 ```
-
-## Nouveautes
-
-- v5.1.0: durcissement securite backend avec lecture eleves protegee par JWT, suppression des secrets par defaut, TLS base verifie, sync schema desactivee par defaut, rate limiting sur login et tests de securite ajoutes au workflow CI.
-- v5.0.10: fermeture du detail d'experience via la touche Echap ou un clic hors du conteneur modal.
-- v5.0.9: conteneur de la sidebar navigation passe en vraie couche de background derriere les liens, pour garder la navigation lisible sans la mettre visuellement au-dessus du portfolio.

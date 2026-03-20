@@ -111,6 +111,40 @@ describe('StudentsService', () => {
     );
   });
 
+  it('findAllPublic returns anonymized data without private notes', async () => {
+    const list = [
+      {
+        id: '12345678-abcd-ef00-0000-000000000000',
+        fullName: 'John Doe',
+        level: 'Terminale',
+        objective: 'Progression',
+        sessionsDone: 3,
+        nextSessionAt: null,
+        notes: 'Private note',
+      },
+    ] as StudentEntity[];
+    const qb = {
+      orderBy: jest.fn().mockReturnThis(),
+      skip: jest.fn().mockReturnThis(),
+      take: jest.fn().mockReturnThis(),
+      where: jest.fn().mockReturnThis(),
+      getManyAndCount: jest.fn().mockResolvedValue([list, 1]),
+    };
+    repository.createQueryBuilder.mockReturnValue(qb);
+
+    const result = await service.findAllPublic({});
+
+    expect(result.items[0]).toEqual({
+      id: '12345678-abcd-ef00-0000-000000000000',
+      displayName: 'Eleve 12345678',
+      level: 'Terminale',
+      objective: 'Progression',
+      sessionsDone: 3,
+      nextSessionAt: null,
+    });
+    expect((result.items[0] as Record<string, unknown>).notes).toBeUndefined();
+  });
+
   it('findAll auto-increments sessionsDone for passed sessions', async () => {
     const now = new Date();
     const pastSession = new Date(now.getTime() - 8 * 24 * 60 * 60 * 1000);
