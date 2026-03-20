@@ -1140,10 +1140,10 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <TiltCard className="panel-soft rounded-xl p-4">
             <p className="text-xs uppercase tracking-[0.16em] text-slate-400">{copy.engineeringDegree}</p>
+            <div className="rounded-xl bg-slate-900/30 p-2">
+              <img src="/logo_ensimag.png" alt="Logo ENSIMAG" className="h-20 w-20 object-contain" />
+            </div>
             <div className="mt-3 grid gap-2 sm:grid-cols-[96px_1fr]">
-              <div className="rounded-xl bg-slate-900/30 p-2">
-                <img src="/logo_ensimag.png" alt="Logo ENSIMAG" className="h-20 w-20 object-contain" />
-              </div>
               <div className="rounded-xl bg-slate-900/30 p-3">
                 <p className="font-semibold text-slate-100">
                   {copy.engineeringSchool}
