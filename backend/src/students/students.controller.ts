@@ -14,11 +14,20 @@ import { CreateStudentDto } from './dto/create-student.dto';
 import { ListStudentsQueryDto } from './dto/list-students-query.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { StudentEntity } from './student.entity';
-import { StudentsPage, StudentsService } from './students.service';
+import {
+  PublicStudentsPage,
+  StudentsPage,
+  StudentsService,
+} from './students.service';
 
 @Controller('students')
 export class StudentsController {
   constructor(private readonly studentsService: StudentsService) {}
+
+  @Get('public')
+  findAllPublic(@Query() query: ListStudentsQueryDto): Promise<PublicStudentsPage> {
+    return this.studentsService.findAllPublic(query);
+  }
 
   @Post()
   @UseGuards(AuthGuard('jwt'))

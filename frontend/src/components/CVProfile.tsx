@@ -760,7 +760,7 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
           teachingSoftText: 'Écoute, patience, reformulation et adaptation du discours selon la personne en face.',
           teachingImpactTitle: 'Impact',
           teachingImpactText: 'Au quotidien, ça m’aide à écrire un code plus clair et à mieux collaborer avec une équipe produit/tech.',
-          faq: 'Questions fréquentes',
+          faq: 'FAQ',
           contactTitle: 'Contact',
           viewOnGithub: 'Voir sur GitHub',
           clickForDetails: 'Cliquer pour voir les détails',

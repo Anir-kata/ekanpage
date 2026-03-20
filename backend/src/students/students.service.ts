@@ -14,6 +14,23 @@ export type StudentsPage = {
   totalPages: number;
 };
 
+export type PublicStudent = {
+  id: string;
+  displayName: string;
+  level: string;
+  objective: string;
+  sessionsDone: number;
+  nextSessionAt: Date | null;
+};
+
+export type PublicStudentsPage = {
+  items: PublicStudent[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+};
+
 @Injectable()
 export class StudentsService {
   constructor(
@@ -87,7 +104,7 @@ export class StudentsService {
     return target;
   }
 
-  async findAll(query: ListStudentsQueryDto): Promise<StudentsPage> {
+  private buildFindAllQuery(query: ListStudentsQueryDto) {
     const page = query.page ?? 1;
     const limit = query.limit ?? 10;
     const search = query.search?.trim();
@@ -105,6 +122,12 @@ export class StudentsService {
       );
     }
 
+    return { qb, page, limit };
+  }
+
+  async findAll(query: ListStudentsQueryDto): Promise<StudentsPage> {
+    const { qb, page, limit } = this.buildFindAllQuery(query);
+
     const [items, total] = await qb.getManyAndCount();
 
     const updatedItems = items.filter((item) => this.syncPastSessions(item));
@@ -118,6 +141,26 @@ export class StudentsService {
 
     return {
       items,
+      total,
+      page,
+      limit,
+      totalPages: Math.max(1, Math.ceil(total / limit)),
+    };
+  }
+
+  async findAllPublic(query: ListStudentsQueryDto): Promise<PublicStudentsPage> {
+    const { qb, page, limit } = this.buildFindAllQuery(query);
+    const [items, total] = await qb.getManyAndCount();
+
+    return {
+      items: items.map((item) => ({
+        id: item.id,
+        displayName: `Eleve ${item.id.slice(0, 8)}`,
+        level: item.level,
+        objective: item.objective,
+        sessionsDone: item.sessionsDone,
+        nextSessionAt: item.nextSessionAt,
+      })),
       total,
       page,
       limit,
