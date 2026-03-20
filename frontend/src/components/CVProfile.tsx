@@ -824,7 +824,7 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
   ]
 
   return (
-    <section id="portfolio" className="mt-6 space-y-6">
+    <section id="portfolio" className="mt-6 space-y-6 pb-24 sm:pb-28">
       <Reveal>
         <article className="panel scan-line rounded-3xl p-6 md:p-8">
         <p className="text-xs uppercase tracking-[0.2em] text-cyan-200/90">{copy.portfolio}</p>
@@ -867,7 +867,7 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
         </article>
       </Reveal>
 
-      <article className="panel !sticky bottom-3 z-40 rounded-2xl p-3 sm:p-4">
+      <article className="panel fixed bottom-3 left-1/2 z-40 w-[min(92vw,72rem)] -translate-x-1/2 rounded-2xl p-3 sm:p-4">
         <div className="no-scrollbar flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible sm:pb-0">
           {quickLinks.map((link) => (
             <a
