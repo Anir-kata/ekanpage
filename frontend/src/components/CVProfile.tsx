@@ -813,7 +813,7 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
           toolsLabel: 'Outils',
           softSkillsLabel: 'Soft skills',
           experiences: 'Expériences',
-          education: 'Formation',
+          education: 'Formation et certifications',
           engineeringDegree: 'Diplôme ingénieur - 2025',
           engineeringSchool: "ENSIMAG - École nationale supérieure d'informatique et de mathématiques appliquées de Grenoble",
           specialization: "Spécialisation : Ingénierie des Systèmes d'Information",
