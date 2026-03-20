@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type ComponentType, type CSSProperties, type MouseEvent, type ReactNode } from 'react'
 import {
+  FaAndroid,
   FaCalendarCheck,
   FaChartLine,
   FaChevronDown,
@@ -11,7 +12,9 @@ import {
   FaEnvelope,
   FaFilePdf,
   FaFileCode,
+  FaGitAlt,
   FaGithub,
+  FaJava,
   FaLightbulb,
   FaLanguage,
   FaLinkedin,
@@ -30,7 +33,6 @@ import {
   SiDocker,
   SiExpress,
   SiFastapi,
-  SiGit,
   SiIntellijidea,
   SiJenkins,
   SiMysql,
@@ -86,7 +88,7 @@ const backendSkills = [
 ]
 
 const languageSkills = [
-  { name: 'Java', icon: SiSpringboot },
+  { name: 'Java', icon: FaJava },
   { name: 'Python', icon: SiPython },
   { name: 'TypeScript', icon: SiTypescript },
   { name: 'Node.js', icon: SiNodedotjs },
@@ -94,7 +96,7 @@ const languageSkills = [
 ]
 
 const toolingSkills = [
-  { name: 'Git', icon: SiGit },
+  { name: 'Git', icon: FaGitAlt },
   { name: 'Docker', icon: SiDocker },
   { name: 'Jenkins', icon: SiJenkins },
   { name: 'Azure / AWS', icon: FaCloud },
@@ -214,7 +216,7 @@ const projects: ProjectCardItem[] = [
   {
     title: 'Projet pour faire le processing de CVs avec Java Spring Boot',
     stack: [
-      { name: 'Java', icon: SiSpringboot },
+      { name: 'Java', icon: FaJava },
       { name: 'Spring Boot', icon: SiSpringboot },
     ],
     result: 'Gestion de CV avec API backend et logique métier de traitement.',
@@ -243,10 +245,10 @@ const universityProjects: UniversityProjectItem[] = [
     title: 'Compilateur Déca',
     subtitle: 'Projet académique - Génie Logiciel (ENSIMAG)',
     stack: [
-      { name: 'Java', icon: SiSpringboot },
+      { name: 'Java', icon: FaJava },
       { name: 'ANTLR', icon: FaCode },
       { name: 'Maven', icon: FaCogs },
-      { name: 'Git', icon: SiGit },
+      { name: 'Git', icon: FaGitAlt },
     ],
     description:
       "Développement en équipe d'un compilateur pour le langage Déca (langage pédagogique proche de Java), avec implémentation des différentes phases de compilation et application de pratiques modernes de développement logiciel.",
@@ -271,8 +273,8 @@ const universityProjects: UniversityProjectItem[] = [
     title: 'Smart Jogging',
     subtitle: 'Projet FABLAB - Application mobile Android',
     stack: [
-      { name: 'Java', icon: SiSpringboot },
-      { name: 'Android', icon: FaPhoneAlt },
+      { name: 'Java', icon: FaJava },
+      { name: 'Android Studio', icon: FaAndroid },
       { name: 'BLE', icon: FaCodeBranch },
       { name: 'Google Maps', icon: FaMapMarkerAlt },
     ],
@@ -553,7 +555,7 @@ const projectsEn: ProjectCardItem[] = [
   {
     title: 'Process_CVs_SpringBoot',
     stack: [
-      { name: 'Java', icon: SiSpringboot },
+      { name: 'Java', icon: FaJava },
       { name: 'Spring Boot', icon: SiSpringboot },
     ],
     result: 'CV management with backend API and business processing logic.',
@@ -582,10 +584,10 @@ const universityProjectsEn: UniversityProjectItem[] = [
     title: 'Deca compiler',
     subtitle: 'Academic project - Software Engineering (ENSIMAG)',
     stack: [
-      { name: 'Java', icon: SiSpringboot },
+      { name: 'Java', icon: FaJava },
       { name: 'ANTLR', icon: FaCode },
       { name: 'Maven', icon: FaCogs },
-      { name: 'Git', icon: SiGit },
+      { name: 'Git', icon: FaGitAlt },
     ],
     description:
       'Team development of a compiler for the Deca language (an educational Java-like language), including all compilation phases and modern software engineering practices.',
@@ -610,8 +612,8 @@ const universityProjectsEn: UniversityProjectItem[] = [
     title: 'Smart Jogging',
     subtitle: 'FABLAB project - Android mobile application',
     stack: [
-      { name: 'Java', icon: SiSpringboot },
-      { name: 'Android', icon: FaPhoneAlt },
+      { name: 'Java', icon: FaJava },
+      { name: 'Android Studio', icon: FaAndroid },
       { name: 'BLE', icon: FaCodeBranch },
       { name: 'Google Maps', icon: FaMapMarkerAlt },
     ],
