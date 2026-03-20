@@ -43,3 +43,7 @@ Build complet:
 ```bash
 npm run build:full
 ```
+
+## Nouveautes
+
+- v5.0.9: conteneur de la sidebar navigation passe en vraie couche de background derriere les liens, pour garder la navigation lisible sans la mettre visuellement au-dessus du portfolio.
