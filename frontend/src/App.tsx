@@ -276,7 +276,7 @@ function App() {
       setActiveReviewIndex(0)
       return
     }
-
+ 
     const interval = setInterval(() => {
       setActiveReviewIndex((previous) => (previous + 1) % reviewFeed.length)
     }, 4200)
