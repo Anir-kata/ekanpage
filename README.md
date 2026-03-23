@@ -32,9 +32,6 @@ Le site présente mon parcours, mes projets et mes compétences, avec un dashboa
 | Vercel   | Frontend          | https://anirportfolio.vercel.app/           |
 | Render   | Backend (API)     | https://ekanpage-backend.onrender.com        |
 | Neon     | Base PostgreSQL   | connexion via `DATABASE_URL`   |
-
-La variable `CORS_ORIGIN` du backend Render est gérée dans `render.yaml` pour centraliser le changement de domaine dans un seul endroit du dépôt.
-
 ---
 
 ## Développement local
