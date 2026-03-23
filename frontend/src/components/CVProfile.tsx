@@ -913,7 +913,7 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
 
   return (
     <>
-      <nav className="fixed left-3 top-24 z-30 hidden isolate xl:flex">
+      <nav className="fixed left-3 top-24 z-0 hidden isolate xl:flex">
         <div
           aria-hidden="true"
           className="absolute inset-0 -z-10 rounded-2xl border border-slate-800/70 bg-slate-950/25 backdrop-blur-sm"
