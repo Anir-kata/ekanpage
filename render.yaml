@@ -32,4 +32,4 @@ services:
       - key: AUTH_RATE_LIMIT_WINDOW_MS
         value: 60000
       - key: CORS_ORIGIN
-        sync: false
+        value: https://anirportfolio.vercel.app
