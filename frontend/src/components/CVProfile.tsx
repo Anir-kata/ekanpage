@@ -760,11 +760,10 @@ function SkillOrb({
 }
 
 type CVProfileProps = {
-  onOpenPedagogy: () => void
   language: 'fr' | 'en'
 }
 
-export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
+export function CVProfile({ language }: CVProfileProps) {
   const [selectedExperience, setSelectedExperience] = useState<ExperienceItem | null>(null)
   const [openedFaq, setOpenedFaq] = useState<number | null>(0)
 
@@ -960,12 +959,6 @@ export function CVProfile({ onOpenPedagogy, language }: CVProfileProps) {
             <FaEnvelope />
             {copy.contact}
           </a>
-          <button
-            className="inline-flex items-center gap-2 rounded-xl bg-cyan-400/15 px-4 py-2 text-sm font-semibold text-cyan-100 transition-all duration-150 ease-out hover:-translate-y-0.5 hover:bg-cyan-300/25 hover:shadow-[0_0_22px_rgba(34,211,238,0.35)] active:translate-y-0 active:scale-[0.98]"
-            onClick={onOpenPedagogy}
-          >
-            {copy.openDashboard}
-          </button>
         </div>
         <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-emerald-400/12 px-3 py-1 text-xs font-semibold text-emerald-200">
           <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-300" />
