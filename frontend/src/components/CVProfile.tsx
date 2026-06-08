@@ -912,17 +912,13 @@ export function CVProfile({ language }: CVProfileProps) {
 
   return (
     <>
-      <nav className="fixed left-3 top-24 z-0 hidden isolate xl:flex">
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 -z-10 rounded-2xl border border-slate-800/70 bg-slate-950/25 backdrop-blur-sm"
-        />
-        <div className="relative flex flex-col gap-0.5 px-1.5 py-2">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 isolate flex justify-center border-t border-slate-800/70 bg-slate-950/80 backdrop-blur-sm">
+        <div className="relative flex flex-row flex-wrap items-center justify-center gap-0.5 px-3 py-3 md:gap-1 md:px-4 md:py-4">
           {quickLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="group flex items-center gap-2.5 rounded-lg px-2 py-1.5 text-xs font-medium text-slate-500 transition-all duration-150 hover:text-cyan-200 hover:shadow-[inset_0_0_0_1px_rgba(34,211,238,0.18)] hover:tracking-wide"
+              className="group flex items-center gap-2 rounded-lg px-2 py-1 text-xs font-medium text-slate-500 transition-all duration-150 hover:text-cyan-200 hover:shadow-[inset_0_0_0_1px_rgba(34,211,238,0.18)] hover:tracking-wide"
             >
               <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-slate-600 transition-all duration-150 group-hover:scale-125 group-hover:bg-cyan-400 group-hover:shadow-[0_0_6px_rgba(34,211,238,0.7)]" />
               {link.label}
@@ -930,7 +926,7 @@ export function CVProfile({ language }: CVProfileProps) {
           ))}
         </div>
       </nav>
-      <section id="portfolio" className="mt-6 space-y-6">
+      <section id="portfolio" className="mt-6 space-y-6 pb-24 md:pb-28">
       <Reveal>
         <article className="panel scan-line rounded-3xl p-6 md:p-8">
         <p className="text-xs uppercase tracking-[0.2em] text-cyan-200/90">{copy.portfolio}</p>
