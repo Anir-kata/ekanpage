@@ -1,4 +1,4 @@
-name: Ekanpage Project Sync
+name: Daily Update
 
 on:
   schedule:
@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  project-sync:
+  daily-project-update:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -23,29 +23,40 @@ jobs:
           git config user.name "Anir-kata"
           git config user.email "ekanir52@gmail.com"
 
-      - name: Update project status log
+      - name: Update project journal
         run: |
           mkdir -p .automation
           DATE_UTC=$(date -u +'%Y-%m-%d %H:%M:%S UTC')
           VERSION=$(node -p "require('./package.json').version")
-          cat >> .automation/daily-log.txt <<EOF
+          cat > .automation/project-daily-log.md <<EOF
+# Ekanpage — Daily Project Journal
 
----
-Project: ekanpage
-Version: ${VERSION}
-Updated: ${DATE_UTC}
-Status: active
-Notes: Automated project status sync.
----
+- Project: Ekanpage
+- Version: ${VERSION}
+- Date: ${DATE_UTC}
+- Status: In progress
+
+## Commits completed
+- [ ] describe the commit(s) completed today
+- [ ] include the main feature, fix, or improvement
+
+## Changes made today
+- [ ] summarize the work completed
+- [ ] mention files or modules updated
+- [ ] note any bug fixes or improvements
+
+## Notes
+- [ ] add relevant project context
+- [ ] mention next priority
 EOF
 
-      - name: Commit project sync changes
+      - name: Commit daily project update
         run: |
-          git add .automation/daily-log.txt
+          git add .automation/project-daily-log.md
           if git diff --cached --quiet; then
-            echo "No project sync update required."
+            echo "No project update required."
             exit 0
           fi
           DATE_TAG=$(date -u +'%Y-%m-%d')
-          git commit -m "ekanpage: project sync ${DATE_TAG}"
+          git commit -m "ekanpage: daily project update ${DATE_TAG}"
           git push origin HEAD
