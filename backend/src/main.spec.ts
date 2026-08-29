@@ -49,10 +49,23 @@ describe('main bootstrap', () => {
     await bootstrap();
 
     expect(createMock).toHaveBeenCalledTimes(1);
-    expect(enableCorsMock).toHaveBeenCalledWith({
-      origin: 'http://localhost:5173',
-      credentials: true,
-    });
+
+    const corsConfig = enableCorsMock.mock.calls[0][0] as {
+      origin: (origin: string | undefined, callback: (err: Error | null, allowed?: boolean) => void) => void;
+      credentials: boolean;
+    };
+
+    expect(corsConfig.credentials).toBe(true);
+    expect(typeof corsConfig.origin).toBe('function');
+
+    const callback = jest.fn();
+    corsConfig.origin('http://localhost:5173', callback);
+    expect(callback).toHaveBeenCalledWith(null, true);
+
+    const rejectedCallback = jest.fn();
+    corsConfig.origin('https://evil.example', rejectedCallback);
+    expect(rejectedCallback).toHaveBeenCalledWith(null, false);
+
     expect(useGlobalPipesMock).toHaveBeenCalledTimes(1);
     expect(useGlobalFiltersMock).toHaveBeenCalledTimes(1);
     expect(listenMock).toHaveBeenCalledWith('3000');

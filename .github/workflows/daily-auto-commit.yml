@@ -1,4 +1,4 @@
-name: Daily Auto Commit
+name: Daily
 
 on:
   schedule:
