@@ -35,5 +35,7 @@ jobs:
             echo "No changes to commit."
             exit 0
           fi
-          git commit -m "v5.1.21 daily"
+          VERSION=$(node -p "require('./package.json').version")
+          DAY_TAG=$(date -u +%d%m)
+          git commit -m "v${VERSION} ${DAY_TAG}"
           git push origin HEAD
