@@ -20,8 +20,8 @@ jobs:
 
       - name: Configure git
         run: |
-          git config user.name "Ton Nom GitHub"
-          git config user.email "ton-email@example.com"
+          git config user.name "Anir-kata"
+          git config user.email "ekanir52@gmail.com"
 
       - name: Create daily log
         run: |
