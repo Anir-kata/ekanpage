@@ -1,0 +1,39 @@
+name: Daily Auto Commit
+
+on:
+  schedule:
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+jobs:
+  daily-commit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PAT_GITHUB }}
+          fetch-depth: 0
+
+      - name: Configure git
+        run: |
+          git config user.name "Ton Nom GitHub"
+          git config user.email "ton-email@example.com"
+
+      - name: Create daily log
+        run: |
+          mkdir -p .automation
+          printf '%s\n' "Daily update generated at $(date -u)" >> .automation/daily-log.txt
+
+      - name: Commit and push if needed
+        run: |
+          git add .
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          git commit -m "v5.1.21 daily"
+          git push origin HEAD
