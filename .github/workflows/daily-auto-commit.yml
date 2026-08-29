@@ -1,4 +1,4 @@
-name: Daily
+name: Ekanpage Project Sync
 
 on:
   schedule:
@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  daily-commit:
+  project-sync:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -18,24 +18,34 @@ jobs:
           token: ${{ secrets.PAT_GITHUB }}
           fetch-depth: 0
 
-      - name: Configure git
+      - name: Configure Git identity
         run: |
           git config user.name "Anir-kata"
           git config user.email "ekanir52@gmail.com"
 
-      - name: Create daily log
+      - name: Update project status log
         run: |
           mkdir -p .automation
-          printf '%s\n' "Daily update generated at $(date -u)" >> .automation/daily-log.txt
+          DATE_UTC=$(date -u +'%Y-%m-%d %H:%M:%S UTC')
+          VERSION=$(node -p "require('./package.json').version")
+          cat >> .automation/daily-log.txt <<EOF
 
-      - name: Commit and push if needed
+---
+Project: ekanpage
+Version: ${VERSION}
+Updated: ${DATE_UTC}
+Status: active
+Notes: Automated project status sync.
+---
+EOF
+
+      - name: Commit project sync changes
         run: |
-          git add .
+          git add .automation/daily-log.txt
           if git diff --cached --quiet; then
-            echo "No changes to commit."
+            echo "No project sync update required."
             exit 0
           fi
-          VERSION=$(node -p "require('./package.json').version")
-          DAY_TAG=$(date -u +%d%m)
-          git commit -m "v${VERSION} ${DAY_TAG}"
+          DATE_TAG=$(date -u +'%Y-%m-%d')
+          git commit -m "ekanpage: project sync ${DATE_TAG}"
           git push origin HEAD
