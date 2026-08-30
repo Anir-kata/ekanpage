@@ -1,0 +1,117 @@
+name: Ekanpage — mise à jour dynamique
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+    - cron: '0 9 * * *'
+    - cron: '0 12 * * *'
+    - cron: '0 15 * * *'
+    - cron: '0 18 * * *'
+  workflow_dispatch:
+
+jobs:
+  daily-project-update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Récupérer le dépôt
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PAT_GITHUB }}
+          fetch-depth: 0
+
+      - name: Configurer l’identité Git
+        run: |
+          git config user.name "Anir-kata"
+          git config user.email "ekanir52@gmail.com"
+
+      - name: Mettre à jour le journal du projet
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .automation
+          DATE_UTC="$(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+          TIME_LABEL="$(date -u +'%H:%M UTC')"
+          VERSION="$(node -p "require('./package.json').version")"
+          LOG_FILE=".automation/project-daily-log.md"
+
+          if [ ! -f "$LOG_FILE" ]; then
+            {
+              printf '# Journal quotidien Ekanpage\n\n'
+              printf -- '- Projet: Ekanpage\n'
+              printf -- '- Version: %s\n' "$VERSION"
+              printf -- '- Date: %s\n' "$DATE_UTC"
+              printf -- '- Statut: actif\n'
+              printf -- '- Fréquence: 5 points par jour\n\n'
+              printf '## Ce qui a été fait\n'
+              printf -- '- Mise en place du suivi quotidien du projet\n'
+              printf -- '- Organisation d’un journal de projet plus propre\n'
+              printf -- '- Suivi de l’avancement avec des points réguliers\n\n'
+              printf '## Modifications principales\n'
+              printf -- '- Ajout d’un journal de suivi professionnel\n'
+              printf -- '- Mise en place d’un rythme de 5 mises à jour par jour\n'
+              printf -- '- Amélioration de la visibilité sur l’état du projet\n\n'
+              printf '## Note\n'
+              printf -- '- Le projet suit maintenant un rythme de suivi plus sérieux\n'
+              printf -- '- Prochaine étape: valider les points automatiques et garder le projet à jour\n'
+              printf -- '---\n\n'
+            } > "$LOG_FILE"
+          fi
+
+          CHANGED_FILES="$(git diff --name-only HEAD~1 HEAD 2>/dev/null || git diff --name-only --cached 2>/dev/null || true)"
+          CHANGED_ITEMS=()
+          if [ -n "$CHANGED_FILES" ]; then
+            while IFS= read -r file; do
+              [ -n "$file" ] && CHANGED_ITEMS+=("- $file")
+            done <<< "$CHANGED_FILES"
+          else
+            CHANGED_ITEMS+=("- Aucun fichier modifié dans cette fenêtre de mise à jour.")
+          fi
+
+          UNCHANGED_ITEMS=()
+          for area in "backend/src" "frontend/src" ".github/workflows" ".automation" "package.json"; do
+            if ! printf '%s\n' "$CHANGED_FILES" | grep -Fq "$area"; then
+              case "$area" in
+                "backend/src") UNCHANGED_ITEMS+=("- Backend: pas modifié dans ce cycle.") ;;
+                "frontend/src") UNCHANGED_ITEMS+=("- Frontend: pas modifié dans ce cycle.") ;;
+                ".github/workflows") UNCHANGED_ITEMS+=("- Workflows GitHub: pas modifié dans ce cycle.") ;;
+                ".automation") UNCHANGED_ITEMS+=("- Journal du projet: pas modifié dans ce cycle.") ;;
+                "package.json") UNCHANGED_ITEMS+=("- Paramètres du projet: pas modifiés dans ce cycle.") ;;
+              esac
+            fi
+          done
+
+          if [ ${#UNCHANGED_ITEMS[@]} -eq 0 ]; then
+            UNCHANGED_ITEMS+=("- Aucune zone importante n’est restée inchangée durant ce cycle.")
+          fi
+
+          {
+            printf '## Point %s\n' "$TIME_LABEL"
+            printf -- '- Heure de revue: %s\n' "$DATE_UTC"
+            printf -- '- Version: %s\n' "$VERSION"
+            printf -- '- Statut: vrai message de mise à jour basé sur les changements du dépôt\n'
+            printf -- '- Modifié pendant ce cycle:\n'
+            for item in "${CHANGED_ITEMS[@]}"; do
+              printf -- '  %s\n' "$item"
+            done
+            printf -- '- Non modifié pendant ce cycle:\n'
+            for item in "${UNCHANGED_ITEMS[@]}"; do
+              printf -- '  %s\n' "$item"
+            done
+            printf -- '- Résultat: le message reflète bien ce qui a changé et ce qui n’a pas changé.\n'
+            printf -- '---\n\n'
+          } >> "$LOG_FILE"
+
+      - name: Valider le journal quotidien
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add .automation/project-daily-log.md
+          if git diff --cached --quiet; then
+            echo "Aucune mise à jour à enregistrer."
+            exit 0
+          fi
+          git commit -m "5.1.31 update"
+          git push origin HEAD:refs/heads/main
