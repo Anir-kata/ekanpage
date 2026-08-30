@@ -60,12 +60,47 @@ jobs:
             } > "$LOG_FILE"
           fi
 
+          CHANGED_FILES="$(git diff --name-only HEAD~1 HEAD 2>/dev/null || git diff --name-only --cached 2>/dev/null || true)"
+          CHANGED_ITEMS=()
+          if [ -n "$CHANGED_FILES" ]; then
+            while IFS= read -r file; do
+              [ -n "$file" ] && CHANGED_ITEMS+=("- $file")
+            done <<< "$CHANGED_FILES"
+          else
+            CHANGED_ITEMS+=("- No source files changed in this update window.")
+          fi
+
+          UNCHANGED_ITEMS=()
+          for area in "backend/src" "frontend/src" ".github/workflows" ".automation" "package.json"; do
+            if ! printf '%s\n' "$CHANGED_FILES" | grep -Fq "$area"; then
+              case "$area" in
+                "backend/src") UNCHANGED_ITEMS+=("- Backend application source: not changed in this cycle.") ;;
+                "frontend/src") UNCHANGED_ITEMS+=("- Frontend application source: not changed in this cycle.") ;;
+                ".github/workflows") UNCHANGED_ITEMS+=("- GitHub workflow configuration: not changed in this cycle.") ;;
+                ".automation") UNCHANGED_ITEMS+=("- Project journal automation: not changed in this cycle.") ;;
+                "package.json") UNCHANGED_ITEMS+=("- Root package metadata: not changed in this cycle.") ;;
+              esac
+            fi
+          done
+
+          if [ ${#UNCHANGED_ITEMS[@]} -eq 0 ]; then
+            UNCHANGED_ITEMS+=("- No major area remained unchanged in this update cycle.")
+          fi
+
           {
             printf '## Checkpoint %s\n' "$TIME_LABEL"
             printf -- '- Review time: %s\n' "$DATE_UTC"
-            printf -- '- Status: Workflow executed successfully within the 5-checkpoint daily cadence\n'
-            printf -- '- Scope: Ekanpage repository monitoring, project tracking, and delivery continuity\n'
-            printf -- '- Next action: continue task progression and keep the project journal aligned with real delivery\n'
+            printf -- '- Version: %s\n' "$VERSION"
+            printf -- '- Status: Real update based on repository delta\n'
+            printf -- '- Changed this cycle:\n'
+            for item in "${CHANGED_ITEMS[@]}"; do
+              printf -- '  %s\n' "$item"
+            done
+            printf -- '- Not changed this cycle:\n'
+            for item in "${UNCHANGED_ITEMS[@]}"; do
+              printf -- '  %s\n' "$item"
+            done
+            printf -- '- Outcome: the update reflects actual project changes and unchanged areas, rather than a static message.\n'
             printf -- '---\n\n'
           } >> "$LOG_FILE"
 
