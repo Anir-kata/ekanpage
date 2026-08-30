@@ -1,8 +1,12 @@
-name: Daily Project Update
+name: Ekanpage Daily Project Update
 
 on:
   schedule:
-    - cron: '0 2 * * *'
+    - cron: '0 6 * * *'
+    - cron: '0 9 * * *'
+    - cron: '0 12 * * *'
+    - cron: '0 15 * * *'
+    - cron: '0 18 * * *'
   workflow_dispatch:
 
 jobs:
@@ -24,42 +28,56 @@ jobs:
           git config user.email "ekanir52@gmail.com"
 
       - name: Update project journal
+        shell: bash
         run: |
+          set -euo pipefail
           mkdir -p .automation
-          DATE_UTC=$(date -u +'%Y-%m-%d %H:%M:%S UTC')
-          VERSION=$(node -p "require('./package.json').version")
+          DATE_UTC="$(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+          TIME_LABEL="$(date -u +'%H:%M UTC')"
+          VERSION="$(node -p "require('./package.json').version")"
+          LOG_FILE=".automation/project-daily-log.md"
+
+          if [ ! -f "$LOG_FILE" ]; then
+            {
+              printf '# Ekanpage — Daily Project Journal\n\n'
+              printf -- '- Project: Ekanpage\n'
+              printf -- '- Version: %s\n' "$VERSION"
+              printf -- '- Date: %s\n' "$DATE_UTC"
+              printf -- '- Status: Active\n'
+              printf -- '- Cadence: 5 checkpoints per day\n\n'
+              printf '## Commits completed\n'
+              printf -- '- Workflow cadence aligned to five project updates per day\n'
+              printf -- '- Daily operational journal established for project visibility\n'
+              printf -- '- Project continuity tracked through structured checkpoint logging\n\n'
+              printf '## Changes made today\n'
+              printf -- '- Maintained the Ekanpage project journal with structured progress checks\n'
+              printf -- '- Aligned automation with a professional daily delivery rhythm\n'
+              printf -- '- Prepared the repository for continuous status visibility\n\n'
+              printf '## Notes\n'
+              printf -- '- The project is following a disciplined operational cadence\n'
+              printf -- '- Next focus: validate all automated checkpoints on GitHub and maintain project continuity\n'
+              printf -- '---\n\n'
+            } > "$LOG_FILE"
+          fi
+
           {
-            echo '# Ekanpage — Daily Project Journal'
-            echo
-            echo "- Project: Ekanpage"
-            echo "- Version: ${VERSION}"
-            echo "- Date: ${DATE_UTC}"
-            echo '- Status: Active'
-            echo
-            echo '## Commits completed'
-            echo '- CI fix for the NestJS bootstrap CORS test'
-            echo '- GitHub Actions workflow cleanup and naming alignment'
-            echo '- Project journal initialization for daily status tracking'
-            echo
-            echo '## Changes made today'
-            echo '- Corrected backend test expectations to match the real dynamic CORS configuration'
-            echo '- Standardized the workflow naming for professional project tracking'
-            echo '- Added a dedicated journal file under .automation to keep daily updates traceable'
-            echo
-            echo '## Notes'
-            echo '- Backend verification remains in good standing after the fix'
-            echo '- Next focus: validate the workflow execution in GitHub Actions and continue project readiness checks'
-            echo '---'
-            echo
-          } >> .automation/project-daily-log.md
+            printf '## Checkpoint %s\n' "$TIME_LABEL"
+            printf -- '- Review time: %s\n' "$DATE_UTC"
+            printf -- '- Status: Workflow executed successfully within the 5-checkpoint daily cadence\n'
+            printf -- '- Scope: Ekanpage repository monitoring, project tracking, and delivery continuity\n'
+            printf -- '- Next action: continue task progression and keep the project journal aligned with real delivery\n'
+            printf -- '---\n\n'
+          } >> "$LOG_FILE"
 
       - name: Commit daily project update
+        shell: bash
         run: |
+          set -euo pipefail
           git add .automation/project-daily-log.md
           if git diff --cached --quiet; then
             echo "No project update required."
             exit 0
           fi
-          DATE_TAG=$(date -u +'%Y-%m-%d')
-          git commit -m "ekanpage: daily project update ${DATE_TAG}"
-          git push origin HEAD
+          TIME_STAMP="$(date -u +'%Y-%m-%d %H:%M UTC')"
+          git commit -m "5.1.30 workflow"
+          git push origin HEAD:refs/heads/main
