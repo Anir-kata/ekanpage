@@ -2,9 +2,9 @@
 
 ![CI](https://github.com/Anir-kata/ekanpage/actions/workflows/ci.yml/badge.svg)
 
-Portfolio interactif + espace d'enseignement personnel.
+Portfolio EL KABIRI ANIR.
 
-Le site présente mon parcours, mes projets et mes compétences, avec un dashboard pédagogique.
+Le site présente mon parcours, mes projets et mes compétences.
 
 ---
 
