@@ -92,3 +92,20 @@ s
 - Résultat: suppression du tracking de souris et des effets visuels les plus gourmands, sans perte de l’identité visuelle premium; validation du build Vite OK.
 ---
 
+## Point 17:06 UTC
+- Heure de revue: 2026-08-31 17:06:00 UTC
+- Version: 5.1.35
+- Statut: correction de compatibilité TypeScript validée
+- Modifié pendant ce cycle:
+  - backend/tsconfig.json
+  - backend/package.json
+  - package.json
+  - frontend/package.json
+  - .automation/project-daily-log.md
+- Non modifié pendant ce cycle:
+  - Backend fonctionnel: pas modifié dans ce cycle.
+  - Frontend visuel: pas modifié dans ce cycle.
+  - Workflows GitHub: pas modifié dans ce cycle.
+- Résultat: suppression de l’option dépréciée `baseUrl` qui n’était pas utilisée, compatible avec TypeScript 5.x/6.x et sans impact fonctionnel sur le code.
+---
+
