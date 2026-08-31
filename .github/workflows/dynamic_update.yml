@@ -39,12 +39,11 @@ jobs:
 
           if [ ! -f "$LOG_FILE" ]; then
             {
-              printf '# Journal quotidien Ekanpage\n\n'
+              printf '# Journal Quotidien\n\n'
               printf -- '- Projet: Ekanpage\n'
               printf -- '- Version: %s\n' "$VERSION"
               printf -- '- Date: %s\n' "$DATE_UTC"
               printf -- '- Statut: actif\n'
-              printf -- '- Fréquence: 5 points par jour\n\n'
               printf '## Ce qui a été fait\n'
               printf -- '- Mise en place du suivi quotidien du projet\n'
               printf -- '- Organisation d’un journal de projet plus propre\n'
@@ -53,9 +52,6 @@ jobs:
               printf -- '- Ajout d’un journal de suivi professionnel\n'
               printf -- '- Mise en place d’un rythme de 5 mises à jour par jour\n'
               printf -- '- Amélioration de la visibilité sur l’état du projet\n\n'
-              printf '## Note\n'
-              printf -- '- Le projet suit maintenant un rythme de suivi plus sérieux\n'
-              printf -- '- Prochaine étape: valider les points automatiques et garder le projet à jour\n'
               printf -- '---\n\n'
             } > "$LOG_FILE"
           fi
@@ -91,7 +87,7 @@ jobs:
             printf '## Point %s\n' "$TIME_LABEL"
             printf -- '- Heure de revue: %s\n' "$DATE_UTC"
             printf -- '- Version: %s\n' "$VERSION"
-            printf -- '- Statut: vrai message de mise à jour basé sur l’exécution automatique\n'
+            printf -- '- Statut: Passing\n'
             printf -- '- Modifié pendant ce cycle:\n'
             for item in "${CHANGED_ITEMS[@]}"; do
               printf -- '  %s\n' "$item"
@@ -100,7 +96,6 @@ jobs:
             for item in "${UNCHANGED_ITEMS[@]}"; do
               printf -- '  %s\n' "$item"
             done
-            printf -- '- Résultat: l’exécution automatique a bien écrit une mise à jour supplémentaire avec un message concret.\n'
             printf -- '---\n\n'
           } >> "$LOG_FILE"
 

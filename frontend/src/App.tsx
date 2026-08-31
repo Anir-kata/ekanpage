@@ -337,7 +337,7 @@ function App() {
         </button>
       </div>
 
-      {activeView === 'portfolio' && <CVProfile language={language} />}
+      {activeView === 'portfolio' && <CVProfile onOpenPedagogy={() => setActiveView('dashboard')} language={language} />}
 
       {activeView !== 'portfolio' && (
         <>
