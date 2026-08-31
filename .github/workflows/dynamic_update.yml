@@ -60,14 +60,14 @@ jobs:
             } > "$LOG_FILE"
           fi
 
-          CHANGED_FILES="$(git diff --name-only HEAD~1 HEAD 2>/dev/null || git diff --name-only --cached 2>/dev/null || true)"
+          CHANGED_FILES="$(git diff --name-only HEAD~1 HEAD 2>/dev/null || true)"
           CHANGED_ITEMS=()
           if [ -n "$CHANGED_FILES" ]; then
             while IFS= read -r file; do
               [ -n "$file" ] && CHANGED_ITEMS+=("- $file")
             done <<< "$CHANGED_FILES"
           else
-            CHANGED_ITEMS+=("- Aucun fichier modifié dans cette fenêtre de mise à jour.")
+            CHANGED_ITEMS+=("- Aucun fichier source modifié dans cette fenêtre de mise à jour.")
           fi
 
           UNCHANGED_ITEMS=()
@@ -91,7 +91,7 @@ jobs:
             printf '## Point %s\n' "$TIME_LABEL"
             printf -- '- Heure de revue: %s\n' "$DATE_UTC"
             printf -- '- Version: %s\n' "$VERSION"
-            printf -- '- Statut: vrai message de mise à jour basé sur les changements du dépôt\n'
+            printf -- '- Statut: vrai message de mise à jour basé sur l’exécution automatique\n'
             printf -- '- Modifié pendant ce cycle:\n'
             for item in "${CHANGED_ITEMS[@]}"; do
               printf -- '  %s\n' "$item"
@@ -100,7 +100,7 @@ jobs:
             for item in "${UNCHANGED_ITEMS[@]}"; do
               printf -- '  %s\n' "$item"
             done
-            printf -- '- Résultat: le message reflète bien ce qui a changé et ce qui n’a pas changé.\n'
+            printf -- '- Résultat: l’exécution automatique a bien écrit une mise à jour supplémentaire avec un message concret.\n'
             printf -- '---\n\n'
           } >> "$LOG_FILE"
 
@@ -113,5 +113,5 @@ jobs:
             echo "Aucune mise à jour à enregistrer."
             exit 0
           fi
-          git commit -m "5.1.31 update"
+          git commit -m "5.1.32 fix"
           git push origin HEAD:refs/heads/main
