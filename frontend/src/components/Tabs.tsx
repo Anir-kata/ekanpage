@@ -1,4 +1,4 @@
-type TabKey = 'dashboard' | 'students'
+type TabKey = 'students'
 
 type TabsProps = {
   activeTab: TabKey
@@ -16,14 +16,11 @@ const tabStyles = (isActive: boolean) =>
 export function Tabs({ activeTab, onChange, language }: TabsProps) {
   const labels =
     language === 'fr'
-      ? { dashboard: 'Tableau de bord', students: 'Élèves' }
-      : { dashboard: 'Dashboard', students: 'Students' }
+      ? { students: 'Élèves' }
+      : { students: 'Students' }
 
   return (
     <nav className="flex flex-wrap gap-2">
-      <button className={tabStyles(activeTab === 'dashboard')} onClick={() => onChange('dashboard')}>
-        {labels.dashboard}
-      </button>
       <button className={tabStyles(activeTab === 'students')} onClick={() => onChange('students')}>
         {labels.students}
       </button>

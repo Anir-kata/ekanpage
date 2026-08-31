@@ -34,7 +34,6 @@ function App() {
   const [studentsLoading, setStudentsLoading] = useState(true)
   const [studentsError, setStudentsError] = useState('')
   const [operationFeedback, setOperationFeedback] = useState('')
-  const [activeReviewIndex, setActiveReviewIndex] = useState(0)
   const [studentsPage, setStudentsPage] = useState<StudentsPage>({
     items: [],
     total: 0,
@@ -96,11 +95,6 @@ function App() {
     const timeout = setTimeout(() => setOperationFeedback(''), 2500)
     return () => clearTimeout(timeout)
   }, [operationFeedback])
-
-  const totalSessions = useMemo(
-    () => students.reduce((acc, student) => acc + student.sessionsDone, 0),
-    [students],
-  )
 
   const copy = useMemo(
     () =>
@@ -225,33 +219,6 @@ function App() {
   }
 
   const isStudentsListView = studentsView === 'list'
-  const reviewFeed = useMemo(
-    () =>
-      students
-        .filter((student) => Boolean(student.notes?.trim()))
-        .map((student) => ({
-          note: student.notes.trim(),
-          level: student.level,
-          sessionsDone: student.sessionsDone,
-          nextSessionAt: student.nextSessionAt,
-        })),
-    [students],
-  )
-
-  useEffect(() => {
-    if (!reviewFeed.length) {
-      setActiveReviewIndex(0)
-      return
-    }
- 
-    const interval = setInterval(() => {
-      setActiveReviewIndex((previous) => (previous + 1) % reviewFeed.length)
-    }, 4200)
-
-    return () => clearInterval(interval)
-  }, [reviewFeed.length])
-
-  const activeReview = reviewFeed.length ? reviewFeed[activeReviewIndex % reviewFeed.length] : null
 
   const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -304,22 +271,10 @@ function App() {
         </button>
       </div>
 
-      {activeView === 'portfolio' && <CVProfile onOpenPedagogy={() => setActiveView('dashboard')} language={language} />}
+      {activeView === 'portfolio' && <CVProfile language={language} />}
 
       {activeView !== 'portfolio' && (
         <>
-          {activeView === 'dashboard' && (
-            <header className="panel scan-line relative rounded-3xl p-6 md:p-8">
-              <p className="text-xs font-medium uppercase tracking-[0.2em] text-cyan-200/90">{copy.teachingSpace}</p>
-              <h1 className="hud-title mt-3 text-2xl font-black text-slate-100 sm:text-3xl lg:text-4xl">
-                {copy.dashboardTitle}
-              </h1>
-              <p className="mt-3 w-full max-w-3xl text-sm text-slate-300 sm:text-base">
-                {copy.dashboardSubtitle}
-              </p>
-            </header>
-          )}
-
           <section className="panel mt-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl p-4">
             <Tabs activeTab={activeView} onChange={setActiveView} language={language} />
             <div className="flex items-center gap-2">
@@ -384,62 +339,6 @@ function App() {
                 </form>
               </section>
             </div>
-          )}
-
-          {activeView === 'dashboard' && (
-            <section className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              <article className="panel-soft rounded-2xl p-5 transition hover:-translate-y-0.5 hover:shadow-cyan-400/20">
-                <p className="text-xs uppercase tracking-[0.18em] text-slate-400">{copy.totalStudents}</p>
-                <p className="neon-cyan mt-3 text-4xl font-extrabold">{students.length}</p>
-              </article>
-              <article className="panel-soft rounded-2xl p-5 transition hover:-translate-y-0.5 hover:shadow-blue-400/20">
-                <p className="text-xs uppercase tracking-[0.18em] text-slate-400">{copy.doneSessions}</p>
-                <p className="mt-3 text-4xl font-extrabold text-blue-300">{totalSessions}</p>
-              </article>
-              <article className="panel-soft rounded-2xl p-5 transition hover:-translate-y-0.5 hover:shadow-indigo-400/20">
-                <p className="text-xs uppercase tracking-[0.18em] text-slate-400">{copy.observedProgress}</p>
-                <p className="mt-3 text-base font-semibold text-indigo-200">{copy.positiveProgress}</p>
-              </article>
-            </section>
-          )}
-
-          {activeView === 'dashboard' && (
-            <section className="mt-6 panel rounded-2xl p-5">
-              <h3 className="hud-title text-base font-bold text-cyan-200">{copy.notesTitle}</h3>
-              <div className="mt-4">
-                <article className="review-spotlight relative overflow-hidden rounded-xl p-4 sm:p-5">
-                  {activeReview && (
-                    <div className="relative z-10">
-                      <p className="review-quote mt-3 text-base leading-relaxed text-slate-100 sm:text-lg">
-                        "{activeReview.note}"
-                      </p>
-                      <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-slate-300">
-                        <span className="rounded-full border border-cyan-400/30 bg-cyan-500/10 px-2 py-1">
-                          {activeReview.level}
-                        </span>
-                        <span className="rounded-full border border-blue-400/30 bg-blue-500/10 px-2 py-1">
-                          {copy.sessionsCount}: {activeReview.sessionsDone}
-                        </span>
-                      </div>
-                    </div>
-                  )}
-                  {!activeReview && <p className="text-sm text-slate-300">{copy.noReview}</p>}
-                </article>
-                {!!reviewFeed.length && (
-                  <div className="mt-4 flex flex-wrap items-center gap-2">
-                    {reviewFeed.slice(0, 8).map((review, index) => (
-                      <button
-                        key={`${review.note}-${index}-dot`}
-                        type="button"
-                        className={`review-dot ${index === activeReviewIndex % reviewFeed.length ? 'review-dot--active' : ''}`}
-                        onClick={() => setActiveReviewIndex(index)}
-                        aria-label={copy.showReviewAria(index)}
-                      />
-                    ))}
-                  </div>
-                )}
-              </div>
-            </section>
           )}
 
           {activeView === 'students' && (
