@@ -75,3 +75,20 @@ s
   - Paramètres du projet: pas modifiés dans ce cycle.
 ---
 
+## Point 15:42 UTC
+- Heure de revue: 2026-08-31 15:42:00 UTC
+- Version: 5.1.34
+- Statut: correction de performance front validée, rendu premium conservé sans lag
+- Modifié pendant ce cycle:
+  - frontend/src/App.tsx
+  - frontend/src/index.css
+  - package.json
+  - frontend/package.json
+  - .automation/project-daily-log.md
+- Non modifié pendant ce cycle:
+  - Backend: pas modifié dans ce cycle.
+  - Workflows GitHub: pas modifié dans ce cycle.
+  - Paramètres du projet: pas modifiés dans ce cycle.
+- Résultat: suppression du tracking de souris et des effets visuels les plus gourmands, sans perte de l’identité visuelle premium; validation du build Vite OK.
+---
+

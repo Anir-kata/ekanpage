@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react'
+import { useEffect, useMemo, useState, type FormEvent } from 'react'
 import {
   clearAuthToken,
   createStudent as createStudentApi,
@@ -42,8 +42,6 @@ function App() {
     limit: 10,
     totalPages: 1,
   })
-  const frameRef = useRef<number | null>(null)
-  const pointerRef = useRef<{ x: number; y: number } | null>(null)
 
   const loadStudents = async (params?: { page?: number }) => {
     setStudentsLoading(true)
@@ -98,37 +96,6 @@ function App() {
     const timeout = setTimeout(() => setOperationFeedback(''), 2500)
     return () => clearTimeout(timeout)
   }, [operationFeedback])
-
-  useEffect(() => {
-    const flushPointer = () => {
-      const next = pointerRef.current
-      if (!next) {
-        frameRef.current = null
-        return
-      }
-
-      const root = document.documentElement
-      root.style.setProperty('--mouse-x', `${next.x}px`)
-      root.style.setProperty('--mouse-y', `${next.y}px`)
-      pointerRef.current = null
-      frameRef.current = null
-    }
-
-    const handlePointerMove = (event: PointerEvent) => {
-      pointerRef.current = { x: event.clientX, y: event.clientY }
-      if (frameRef.current === null) {
-        frameRef.current = requestAnimationFrame(flushPointer)
-      }
-    }
-
-    window.addEventListener('pointermove', handlePointerMove, { passive: true })
-    return () => {
-      window.removeEventListener('pointermove', handlePointerMove)
-      if (frameRef.current !== null) {
-        cancelAnimationFrame(frameRef.current)
-      }
-    }
-  }, [])
 
   const totalSessions = useMemo(
     () => students.reduce((acc, student) => acc + student.sessionsDone, 0),
