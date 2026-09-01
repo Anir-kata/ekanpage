@@ -35,7 +35,7 @@ jobs:
           DATE_UTC="$(date -u +'%Y-%m-%d %H:%M:%S UTC')"
           TIME_LABEL="$(date -u +'%H:%M UTC')"
           VERSION="$(node -p "require('./package.json').version")"
-          LOG_FILE="log/project-daily-log.md"
+          LOG_FILE="log/789091.md"
 
           if [ ! -f "$LOG_FILE" ]; then
             {
@@ -103,7 +103,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git add log/project-daily-log.md
+          git add log/789091.md
           if git diff --cached --quiet; then
             echo "Aucune mise à jour à enregistrer."
             exit 0
