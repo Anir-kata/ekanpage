@@ -1,4 +1,4 @@
-name: Mis à jour
+name: Project notes
 
 on:
   schedule:
@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  daily-project-update:
+  project-notes:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -23,7 +23,7 @@ jobs:
           git config user.name "Anir-kata"
           git config user.email "ekanir52@gmail.com"
 
-      - name: Mettre à jour le journal du projet
+      - name: Record project notes
         shell: bash
         run: |
           set -euo pipefail
@@ -34,13 +34,13 @@ jobs:
 
           if [ ! -f "$LOG_FILE" ]; then
             {
-              printf '# Journal Quotidien\n\n'
+              printf '# Project Notes\n\n'
               printf -- '- Projet: Ekanpage\n'
               printf -- '- Version: %s\n' "$VERSION"
               printf -- '- Date: %s\n' "$DATE_UTC"
               printf -- '- Statut: actif\n'
               printf '## Ce qui a été fait\n'
-              printf -- '- Mise en place du suivi quotidien du projet\n'
+              printf -- '- Tracking project progress\n'
               printf -- '- Organisation d’un journal de projet plus propre\n'
               printf -- '- Suivi de l’avancement avec des points réguliers\n\n'
               printf '## Modifications principales\n'
@@ -98,10 +98,10 @@ jobs:
             } >> "$LOG_FILE"
 
             git add "$LOG_FILE"
-            git commit -m "Daily update ${commit_number}/${COMMIT_COUNT}"
+            git commit -m "Project notes ${commit_number}/${COMMIT_COUNT}"
           done
 
-      - name: Publier les mises à jour quotidiennes
+      - name: Publish changes
         shell: bash
         run: |
           set -euo pipefail
