@@ -2,7 +2,7 @@ name: Project notes
 
 on:
   schedule:
-    - cron: '0 6 * * *'
+    - cron: '*/15 * * * *'
   workflow_dispatch:
 
 jobs:
@@ -28,9 +28,24 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p log
+          DATE_UTC="$(date -u +'%Y-%m-%d %H:%M:%S UTC')"
           VERSION="$(node -p "require('./package.json').version")"
           LOG_FILE="log/789091.md"
-          COMMIT_COUNT="$(shuf -i 1-15 -n 1)"
+          DATE_KEY="$(date -u +'%Y-%m-%d')"
+          CURRENT_SLOT="$(($(date -u +'%H') * 4 + $(date -u +'%M') / 15))"
+          read -r COMMIT_COUNT RANDOM_SLOTS <<< "$(python -c "import random,sys; rng=random.Random(sys.argv[1]); count=rng.randint(1,15); print(count, *sorted(rng.sample(range(96), count)))" "$DATE_KEY")"
+
+          SLOT_IS_SELECTED=false
+          for slot in $RANDOM_SLOTS; do
+            if [ "$slot" -eq "$CURRENT_SLOT" ]; then
+              SLOT_IS_SELECTED=true
+              break
+            fi
+          done
+
+          if [ "$SLOT_IS_SELECTED" != true ]; then
+            exit 0
+          fi
 
           if [ ! -f "$LOG_FILE" ]; then
             {
@@ -51,7 +66,8 @@ jobs:
             } > "$LOG_FILE"
           fi
 
-          for ((commit_number = 1; commit_number <= COMMIT_COUNT; commit_number++)); do
+          COMMIT_NUMBER="$(git log --since="$DATE_KEY 00:00:00 UTC" --until="$DATE_KEY 23:59:59 UTC" --format='%s' | grep -Fc 'Project notes' || true)"
+          COMMIT_NUMBER=$((COMMIT_NUMBER + 1))
             DATE_UTC="$(date -u +'%Y-%m-%d %H:%M:%S UTC')"
             TIME_LABEL="$(date -u +'%H:%M UTC')"
             CHANGED_FILES="$(git diff --name-only HEAD~1 HEAD 2>/dev/null || true)"
@@ -82,7 +98,7 @@ jobs:
             fi
 
             {
-              printf '## Point %s (%s/%s)\n' "$TIME_LABEL" "$commit_number" "$COMMIT_COUNT"
+              printf '## Point %s (%s/%s)\n' "$TIME_LABEL" "$COMMIT_NUMBER" "$COMMIT_COUNT"
               printf -- '- Heure de revue: %s\n' "$DATE_UTC"
               printf -- '- Version: %s\n' "$VERSION"
               printf -- '- Statut: Passing\n'
@@ -98,8 +114,7 @@ jobs:
             } >> "$LOG_FILE"
 
             git add "$LOG_FILE"
-            git commit -m "Project notes ${commit_number}/${COMMIT_COUNT}"
-          done
+            git commit -m "Project notes ${COMMIT_NUMBER}/${COMMIT_COUNT}"
 
       - name: Publish changes
         shell: bash
