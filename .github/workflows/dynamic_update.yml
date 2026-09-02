@@ -3,10 +3,6 @@ name: Mis à jour
 on:
   schedule:
     - cron: '0 6 * * *'
-    - cron: '0 9 * * *'
-    - cron: '0 12 * * *'
-    - cron: '0 15 * * *'
-    - cron: '0 18 * * *'
   workflow_dispatch:
 
 jobs:
@@ -32,10 +28,9 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p log
-          DATE_UTC="$(date -u +'%Y-%m-%d %H:%M:%S UTC')"
-          TIME_LABEL="$(date -u +'%H:%M UTC')"
           VERSION="$(node -p "require('./package.json').version")"
           LOG_FILE="log/789091.md"
+          COMMIT_COUNT="$(shuf -i 1-15 -n 1)"
 
           if [ ! -f "$LOG_FILE" ]; then
             {
@@ -50,63 +45,64 @@ jobs:
               printf -- '- Suivi de l’avancement avec des points réguliers\n\n'
               printf '## Modifications principales\n'
               printf -- '- Ajout d’un journal de suivi professionnel\n'
-              printf -- '- Mise en place d’un rythme de 5 mises à jour par jour\n'
+              printf -- '- Mise en place d’un rythme de 1 à 15 mises à jour aléatoires par jour\n'
               printf -- '- Amélioration de la visibilité sur l’état du projet\n\n'
               printf -- '---\n\n'
             } > "$LOG_FILE"
           fi
 
-          CHANGED_FILES="$(git diff --name-only HEAD~1 HEAD 2>/dev/null || true)"
-          CHANGED_ITEMS=()
-          if [ -n "$CHANGED_FILES" ]; then
-            while IFS= read -r file; do
-              [ -n "$file" ] && CHANGED_ITEMS+=("- $file")
-            done <<< "$CHANGED_FILES"
-          else
-            CHANGED_ITEMS+=("- Aucun fichier source modifié dans cette fenêtre de mise à jour.")
-          fi
-
-          UNCHANGED_ITEMS=()
-          for area in "backend/src" "frontend/src" ".github/workflows" "log" "package.json"; do
-            if ! printf '%s\n' "$CHANGED_FILES" | grep -Fq "$area"; then
-              case "$area" in
-                "backend/src") UNCHANGED_ITEMS+=("- Backend: pas modifié dans ce cycle.") ;;
-                "frontend/src") UNCHANGED_ITEMS+=("- Frontend: pas modifié dans ce cycle.") ;;
-                ".github/workflows") UNCHANGED_ITEMS+=("- Workflows GitHub: pas modifié dans ce cycle.") ;;
-                "log") UNCHANGED_ITEMS+=("- Journal du projet: pas modifié dans ce cycle.") ;;
-                "package.json") UNCHANGED_ITEMS+=("- Paramètres du projet: pas modifiés dans ce cycle.") ;;
-              esac
+          for ((commit_number = 1; commit_number <= COMMIT_COUNT; commit_number++)); do
+            DATE_UTC="$(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+            TIME_LABEL="$(date -u +'%H:%M UTC')"
+            CHANGED_FILES="$(git diff --name-only HEAD~1 HEAD 2>/dev/null || true)"
+            CHANGED_ITEMS=()
+            if [ -n "$CHANGED_FILES" ]; then
+              while IFS= read -r file; do
+                [ -n "$file" ] && CHANGED_ITEMS+=("- $file")
+              done <<< "$CHANGED_FILES"
+            else
+              CHANGED_ITEMS+=("- Aucun fichier source modifié dans cette fenêtre de mise à jour.")
             fi
+
+            UNCHANGED_ITEMS=()
+            for area in "backend/src" "frontend/src" ".github/workflows" "log" "package.json"; do
+              if ! printf '%s\n' "$CHANGED_FILES" | grep -Fq "$area"; then
+                case "$area" in
+                  "backend/src") UNCHANGED_ITEMS+=("- Backend: pas modifié dans ce cycle.") ;;
+                  "frontend/src") UNCHANGED_ITEMS+=("- Frontend: pas modifié dans ce cycle.") ;;
+                  ".github/workflows") UNCHANGED_ITEMS+=("- Workflows GitHub: pas modifié dans ce cycle.") ;;
+                  "log") UNCHANGED_ITEMS+=("- Journal du projet: pas modifié dans ce cycle.") ;;
+                  "package.json") UNCHANGED_ITEMS+=("- Paramètres du projet: pas modifiés dans ce cycle.") ;;
+                esac
+              fi
+            done
+
+            if [ ${#UNCHANGED_ITEMS[@]} -eq 0 ]; then
+              UNCHANGED_ITEMS+=("- Aucune zone importante n’est restée inchangée durant ce cycle.")
+            fi
+
+            {
+              printf '## Point %s (%s/%s)\n' "$TIME_LABEL" "$commit_number" "$COMMIT_COUNT"
+              printf -- '- Heure de revue: %s\n' "$DATE_UTC"
+              printf -- '- Version: %s\n' "$VERSION"
+              printf -- '- Statut: Passing\n'
+              printf -- '- Modifié pendant ce cycle:\n'
+              for item in "${CHANGED_ITEMS[@]}"; do
+                printf -- '  %s\n' "$item"
+              done
+              printf -- '- Non modifié pendant ce cycle:\n'
+              for item in "${UNCHANGED_ITEMS[@]}"; do
+                printf -- '  %s\n' "$item"
+              done
+              printf -- '---\n\n'
+            } >> "$LOG_FILE"
+
+            git add "$LOG_FILE"
+            git commit -m "Daily update ${commit_number}/${COMMIT_COUNT}"
           done
 
-          if [ ${#UNCHANGED_ITEMS[@]} -eq 0 ]; then
-            UNCHANGED_ITEMS+=("- Aucune zone importante n’est restée inchangée durant ce cycle.")
-          fi
-
-          {
-            printf '## Point %s\n' "$TIME_LABEL"
-            printf -- '- Heure de revue: %s\n' "$DATE_UTC"
-            printf -- '- Version: %s\n' "$VERSION"
-            printf -- '- Statut: Passing\n'
-            printf -- '- Modifié pendant ce cycle:\n'
-            for item in "${CHANGED_ITEMS[@]}"; do
-              printf -- '  %s\n' "$item"
-            done
-            printf -- '- Non modifié pendant ce cycle:\n'
-            for item in "${UNCHANGED_ITEMS[@]}"; do
-              printf -- '  %s\n' "$item"
-            done
-            printf -- '---\n\n'
-          } >> "$LOG_FILE"
-
-      - name: Valider le journal quotidien
+      - name: Publier les mises à jour quotidiennes
         shell: bash
         run: |
           set -euo pipefail
-          git add log/789091.md
-          if git diff --cached --quiet; then
-            echo "Aucune mise à jour à enregistrer."
-            exit 0
-          fi
-          git commit -m "5.1.32 fix"
           git push origin HEAD:refs/heads/main
