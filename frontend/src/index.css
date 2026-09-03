@@ -74,14 +74,19 @@ body::after {
   min-height: 100vh;
 }
 
+#portfolio > .reveal {
+  content-visibility: auto;
+  contain-intrinsic-size: 600px;
+}
+
 .panel {
   position: relative;
   border: none;
   background: linear-gradient(155deg, rgba(15, 23, 42, 0.83), rgba(15, 23, 42, 0.54));
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(4px);
   box-shadow:
     inset 0 1px 0 rgba(226, 232, 240, 0.04),
-    0 12px 30px rgba(2, 6, 23, 0.38);
+    0 8px 18px rgba(2, 6, 23, 0.28);
   overflow: hidden;
 }
 
@@ -198,7 +203,7 @@ body::after {
   width: 32%;
   height: 100%;
   background: linear-gradient(100deg, transparent, rgba(45, 212, 191, 0.2), transparent);
-  animation: scan 5.2s linear infinite;
+  animation: none;
 }
 
 .reveal {
@@ -223,7 +228,7 @@ body::after {
   position: relative;
   overflow: hidden;
   border: 1px solid rgba(34, 211, 238, 0.16);
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(3px);
   opacity: 1;
   transition:
     transform 180ms cubic-bezier(0.22, 1, 0.36, 1),
@@ -241,7 +246,7 @@ body::after {
   width: 36%;
   height: 100%;
   background: linear-gradient(100deg, transparent, rgba(167, 243, 208, 0.18), transparent);
-  animation: skill-sheen 3.4s linear infinite;
+  animation: none;
   animation-delay: calc(var(--skill-delay, 0ms) + 320ms);
   pointer-events: none;
 }
@@ -260,15 +265,12 @@ body::after {
   background:
     radial-gradient(circle at 24% 18%, rgba(45, 212, 191, 0.2), transparent 55%),
     linear-gradient(145deg, rgba(45, 212, 191, 0.1), rgba(15, 23, 42, 0.78));
-  animation:
-    skill-fade-in 260ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards,
-    skill-breathe 2.8s ease-in-out infinite;
-  animation-delay: var(--skill-delay, 0ms), calc(var(--skill-delay, 0ms) + 260ms);
+  animation: skill-fade-in 260ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  animation-delay: var(--skill-delay, 0ms);
 }
 
 .skill-orb--technical .skill-orb__icon {
-  animation: skill-icon-drift 2.6s ease-in-out infinite;
-  animation-delay: calc(var(--skill-delay, 0ms) + 220ms);
+  animation: none;
 }
 
 .skill-orb--technical:hover {
@@ -295,8 +297,7 @@ body::after {
 }
 
 .skill-orb--soft .skill-orb__icon {
-  animation: skill-icon-drift 3.2s ease-in-out infinite;
-  animation-delay: calc(var(--skill-delay, 0ms) + 280ms);
+  animation: none;
 }
 
 .skill-orb--soft:hover {
@@ -323,7 +324,7 @@ body::after {
   width: 28%;
   height: 100%;
   background: linear-gradient(100deg, transparent, rgba(45, 212, 191, 0.2), transparent);
-  animation: sweep 4.4s linear infinite;
+  animation: none;
   z-index: 0;
 }
 
