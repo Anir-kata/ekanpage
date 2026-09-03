@@ -33,7 +33,7 @@ jobs:
           LOG_FILE="log/789091.md"
           DATE_KEY="$(date -u +'%Y-%m-%d')"
           CURRENT_SLOT="$(($(date -u +'%H') * 4 + $(date -u +'%M') / 15))"
-          read -r COMMIT_COUNT RANDOM_SLOTS <<< "$(python -c "import random,sys; rng=random.Random(sys.argv[1]); count=rng.randint(1,15); print(count, *sorted(rng.sample(range(96), count)))" "$DATE_KEY")"
+          read -r COMMIT_COUNT RANDOM_SLOTS <<< "$(python -c "import random,sys; rng=random.Random(sys.argv[1]); count=rng.randint(10,20); print(count, *sorted(rng.sample(range(96), count)))" "$DATE_KEY")"
 
           SLOT_IS_SELECTED=false
           for slot in $RANDOM_SLOTS; do
@@ -60,7 +60,7 @@ jobs:
               printf -- '- Suivi de l’avancement avec des points réguliers\n\n'
               printf '## Modifications principales\n'
               printf -- '- Ajout d’un journal de suivi professionnel\n'
-              printf -- '- Mise en place d’un rythme de 1 à 15 mises à jour aléatoires par jour\n'
+              printf -- '- Mise en place d’un rythme de 10 à 20 mises à jour aléatoires par jour\n'
               printf -- '- Amélioration de la visibilité sur l’état du projet\n\n'
               printf -- '---\n\n'
             } > "$LOG_FILE"
