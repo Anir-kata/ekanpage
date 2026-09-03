@@ -82,8 +82,7 @@ body::after {
 .panel {
   position: relative;
   border: none;
-  background: linear-gradient(155deg, rgba(15, 23, 42, 0.83), rgba(15, 23, 42, 0.54));
-  backdrop-filter: blur(4px);
+  background: linear-gradient(155deg, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.88));
   box-shadow:
     inset 0 1px 0 rgba(226, 232, 240, 0.04),
     0 8px 18px rgba(2, 6, 23, 0.28);
@@ -208,15 +207,13 @@ body::after {
 
 .reveal {
   opacity: 0;
-  transform: translateY(20px) scale(0.99);
-  filter: blur(3px);
-  transition: opacity 340ms ease, transform 340ms ease, filter 340ms ease;
+  transform: translateY(14px);
+  transition: opacity 260ms ease, transform 260ms ease;
 }
 
 .reveal--visible {
   opacity: 1;
   transform: translateY(0) scale(1);
-  filter: blur(0);
 }
 
 .interactive-card {
@@ -228,14 +225,13 @@ body::after {
   position: relative;
   overflow: hidden;
   border: 1px solid rgba(34, 211, 238, 0.16);
-  backdrop-filter: blur(3px);
+  background-color: rgba(15, 23, 42, 0.92);
   opacity: 1;
   transition:
     transform 180ms cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 180ms cubic-bezier(0.22, 1, 0.36, 1),
     border-color 180ms ease,
     background-color 180ms ease;
-  will-change: transform;
 }
 
 .skill-orb::after {
