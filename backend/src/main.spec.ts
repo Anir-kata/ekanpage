@@ -1,5 +1,6 @@
 import { INestApplication, PipeTransform } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 import { bootstrap } from './main';
 
 jest.mock('@nestjs/core', () => ({
@@ -10,16 +11,18 @@ jest.mock('@nestjs/core', () => ({
 
 describe('main bootstrap', () => {
   const mockApp: Partial<INestApplication> = {};
-  const enableCorsMock = jest.fn<INestApplication, [unknown]>(
+  const enableCorsMock = jest.fn<(options: unknown) => INestApplication>(
     () => mockApp as INestApplication,
   );
-  const useGlobalPipesMock = jest.fn<INestApplication, [...PipeTransform[]]>(
+  const useGlobalPipesMock = jest.fn<
+    (...pipes: PipeTransform[]) => INestApplication
+  >(() => mockApp as INestApplication);
+  const useGlobalFiltersMock = jest.fn<
+    (filter: unknown) => INestApplication
+  >(
     () => mockApp as INestApplication,
   );
-  const useGlobalFiltersMock = jest.fn<INestApplication, [unknown]>(
-    () => mockApp as INestApplication,
-  );
-  const listenMock = jest.fn<Promise<void>, [string | number]>();
+  const listenMock = jest.fn<(port: string | number) => Promise<void>>();
   const createMock = jest.spyOn(NestFactory, 'create');
 
   beforeEach(() => {

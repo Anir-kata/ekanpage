@@ -850,7 +850,7 @@ export function CVProfile({ language }: CVProfileProps) {
           available: 'Open to full-time opportunities',
           about: 'About',
           locationLabel: 'Location',
-          locationValue: 'Paris (75014) / Lyon (69007)',
+          locationValue: 'Paris (75014)',
           availabilityLabel: 'Availability',
           availabilityValue: 'Immediate',
           languagesLabel: 'Languages',
