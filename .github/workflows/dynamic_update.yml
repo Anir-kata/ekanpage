@@ -32,7 +32,7 @@ jobs:
           VERSION="$(node -p "require('./package.json').version")"
           LOG_FILE="log/789091.md"
           DATE_KEY="$(date -u +'%Y-%m-%d')"
-          CURRENT_SLOT="$(($(date -u +'%H') * 4 + $(date -u +'%M') / 15))"
+          CURRENT_SLOT="$((10#$(date -u +'%H') * 4 + 10#$(date -u +'%M') / 15))"
           read -r COMMIT_COUNT RANDOM_SLOTS <<< "$(python -c "import random,sys; rng=random.Random(sys.argv[1]); count=rng.randint(10,20); print(count, *sorted(rng.sample(range(96), count)))" "$DATE_KEY")"
 
           SLOT_IS_SELECTED=false
