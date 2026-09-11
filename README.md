@@ -22,6 +22,7 @@ Le site présente mon parcours, mes projets et mes compétences.
 
 **Tests**
 - Jest (unitaires + e2e + sécurité)
+- Vitest + Testing Library (frontend)
 
 ---
 
